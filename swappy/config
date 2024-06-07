@@ -1,0 +1,3 @@
+[Default]
+save_dir=$HOME/Media/screenshots/
+early_exit=true

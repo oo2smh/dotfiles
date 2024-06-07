@@ -1,0 +1,98 @@
+* {
+  font-size: 18px;
+  font-family: Hack Nerd Font;
+}
+
+/* WORKSPACES */
+
+#workspaces button {
+  padding: 0 8px;
+  color: #fbf000;
+}
+
+#workspaces button.active {
+  color: #000000;
+  background: #7aa2f7;
+  border-radius: 16px;
+  min-width: 40px;
+}
+
+/* -----------------------------------------------------
+ * Tooltips
+ * ----------------------------------------------------- */
+tooltip {
+  background: #1a1b26;
+  border: 1px solid #7aa2f7;
+  border-radius: 10px;
+}
+
+tooltip label {
+  color: #c0caf5;
+}
+
+/* -----------------------------------------------------
+ * Window
+ * ----------------------------------------------------- */
+window#waybar {
+  background: #292b2e;
+  color: #fdf6e3;
+}
+
+#window,
+#memory,
+#clock,
+#disk,
+#cpu,
+#battery,
+#network,
+#tray,
+#pulseaudio {
+  border-radius: 1rem;
+  margin: 8px;
+  padding: 2px 16px;
+}
+
+#window {
+  color: #15161e;
+  background: #c0caf5;
+}
+
+#memory {
+  color: #15161e;
+  background: #e0af68;
+}
+
+#clock {
+  color: #000000;
+  background: #9ece6a;
+}
+
+#cpu {
+  color: #15161e;
+  background: #7dcfff;
+}
+
+#disk {
+  color: #15161e;
+  background: #9ece6a;
+}
+
+#battery {
+  color: #15161e;
+  background: #ff79c6;
+}
+
+#network {
+  color: #15161e;
+  background: #f1fa8c;
+}
+
+#tray {
+  color: #15161e;
+  background: #414868;
+}
+
+#pulseaudio {
+  color: #15161e;
+  background: #c0caf5;
+}
