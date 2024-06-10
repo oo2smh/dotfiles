@@ -27,10 +27,9 @@ opt.smartindent = true
 opt.showmatch = true
 
 -- WRAPPING
-opt.textwidth = 80
 opt.breakindent = true
 opt.colorcolumn = "80"
-opt.wrap = false
+opt.wrap = true
 opt.linebreak = true
 
 -- COLOR

@@ -1,14 +1,18 @@
 local cmd = vim.cmd
 
 -- EMOJIS
-cmd("abb eedeets 🪲")
--- cmd("abb e-bee 🐝")
--- cmd("abb e-ant 🐜")
--- cmd("abb e-penguin 🐧")
--- cmd("abb e-key 🔑")
--- cmd("abb e-circus 🎪")
--- cmd("ab e-example 🧪")
--- cmd("abb e-lbug 🐞")
--- cmd("abb e-cxns 🪢")
--- cmd("abb e-clown 🤡")
--- cmd("abb e-mnem 🎀")
+cmd("abb emdeets 🪲")
+cmd("abb embee 🐝")
+cmd("abb emant 🐜")
+cmd("abb empenguin 🐧")
+cmd("abb emkey 🔑")
+cmd("abb emcircus 🎪")
+cmd("ab emexample 🧪")
+cmd("abb emlbug 🐞")
+cmd("abb emcxns 🪢")
+cmd("abb emclown 🤡")
+cmd("abb emmnem 🎀")
+cmd("abb emkybd 🎹")
+
+-- SEPARATORS
+cmd("abb emh1 <!--==================-->")

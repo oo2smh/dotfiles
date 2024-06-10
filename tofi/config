@@ -15,7 +15,7 @@ padding-bottom = 4%
 num-results = 30
 prompt-text = "What Ya Need? "
 
-background-color = #10211099
+background-color = #111111
 text-color = #c0caf5
 input-color = #7aa2f7
 selection-color = #7dcfff

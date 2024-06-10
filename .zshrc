@@ -19,7 +19,9 @@ alias gs="git status"
 alias ga="git add"
 alias gc="git commit"
 alias gl="git log"
-
+alias gp="git push"
+alias gd="git diff"
+alias gb="git branch"
 
 # INITALIZE
 eval "$(starship init zsh)"

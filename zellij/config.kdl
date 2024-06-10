@@ -40,7 +40,7 @@ keybinds clear-defaults=true {
     bind "Ctrl d" { HalfPageScrollDown; }
     bind "Ctrl u" { HalfPageScrollUp; }
     bind "Ctrl e" { PageScrollDown; }
-    bind "Ctrl e" { PageScrollUp; }
+    bind "Ctrl y" { PageScrollUp; }
   }
 
   locked {

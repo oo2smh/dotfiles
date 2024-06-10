@@ -15,7 +15,6 @@ local formatter = {
         html = { "prettier" },
         json = { "prettier" },
         yaml = { "prettier" },
-        markdown = { "prettier" },
         graphql = { "prettier" },
         liquid = { "prettier" },
         lua = { "stylua" },
