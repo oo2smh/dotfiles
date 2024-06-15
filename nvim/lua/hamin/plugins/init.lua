@@ -1,4 +1,6 @@
 return {
+  "tpope/vim-fugitive",
+  "nvim-lua/plenary.nvim",
   {
     "folke/tokyonight.nvim",
     priority = 1000,
@@ -13,8 +15,6 @@ return {
       vim.cmd([[colorscheme tokyonight]])
     end,
   },
-  "tpope/vim-fugitive",
-  "nvim-lua/plenary.nvim",
   {
     "echasnovski/mini.pairs",
     version = false,

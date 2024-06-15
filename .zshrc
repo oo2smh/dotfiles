@@ -3,6 +3,7 @@ alias ls="ls --color=auto"
 
 # ALIASES
 # Navigation
+alias Abb="nvim ~/.config/nvim/lua/hamin/core/abbreviate.lua"
 alias Zshrc="nvim ~/.zshrc"
 alias Config="nvim ~/.config"
 alias Nvim="nvim ~/.config/nvim"
@@ -12,6 +13,8 @@ alias Foot="nvim ~/.config/foot/foot.ini"
 alias Star="nvim ~/.config/starship.toml"
 alias Tofi="nvim ~/.config/tofi/config.ini"
 alias Source="source ~/.zshrc"
+alias Tasks="nvim ~/Documents/tasks"
+alias Notes="nvim ~/Documents/notes/"
 alias pac="sudo pacman"
 
 # Git
@@ -32,6 +35,8 @@ export PATH=/home/hamin/.local/bin:$PATH
 
 # NNN Setup
 export EDITOR='nvim'
+
+MOZ_ENABLE_WAYLAND=1
 
 # NOTES
 # <C-d> Exits the current session. This exits zellij if not in a nvim session.

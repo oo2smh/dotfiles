@@ -17,7 +17,6 @@ keymap("n", "<leader>s", ":source<cr>")
 keymap({ "n", "v" }, "[b", ":bp<cr>")
 keymap({ "n", "v" }, "]b", ":bn<cr>")
 
-
 -- SCROLL
 keymap("n", "<C-d>", "<C-d>zz")
 keymap("n", "<C-u>", "<C-u>zz")
@@ -29,7 +28,12 @@ keymap("n", "<leader>y", '"+y')
 keymap("n", "<leader>p", '"+p')
 
 -- SURROUND 1 WORD
-keymap("n", '<leader>s"', 'ciw""<ESC>P') --
-keymap("n", '<leader>s(', 'ciw()<ESC>P') --
-keymap("n", '<leader>s[', 'ciw[]<ESC>P') --
-keymap("n", '<leader>s{', 'ciw{}<ESC>P') --
+keymap("n", '<leader>s"', 'ciw""<ESC>P')
+keymap("n", '<leader>s(', 'ciw()<ESC>P')
+keymap("n", '<leader>s[', 'ciw[]<ESC>P')
+keymap("n", '<leader>s{', 'ciw{}<ESC>P')
+
+-- MD MACROS
+keymap("n", "<leader>mdd", "i<details><summary> </summary>\r\r</details><ESC>kkEa")
+keymap("n", "<leader>mdh", "i<!--==================--><CR><CR><!--==================--><ESC>ki# ")
+-- \r = <CR>

@@ -24,7 +24,7 @@
     "show-special": true,
     "special-visible-only": true,
     "persistent-workspaces": {
-      "*": 5
+      "*": 2
     },
 
     "disable-scroll": true,
