@@ -2,6 +2,7 @@ local cmd = vim.cmd
 
 -- EMOJIS
 cmd("abb emdeets 🪲")
+cmd("abb emerror ❌")
 cmd("abb embee 🐝")
 cmd("abb emant 🐜")
 cmd("abb empenguin 🐧")

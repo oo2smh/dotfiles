@@ -12,9 +12,11 @@ return {
     local keymap = vim.keymap.set
 
     keymap("n", "<leader>ff", "<cmd>Telescope oldfiles<cr>")
-    keymap("n", "<leader>fb", "<cmd>Telescope buffers")
-    keymap("n", "<leader>fd", "<cmd>Telescope diagnostics")
-    keymap("n", "<leader>fm", "<cmd>Telescope marks")
+    keymap("n", "<leader>fs", "<cmd>Telescope grep_string<cr>")
+    keymap("n", "<leader>fl", "<cmd>Telescope live_grep<cr>")
+    keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
+    keymap("n", "<leader>fd", "<cmd>Telescope diagnostics<cr>")
+    keymap("n", "<leader>fm", "<cmd>Telescope marks<cr>")
     keymap("n", "<leader>fN", "<cmd>Telescope find_files cwd=~/Documents/notes/<cr>")
   end,
 }

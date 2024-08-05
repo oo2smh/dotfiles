@@ -16,6 +16,8 @@ alias Source="source ~/.zshrc"
 alias Tasks="nvim ~/Documents/tasks"
 alias Notes="nvim ~/Documents/notes/"
 alias pac="sudo pacman"
+alias sys="systemctl"
+alias Launch="nvim ~/Developer/launch_school/"
 
 # Git
 alias gs="git status"

@@ -12,6 +12,7 @@ g["netrw_winsize"] = 20
 opt.relativenumber = true
 opt.number = true
 opt.cursorline = true
+opt.cursorlineopt = "number"
 opt.swapfile = false
 opt.undodir = os.getenv("HOME") .. "/.config/nvim/undodir"
 opt.undofile = true

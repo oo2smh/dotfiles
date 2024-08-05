@@ -4,39 +4,39 @@ default_layout "default"
 
 keybinds clear-defaults=true {
   shared {
-    bind "Alt a" { SwitchToMode "normal"; }
+    bind "Alt r" { SwitchToMode "normal"; }
     bind "Alt z" { SwitchToMode "locked"; }
-    bind "Alt s" { SwitchToMode "scroll"; }
-    bind "Alt o" { SwitchToMode "session"; }
+    bind "Alt j" { SwitchToMode "scroll"; }
+    bind "Alt k" { SwitchToMode "session"; }
 
     bind "Alt f" { ToggleFloatingPanes; }
   }
 
   shared_except "locked" {
-    bind "Alt n" { NewPane; }
+    bind "Alt g" { NewPane; }
     bind "Alt t" { NewTab; }
     bind "Alt w" { CloseFocus; }
     bind "Alt x" { CloseTab; }
 
-    bind "Alt h" { MoveFocus "Left"; }
-    bind "Alt j" { MoveFocus "Down"; }
-    bind "Alt k" { MoveFocus "Up"; }
-    bind "Alt l" { MoveFocus "Right"; }
+    bind "Alt a" { MoveFocus "Left"; }
+    bind "Alt s" { MoveFocus "Down"; }
+    bind "Alt d" { MoveFocus "Up"; }
+    bind "Alt f" { MoveFocus "Right"; }
 
     bind "Alt 1" { GoToTab 1; }
     bind "Alt 2" { GoToTab 2; }
     bind "Alt 3" { GoToTab 3; }
     bind "Alt 4" { GoToTab 4; }
 
-    bind "Alt =" { Resize "Right"; }
-    bind "Alt -" { Resize "Left"; }
-    bind "Alt [" { Resize "Down"; }
-    bind "Alt ]" { Resize "Up"; }
+    bind "Alt /" { Resize "Right"; }
+    bind "Alt '" { Resize "Left"; }
+    bind "Alt =" { Resize "Down"; }
+    bind "Alt -" { Resize "Up"; }
 
   }
 
   scroll {
-    bind "Alt s" { SwitchToMode "normal";}
+    bind "Alt r" { SwitchToMode "normal";}
     bind "Ctrl d" { HalfPageScrollDown; }
     bind "Ctrl u" { HalfPageScrollUp; }
     bind "Ctrl e" { PageScrollDown; }
@@ -48,7 +48,7 @@ keybinds clear-defaults=true {
   }
 
   session {
-    bind "Alt o" { SwitchToMode "normal"; }
+    bind "Alt k" { SwitchToMode "normal"; }
     bind "d" { Detach; }
     bind "w"  {
       LaunchOrFocusPlugin "session-manager" {
