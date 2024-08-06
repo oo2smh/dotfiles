@@ -4,12 +4,10 @@ default_layout "default"
 
 keybinds clear-defaults=true {
   shared {
-    bind "Alt r" { SwitchToMode "normal"; }
+    bind "Alt d" { SwitchToMode "normal"; }
     bind "Alt z" { SwitchToMode "locked"; }
-    bind "Alt j" { SwitchToMode "scroll"; }
-    bind "Alt k" { SwitchToMode "session"; }
-
-    bind "Alt f" { ToggleFloatingPanes; }
+    bind "Alt s" { SwitchToMode "scroll"; }
+    bind "Alt e" { ToggleFloatingPanes; }
   }
 
   shared_except "locked" {
@@ -19,8 +17,6 @@ keybinds clear-defaults=true {
     bind "Alt x" { CloseTab; }
 
     bind "Alt a" { MoveFocus "Left"; }
-    bind "Alt s" { MoveFocus "Down"; }
-    bind "Alt d" { MoveFocus "Up"; }
     bind "Alt f" { MoveFocus "Right"; }
 
     bind "Alt 1" { GoToTab 1; }
@@ -36,7 +32,7 @@ keybinds clear-defaults=true {
   }
 
   scroll {
-    bind "Alt r" { SwitchToMode "normal";}
+    bind "Alt s" { SwitchToMode "normal";}
     bind "Ctrl d" { HalfPageScrollDown; }
     bind "Ctrl u" { HalfPageScrollUp; }
     bind "Ctrl e" { PageScrollDown; }
@@ -48,7 +44,7 @@ keybinds clear-defaults=true {
   }
 
   session {
-    bind "Alt k" { SwitchToMode "normal"; }
+    bind "Alt j" { SwitchToMode "normal"; }
     bind "d" { Detach; }
     bind "w"  {
       LaunchOrFocusPlugin "session-manager" {
