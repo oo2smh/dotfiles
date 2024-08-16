@@ -4,7 +4,6 @@
 - Follow the qmk's website to get everything setup
 - Use the qmk configurator to setup most of the keyboard's functionality.
 - Download the json file from the qmk configurator
-- Modify the json file by adding modtaps (configurator doesn't support mod taps)
 - Convert the JSON file to a C file
 ```
 qmk json2c (name of json file) -o (name of output file)
@@ -24,6 +23,5 @@ qmk json2c (name of json file) -o (name of output file)
 # PRINCIPLES
 <!--==================-->
 - Try to have only 1 way to do an action (Keep it simple)
-- Leverage prior mental models. Keeping qwerty for example, and numpad
-for numbers layer
+- Leverage prior mental models. Keeping qwerty for example, and numpad for numbers layer
 
