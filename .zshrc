@@ -19,6 +19,7 @@ alias pac="sudo pacman"
 alias sys="systemctl"
 alias Launch="nvim ~/Developer/launch_school/"
 alias Scratch="nvim ~/Documents/scratch/"
+alias Qmk="nvim ~/.config/qmk_firmware/keyboards/ferris/keymaps/oo2smh/"
 
 # Git
 alias gs="git status"
