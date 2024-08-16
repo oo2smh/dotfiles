@@ -5,30 +5,27 @@ default_layout "default"
 keybinds clear-defaults=true {
   shared {
     bind "Alt d" { SwitchToMode "normal"; }
-    bind "Alt z" { SwitchToMode "locked"; }
+    bind "Alt x" { SwitchToMode "locked"; }
     bind "Alt s" { SwitchToMode "scroll"; }
-    bind "Alt e" { ToggleFloatingPanes; }
+    bind "Alt f" { ToggleFloatingPanes; }
   }
 
   shared_except "locked" {
     bind "Alt g" { NewPane; }
     bind "Alt t" { NewTab; }
     bind "Alt w" { CloseFocus; }
-    bind "Alt x" { CloseTab; }
+    bind "Alt q" { CloseTab; }
 
-    bind "Alt a" { MoveFocus "Left"; }
-    bind "Alt f" { MoveFocus "Right"; }
+    bind "Alt j" { MoveFocus "Left"; }
+    bind "Alt k" { MoveFocus "Right"; }
 
     bind "Alt 1" { GoToTab 1; }
     bind "Alt 2" { GoToTab 2; }
     bind "Alt 3" { GoToTab 3; }
     bind "Alt 4" { GoToTab 4; }
 
-    bind "Alt /" { Resize "Right"; }
-    bind "Alt '" { Resize "Left"; }
-    bind "Alt =" { Resize "Down"; }
-    bind "Alt -" { Resize "Up"; }
-
+    bind "Alt h" { Resize "Right"; }
+    bind "Alt l" { Resize "Left"; }
   }
 
   scroll {
@@ -40,7 +37,7 @@ keybinds clear-defaults=true {
   }
 
   locked {
-    bind "Alt z" { SwitchToMode "normal"; }
+    bind "Alt x" { SwitchToMode "normal"; }
   }
 
   session {
