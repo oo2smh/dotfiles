@@ -2,10 +2,10 @@ local keymap = vim.keymap.set
 vim.g.mapleader = ' '
 
 -- NETRW
-keymap("n", "<leader>e", "<cmd>Ex<cr>")
+keymap("n", "<leader>o", "<cmd>Ex<cr>")
 
 -- QUIT
-keymap("n", "<leader>q", "<cmd>q<cr>")
+keymap("n", "<leader>q", "q<cmd>q<cr>")
 keymap("n", "<leader>x", "<cmd>x<cr>")
 keymap("n", "<leader>!", "<cmd>q!<cr>")
 
@@ -24,8 +24,8 @@ keymap("n", "n", "nzzzv")
 keymap("n", "N", "Nzzzv")
 
 -- SYSTEM CLIPBOARD
-keymap("n", "<leader>y", '"+y')
-keymap("n", "<leader>p", '"+p')
+keymap({"n", "v"}, "<leader>y", '"+y')
+keymap({"n", "v"}, "<leader>p", '"+p')
 
 -- SURROUND 1 WORD
 keymap("n", '<leader>s"', 'ciw""<ESC>P')

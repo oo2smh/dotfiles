@@ -1,6 +1,14 @@
 return {
-  "tpope/vim-fugitive",
   "nvim-lua/plenary.nvim",
+  {
+    "luukvbaal/nnn.nvim",
+    config = function()
+      local nnn = require("nnn").setup()
+      local keymap = vim.keymap.set
+
+      keymap("n", "<leader>e", ":NnnPicker<CR>")
+    end
+  },
   {
     "folke/tokyonight.nvim",
     priority = 1000,
