@@ -1,10 +1,8 @@
 #pragma once
-#define MOUSEKEY_INTERVAL 30
-// The default is 20. Since we made the mouse about 3 times faster with the previous setting,
-// give it more time to accelerate to max speed to retain precise control over short distances.
-#define MOUSEKEY_TIME_TO_MAX 10
-#define MOUSEKEY_DELAY 18
-#define MOUSEKEY_WHEEL_DELAY 30
+#define MOUSEKEY_INTERVAL 15
+#define MOUSEKEY_TIME_TO_MAX 15
+#define MOUSEKEY_DELAY 75
+#define MOUSEKEY_WHEEL_DELAY 20
 #define MOUSEKEY_WHEEL_INTERVAL 50
 #define MOUSEKEY_WHEEL_TIME_TO_MAX 20
 
