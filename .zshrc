@@ -20,6 +20,8 @@ alias sys="systemctl"
 alias Launch="nvim ~/Developer/launch_school/"
 alias Scratch="nvim ~/Documents/scratch/"
 alias Qmk="nvim ~/.config/qmk_firmware/keyboards/ferris/keymaps/oo2smh/"
+alias suspend="systemctl suspend"
+alias shutdown="sudo shutdown"
 
 # Git
 alias gs="git status"
