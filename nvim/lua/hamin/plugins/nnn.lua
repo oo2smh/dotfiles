@@ -3,19 +3,13 @@ return {
   -- replace_netrw = "picker",
   config = function()
     require("nnn").setup({
-      explorer = {
-        cmd = "nnn",
-        width = 36,
-        side = "botright",
+      picker = {
         session = "shared",
-      },
-      auto_open = {
-        setup = "picker",
-        tabpage = "explorer",
+        border = "rounded",
       },
       quitcd = "cd",
     })
     local keymap = vim.keymap.set
-    keymap("n", "<leader>e", ":NnnExplorer %:p:h<CR>")
+    keymap("n", "<leader>e", ":NnnPicker %:p:h<CR>")
   end,
 }

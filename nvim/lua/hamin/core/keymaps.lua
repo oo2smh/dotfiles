@@ -24,16 +24,11 @@ keymap("n", "n", "nzzzv")
 keymap("n", "N", "Nzzzv")
 
 -- SYSTEM CLIPBOARD
-keymap({"n", "v"}, "<leader>y", '"+y')
-keymap({"n", "v"}, "<leader>p", '"+p')
+keymap({ "n", "v" }, "<leader>y", '"+y')
+keymap({ "n", "v" }, "<leader>p", '"+p')
 
 -- SURROUND 1 WORD
 keymap("n", '<leader>s"', 'ciw""<ESC>P')
 keymap("n", '<leader>s(', 'ciw()<ESC>P')
 keymap("n", '<leader>s[', 'ciw[]<ESC>P')
 keymap("n", '<leader>s{', 'ciw{}<ESC>P')
-
--- MD MACROS
-keymap("n", "<leader>mdd", "i<details><summary> </summary>\r\r</details><ESC>kkEa")
-keymap("n", "<leader>mdh", "i<!--==================--><CR><CR><!--==================--><ESC>ki# ")
--- \r = <CR>
