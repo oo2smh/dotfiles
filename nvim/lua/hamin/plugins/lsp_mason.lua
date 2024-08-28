@@ -41,8 +41,6 @@ return {
     mason_tool_installer.setup({
       ensure_installed = {
         "prettier", -- prettier formatter
-        "isort",    -- python formatter
-        "black",    -- python formatter
       },
     })
   end,

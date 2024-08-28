@@ -18,6 +18,7 @@ opt.undodir = os.getenv("HOME") .. "/.config/nvim/undodir"
 opt.undofile = true
 
 -- TABS & INDENTATION
+-- g.python_recommended_style = 0
 g.markdown_recommended_style = 0
 opt.tabstop = 2
 opt.shiftwidth = 2

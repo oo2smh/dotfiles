@@ -23,10 +23,15 @@ autocmd({ "BufWritePre" }, {
   command = [[%s/\s\+$//e]],
 })
 
--- if vim.fn.argc(-1) == 0 then
---   vim.defer_fn(
---     function()
---       vim.cmd('NnnPicker')
---     end,
---     0)
--- end
+--[[
+- Code autostarts nnn on nvim startup.
+- Disabled b/c I like using : (ex cmds) that's available in netrwc
+
+ if vim.fn.argc(-1) == 0 then
+   vim.defer_fn(
+    function()
+       vim.cmd('NnnPicker')
+     end,
+     0)
+ end
+--]]
