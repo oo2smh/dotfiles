@@ -1,49 +1,67 @@
-#OTHER
+# ALIASES
+# =============================
+## Sys Cmds
+alias pac="sudo pacman"
+alias sys="systemctl"
 alias ls="ls --color=auto"
 
-# ALIASES
-# Navigation
-alias Abb="nvim ~/.config/nvim/lua/hamin/core/abbreviate.lua"
-alias Zshrc="nvim ~/.zshrc"
-alias Config="nvim ~/.config"
+## Config
+### nvim
 alias Nvim="nvim ~/.config/nvim"
+alias Abb="nvim ~/.config/nvim/lua/hamin/core/abbreviate.lua"
+
+### Programs
+alias Config="nvim ~/.config"
+alias Zshrc="nvim ~/.zshrc"
 alias Zellij="nvim ~/.config/zellij"
 alias Hypr="nvim ~/.config/hypr/hyprland.conf"
 alias Foot="nvim ~/.config/foot/foot.ini"
 alias Star="nvim ~/.config/starship.toml"
 alias Tofi="nvim ~/.config/tofi/config.ini"
 alias Source="source ~/.zshrc"
-alias Tasks="nvim ~/Documents/tasks"
-alias Notes="nvim ~/Documents/notes/"
-alias pac="sudo pacman"
-alias sys="systemctl"
-alias Launch="nvim ~/Developer/launch_school/"
-alias Scratch="nvim ~/Documents/scratch/"
 alias Qmk="nvim ~/.config/qmk_firmware/keyboards/ferris/keymaps/oo2smh/"
-alias suspend="systemctl suspend"
-alias shutdown="sudo shutdown"
 
-# Git
+## Navigation
+### Docs
+alias Tasks="nvim ~/Docs/tasks"
+alias Notes="nvim ~/Docs/notes/"
+alias Docs="nvim ~/Docs/faith"
+alias Scratch="nvim ~/Docs/scratch/"
+alias Launch="nvim ~/Dev/launch/"
+alias Dsa="nvim ~/Dev/dsa/"
+alias shutdown="sudo shutdown now"
+alias sleep="systemctl suspend"
+
+## Git
 alias gs="git status"
 alias ga="git add"
 alias gc="git commit"
 alias gl="git log"
+  alias gl1="git log --oneline --decorate --all"
+  alias gl1p="git log --oneline --decorate --all --parents"
 alias gp="git push"
 alias gd="git diff"
 alias gb="git branch"
 
 # INITALIZE
+# =============================
 eval "$(starship init zsh)"
 eval "$(zellij setup --generate-auto-start zsh)"
 
 # SCRIPT PATH
-export PATH=/home/hamin/.local/bin:$PATH
+# =============================
+export PATH="$PATH:/home/hamin/.local/bin:$HOME/go/bin:"
+
+
+# WAYLAND SUPPORT
+# =============================
+MOZ_ENABLE_WAYLAND=1 #Gives firefox wayland-compatible resolution
 
 # NNN Setup
+# =============================
 export EDITOR='nvim'
-MOZ_ENABLE_WAYLAND=1
 
-# NNN CD ON QUIT
+## NNN CD ON QUIT
 n ()
 {
     # Block nesting of nnn in subshells
@@ -64,7 +82,14 @@ n ()
     }
 }
 
+# DISABLE KEYS
+# =============================
+stty -ixon # disables <C-S> which pauses the terminal
+set -o ignoreeof # asks for verification with <C-D> which exits zellij session
+
 # NOTES
-# Sometime the arrow flips in the terminal, this means that you're in vim normal mode. Use i or a to escape
+# =============================
+# Ctrl + Shift moves prompt arrow to the left. It enters you into vim normal mode. You can move the cursor. Press i/a to get back into insert mode.
 # <C-d> Exits the current session. This exits zellij if not in a nvim session.
 # If in nvim, this should be pg down. Be careful with this
+
