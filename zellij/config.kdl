@@ -4,7 +4,7 @@ keybinds clear-defaults=true {
   shared {
     bind "Alt d" { SwitchToMode "normal"; }
     bind "Alt x" { SwitchToMode "locked"; }
-    bind "Alt s" { SwitchToMode "scroll"; }
+    bind "Alt s" { SwitchToMode "EnterSearch"; }
     bind "Alt p" { SwitchToMode "session"; }
     bind "Alt f" { ToggleFloatingPanes; }
   }
@@ -30,21 +30,34 @@ keybinds clear-defaults=true {
     bind "Alt l" { Resize "Right"; }
   }
 
-  scroll {
-    bind "Alt s" { SwitchToMode "normal";}
-    bind "e" { EditScrollback; }
-    bind "Ctrl d" { HalfPageScrollDown; }
-    bind "Ctrl u" { HalfPageScrollUp; }
-    bind "Ctrl e" { PageScrollDown; }
-    bind "Ctrl y" { PageScrollUp; }
+  search {
+    bind "Alt s" "Alt d" "Esc" { SwitchToMode "Normal"; }
+    bind "s" { SwitchToMode "EnterSearch"; SearchInput 0; }
+    bind "Ctrl c" "Esc" { ScrollToBottom; SwitchToMode "Normal"; }
+    bind "j" "Down" { ScrollDown; }
+    bind "k" "Up" { ScrollUp; }
+    bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
+    bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
+    bind "w" { HalfPageScrollDown; }
+    bind "e" { HalfPageScrollUp; }
+    bind "n" { Search "down"; }
+    bind "N" { Search "up"; }
+    bind "c" { SearchToggleOption "CaseSensitivity"; }
+    bind "i" { SearchToggleOption "Wrap"; }
+    bind "o" { SearchToggleOption "WholeWord"; }
+  }
+
+  entersearch {
+    bind "Ctrl c" "Esc" { SwitchToMode "Search"; }
+    bind "Enter" { SwitchToMode "Search"; }
   }
 
   locked {
-    bind "Alt x" { SwitchToMode "normal"; }
+    bind "Alt x" "Esc" { SwitchToMode "normal"; }
   }
 
   session {
-    bind "Alt p" { SwitchToMode "normal"; }
+    bind "Alt p" "Esc" { SwitchToMode "normal"; }
     bind "d" { Detach; }
     bind "w"  {
       LaunchOrFocusPlugin "session-manager" {
