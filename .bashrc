@@ -4,54 +4,68 @@
 alias pac="sudo pacman"
 alias sys="systemctl"
 alias ls="ls --color=auto"
+alias grep='grep --color=auto'
+
+## Zellij
+alias zr="zellij action rename-pane"
+alias zrt="zellij action rename-tab"
+# both of these require name afterwards
 
 ## Config
 ### nvim
 alias Nvim="nvim ~/.config/nvim"
 alias Abb="nvim ~/.config/nvim/lua/hamin/core/abbreviate.lua"
 
-### Programs
+### Other
 alias Config="nvim ~/.config"
-alias Zshrc="nvim ~/.zshrc"
+alias Bash="nvim ~/.bashrc"
 alias Zellij="nvim ~/.config/zellij"
 alias Hypr="nvim ~/.config/hypr/hyprland.conf"
 alias Foot="nvim ~/.config/foot/foot.ini"
 alias Star="nvim ~/.config/starship.toml"
 alias Tofi="nvim ~/.config/tofi/config.ini"
-alias Source="source ~/.zshrc"
+alias Source="source ~/.bashrc"
 alias Qmk="nvim ~/.config/qmk_firmware/keyboards/ferris/keymaps/oo2smh/"
 
 ## Navigation
 ### Docs
-alias Tasks="nvim ~/Docs/tasks"
-alias Notes="nvim ~/Docs/notes/"
-alias Docs="nvim ~/Docs/faith"
-alias Scratch="nvim ~/Docs/scratch/"
+alias Tasks="nvim ~/Doc/tasks"
+alias Notes="nvim ~/Doc/notes/"
+alias Doc="nvim ~/Doc/faith"
+alias Scratch="nvim ~/Doc/scratch/"
 alias Launch="nvim ~/Dev/launch/"
 alias Dsa="nvim ~/Dev/dsa/"
 alias shutdown="sudo shutdown now"
-alias sleep="systemctl suspend"
+alias suspend="systemctl suspend"
 
 ## Git
 alias gs="git status"
+alias gsw="git switch"
+alias gsh="git show --name-status --oneline"
+alias gb="git branch"
 alias ga="git add"
 alias gc="git commit"
-alias gl="git log"
-  alias gl1="git log --oneline --decorate --all"
-  alias gl1p="git log --oneline --decorate --all --parents"
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit"
+  alias glo="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+  alias glp="git log --oneline --decorate --all --graph --parents"
 alias gp="git push"
 alias gd="git diff"
+  alias gds="git diff --staged"
+  alias gdh="git diff HEAD"
 alias gb="git branch"
 
 # INITALIZE
 # =============================
-eval "$(starship init zsh)"
-eval "$(zellij setup --generate-auto-start zsh)"
+eval "$(starship init bash)"
+eval "$(zellij setup --generate-auto-start bash)"
 
-# SCRIPT PATH
 # =============================
 export PATH="$PATH:/home/hamin/.local/bin:$HOME/go/bin:"
 
+# CUSTOM KEYBINDS
+# =============================
+bind '"\C-j": "\C-p"' # Get prev cmd
+bind '"\C-k": "\C-n"' # Get next cmd
 
 # WAYLAND SUPPORT
 # =============================
@@ -89,7 +103,15 @@ set -o ignoreeof # asks for verification with <C-D> which exits zellij session
 
 # NOTES
 # =============================
-# Ctrl + Shift moves prompt arrow to the left. It enters you into vim normal mode. You can move the cursor. Press i/a to get back into insert mode.
 # <C-d> Exits the current session. This exits zellij if not in a nvim session.
 # If in nvim, this should be pg down. Be careful with this
+
+
+# REFERENCES
+# =============================
+## Custom keybinds
+# https://superuser.com/questions/160388/change-bash-shortcut-keys-such-as-ctrl-c/1726410#1726410
+# https://unix.stackexchange.com/questions/763630/map-alt-c-to-ctrl-u
+
+
 
