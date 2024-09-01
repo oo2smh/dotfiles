@@ -1,3 +1,6 @@
+## PATH for scripts
+export PATH="$PATH:/home/hamin/.local/bin:$HOME/go/bin:"
+
 # ALIASES
 # =============================
 ## Sys Cmds
@@ -5,6 +8,8 @@ alias pac="sudo pacman"
 alias sys="systemctl"
 alias ls="ls --color=auto"
 alias grep='grep --color=auto'
+alias shutdown="sudo shutdown now"
+alias suspend="systemctl suspend"
 
 ## Zellij
 alias zr="zellij action rename-pane"
@@ -13,6 +18,7 @@ alias zrt="zellij action rename-tab"
 
 ## Config
 ### nvim
+alias Dot="nvim ~/dotfiles/"
 alias Nvim="nvim ~/.config/nvim"
 alias Abb="nvim ~/.config/nvim/lua/hamin/core/abbreviate.lua"
 
@@ -28,44 +34,61 @@ alias Source="source ~/.bashrc"
 alias Qmk="nvim ~/.config/qmk_firmware/keyboards/ferris/keymaps/oo2smh/"
 
 ## Navigation
-### Docs
-alias Tasks="nvim ~/Doc/tasks"
+### Docs/Dev
+alias Tasks="nvim ~/Doc/notes/Aim/_todo.md"
 alias Notes="nvim ~/Doc/notes/"
-alias Doc="nvim ~/Doc/faith"
 alias Scratch="nvim ~/Doc/scratch/"
 alias Launch="nvim ~/Dev/launch/"
-alias Dsa="nvim ~/Dev/dsa/"
-alias shutdown="sudo shutdown now"
-alias suspend="systemctl suspend"
 
 ## Git
+alias g="git"
 alias gs="git status"
+alias gss="git status -s"
 alias gsw="git switch"
+alias gch="git checkout"
 alias gsh="git show --name-status --oneline"
 alias gb="git branch"
 alias ga="git add"
+  alias gap="git add -p"
 alias gc="git commit"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit"
-  alias glo="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+  alias glo="git log"
   alias glp="git log --oneline --decorate --all --graph --parents"
-alias gp="git push"
-alias gd="git diff"
-  alias gds="git diff --staged"
+alias gpl="git pull"
+alias gps="git push"
+alias gd="git diff --word-diff --color"
+alias gds="git diff --compact-summary"
+  alias gdi="git diff --staged"
   alias gdh="git diff HEAD"
-alias gb="git branch"
+
 
 # INITALIZE
 # =============================
 eval "$(starship init bash)"
 eval "$(zellij setup --generate-auto-start bash)"
 
-# =============================
-export PATH="$PATH:/home/hamin/.local/bin:$HOME/go/bin:"
+## Bash completion add-on
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
+    . /usr/share/bash-completion/bash_completion
+source /usr/share/git/completion/git-completion.bash
+# allows you to tab complete commands (ie) git sw + TAB --> git switch
 
 # CUSTOM KEYBINDS
 # =============================
 bind '"\C-j": "\C-p"' # Get prev cmd
 bind '"\C-k": "\C-n"' # Get next cmd
+
+## Tab completion \e represents = ALT
+bind 'TAB:menu-complete'
+bind '"\e[Z": menu-complete-backward'
+
+bind "set show-all-if-ambiguous on"
+bind "set menu-complete-display-prefix on"
+bind "set colored-stats on"
+
+# Perform partial (common) completion on the first Tab press, only start
+# cycling full results on the second Tab press (from bash version 5)
+bind "set menu-complete-display-prefix on"
 
 # WAYLAND SUPPORT
 # =============================
@@ -76,8 +99,7 @@ MOZ_ENABLE_WAYLAND=1 #Gives firefox wayland-compatible resolution
 export EDITOR='nvim'
 
 ## NNN CD ON QUIT
-n ()
-{
+n () {
     # Block nesting of nnn in subshells
     [ "${NNNLVL:-0}" -eq 0 ] || {
         echo "nnn is already running"
@@ -101,6 +123,12 @@ n ()
 stty -ixon # disables <C-S> which pauses the terminal
 set -o ignoreeof # asks for verification with <C-D> which exits zellij session
 
+# MAN COLOR
+# =============================
+# Colorized man
+ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+ export MANROFFOPT="-c"
+
 # NOTES
 # =============================
 # <C-d> Exits the current session. This exits zellij if not in a nvim session.
@@ -112,6 +140,6 @@ set -o ignoreeof # asks for verification with <C-D> which exits zellij session
 ## Custom keybinds
 # https://superuser.com/questions/160388/change-bash-shortcut-keys-such-as-ctrl-c/1726410#1726410
 # https://unix.stackexchange.com/questions/763630/map-alt-c-to-ctrl-u
-
-
+# https://stackoverflow.com/questions/7179642/how-can-i-make-bash-tab-completion-behave-like-vim-tab-completion-and-cycle-thro
+# [Friendly Manual] (https://www.gnu.org/software/bash/manual/html_node/Readline-Init-File-Syntax.html)
 

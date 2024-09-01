@@ -7,6 +7,7 @@ keybinds clear-defaults=true {
     bind "Alt s" { SwitchToMode "EnterSearch"; }
     bind "Alt p" { SwitchToMode "session"; }
     bind "Alt f" { ToggleFloatingPanes; }
+    bind "Alt v" { EditScrollback; SwitchToMode "Normal"; }
   }
 
   shared_except "locked" {
@@ -48,6 +49,7 @@ keybinds clear-defaults=true {
   }
 
   entersearch {
+    bind "Alt s" "Alt d" "Esc" { SwitchToMode "Normal"; }
     bind "Ctrl c" "Esc" { SwitchToMode "Search"; }
     bind "Enter" { SwitchToMode "Search"; }
   }
@@ -68,3 +70,5 @@ keybinds clear-defaults=true {
     }
   }
 }
+
+

@@ -3,3 +3,6 @@ add_newline = false
 
 [package]
 disabled = true
+
+continuation_prompt = '▶▶ '
+
