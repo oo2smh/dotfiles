@@ -16,6 +16,7 @@ cmd("abb emmnem 🎀")
 cmd("abb emkybd 🎹")
 cmd("abb emref 📗")
 cmd("abb emreturn ⏎")
+cmd("abb empomo 🍅")
 
 -- SEPARATORS
 cmd("abb emh1 <!--==================-->")

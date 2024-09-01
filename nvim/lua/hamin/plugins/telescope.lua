@@ -5,18 +5,46 @@ return {
     "nvim-lua/plenary.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     "nvim-tree/nvim-web-devicons",
+    "debugloop/telescope-undo.nvim",
+    -- also downloaded ripgrep & fd (:checkhealth telescope)
   },
   config = function()
     local telescope = require("telescope")
+    local actions = require("telescope.actions")
+    local builtin = require("telescope.builtin")
     telescope.load_extension("fzf")
-    local keymap = vim.keymap.set
+    require("telescope").load_extension("undo")
 
-    keymap("n", "<leader>ff", "<cmd>Telescope oldfiles<cr>")
-    keymap("n", "<leader>fs", "<cmd>Telescope grep_string<cr>")
-    keymap("n", "<leader>fl", "<cmd>Telescope live_grep<cr>")
+    telescope.setup({
+      defaults = {
+        file_ignore_patterns = {
+          "node_modules",
+          "undodir",
+          ".git",
+        },
+        mappings = {
+          i = {
+            ["<C-k>"] = actions.move_selection_previous,
+            ["<C-j>"] = actions.move_selection_next,
+          }
+        }
+      }
+    })
+
+    local keymap = vim.keymap.set
+    keymap("n", "<leader>ff", "<cmd>Telescope find_files cwd=~/Dev/<cr>")
+    keymap("n", "<leader>fn", "<cmd>Telescope find_files cwd=~/Doc/notes/<cr>")
+    keymap("n", "<leader>fc", "<cmd>Telescope find_files cwd=~/dotfiles/<cr>")
+    keymap("n", "<leader>fk", "<cmd>Telescope find_files cwd=~/Doc/notes/Den/ks/<cr>")
+    keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
+
     keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
-    keymap("n", "<leader>fd", "<cmd>Telescope diagnostics<cr>")
-    keymap("n", "<leader>fm", "<cmd>Telescope marks<cr>")
-    keymap("n", "<leader>fN", "<cmd>Telescope find_files cwd=~/Documents/notes/<cr>")
-  end,
+    keymap("n", "<leader>fr", "<cmd>Telescope registers<cr>")
+    keymap("n", "<leader>fD", "<cmd>Telescope diagnostics<cr>")
+    keymap("n", "<leader>fs", builtin.lsp_document_symbols)
+    keymap("n", "<leader>fu", "<cmd>Telescope undo<cr>")
+    keymap("n", "<leader>gb", "<cmd>Telescope git_branches<cr>")
+    keymap("n", "<leader>gz", "<cmd>Telescope git_stash<cr>")
+    keymap("n", "<leader>gB", ":G blame<CR>")
+  end
 }

@@ -9,7 +9,7 @@ g["netrw_keepdir"] = 0
 g["netrw_winsize"] = 20
 
 -- GENERAL
-opt.relativenumber = true
+-- opt.relativenumber = true
 opt.number = true
 opt.cursorline = true
 opt.cursorlineopt = "number"
@@ -18,7 +18,6 @@ opt.undodir = os.getenv("HOME") .. "/.config/nvim/undodir"
 opt.undofile = true
 
 -- TABS & INDENTATION
--- g.python_recommended_style = 0
 g.markdown_recommended_style = 0
 opt.tabstop = 2
 opt.shiftwidth = 2

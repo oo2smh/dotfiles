@@ -6,7 +6,7 @@ return {
     local keymap = vim.keymap.set
     harpoon:setup()
 
-    keymap("n", "<leader>g", function()
+    keymap("n", "<leader>a", function()
       harpoon:list():add()
     end)
 
