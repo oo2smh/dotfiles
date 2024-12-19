@@ -88,6 +88,7 @@ source /usr/share/git/completion/git-completion.bash
 # =============================
 bind '"\C-j": "\C-p"' # Get prev cmd
 bind '"\C-k": "\C-n"' # Get next cmd
+bind '"\C-H": "\C-W"' # Delete word
 
 ## Tab completion \e represents = ALT
 bind 'TAB:menu-complete'
