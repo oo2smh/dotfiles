@@ -4,12 +4,13 @@
   "position": "bottom",
 
   "modules-left": [
-    "hyprland/workspaces",
+    "hyprland/workspaces"
   ],
   "modules-center": [
     "clock#1",
     "clock#2",
     "clock#3"
+    // "network"
   ],
   "modules-right": [
     "pulseaudio",
@@ -24,9 +25,9 @@
     "show-special": true,
     "special-visible-only": true,
     "persistent-workspaces": {
-      "*": 2
+      "DP-1": [1,2],
+      "DP-3": [3,4]
     },
-
     "disable-scroll": true,
     "format": "{name}"
   },

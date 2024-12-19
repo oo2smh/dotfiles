@@ -1,65 +1,31 @@
 // https://github.com/zellij-org/zellij/blob/main/zellij-utils/assets/config/default.kdl (Default settings)
+// bashrc file has aliases (zr = rename tab, zrp = rename pane)
 
 keybinds clear-defaults=true {
   shared {
-    bind "Alt d" { SwitchToMode "normal"; }
-    bind "Alt x" { SwitchToMode "locked"; }
-    bind "Alt s" { SwitchToMode "EnterSearch"; }
-    bind "Alt p" { SwitchToMode "session"; }
+    bind "Alt a" { SwitchToMode "normal"; }
+    bind "Alt n" { SwitchToMode "session"; }
     bind "Alt f" { ToggleFloatingPanes; }
-    bind "Alt v" { EditScrollback; SwitchToMode "Normal"; }
   }
 
   shared_except "locked" {
     bind "Alt g" { NewPane; }
-    bind "Alt t" { NewTab; }
-    bind "Alt w" { CloseFocus; }
-    bind "Alt q" { CloseTab; }
+    bind "CTRL t" { NewTab; }
+    bind "Alt x" { CloseFocus; }
 
-    bind "Alt u" { GoToPreviousTab; }
-    bind "Alt i" { GoToNextTab; }
-    bind "Alt j" { FocusPreviousPane; }
-    bind "Alt k" { FocusNextPane;}
-
-    bind "Alt 1" { GoToTab 1; }
-    bind "Alt 2" { GoToTab 2; }
-    bind "Alt 3" { GoToTab 3; }
-    bind "Alt 4" { GoToTab 4; }
-    bind "Alt 5" { GoToTab 5; }
+    bind "SHIFT TAB" { GoToPreviousTab; }
+    bind "CTRL TAB" { GoToNextTab; }
+    bind "Alt o" { FocusPreviousPane; }
+    bind "Alt p" { FocusNextPane;}
 
     bind "Alt h" { Resize "Left"; }
+    bind "Alt j" { Resize "Up"; }
+    bind "Alt k" { Resize "Down"; }
     bind "Alt l" { Resize "Right"; }
   }
 
-  search {
-    bind "Alt s" "Alt d" "Esc" { SwitchToMode "Normal"; }
-    bind "s" { SwitchToMode "EnterSearch"; SearchInput 0; }
-    bind "Ctrl c" "Esc" { ScrollToBottom; SwitchToMode "Normal"; }
-    bind "j" "Down" { ScrollDown; }
-    bind "k" "Up" { ScrollUp; }
-    bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
-    bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
-    bind "w" { HalfPageScrollDown; }
-    bind "e" { HalfPageScrollUp; }
-    bind "n" { Search "down"; }
-    bind "N" { Search "up"; }
-    bind "c" { SearchToggleOption "CaseSensitivity"; }
-    bind "i" { SearchToggleOption "Wrap"; }
-    bind "o" { SearchToggleOption "WholeWord"; }
-  }
-
-  entersearch {
-    bind "Alt s" "Alt d" "Esc" { SwitchToMode "Normal"; }
-    bind "Ctrl c" "Esc" { SwitchToMode "Search"; }
-    bind "Enter" { SwitchToMode "Search"; }
-  }
-
-  locked {
-    bind "Alt x" "Esc" { SwitchToMode "normal"; }
-  }
-
   session {
-    bind "Alt p" "Esc" { SwitchToMode "normal"; }
+    bind "Alt n" "Esc" { SwitchToMode "normal"; }
     bind "d" { Detach; }
     bind "w"  {
       LaunchOrFocusPlugin "session-manager" {
