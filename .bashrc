@@ -1,5 +1,5 @@
 ## PATH for scripts
-export PATH="$PATH:/home/hamin/.local/bin:$HOME/go/bin:"
+export PATH="$PATH:$HOME/.local/opt/go/bin"
 
 # ALIASES
 # =============================
@@ -10,10 +10,20 @@ alias ls="ls --color=auto"
 alias grep='grep --color=auto'
 alias shutdown="sudo shutdown now"
 alias suspend="systemctl suspend"
+alias py="python"
+alias rsp="python ~/Doc/notes/Tmp/_scratch.py"
+alias rsj="python ~/Doc/notes/Tmp/_scratch.js"
+alias x="exit"
+
+## Monitor off and on
+# ===========================
+# sl/r = screen/monitor A and F(far)
+alias sa="hyprctl dispatch dpms toggle DP-1"
+alias sf="hyprctl dispatch dpms toggle DP-3"
 
 ## Zellij
-alias zr="zellij action rename-pane"
-alias zrt="zellij action rename-tab"
+alias zrp="zellij action rename-pane"
+alias zr="zellij action rename-tab"
 # both of these require name afterwards
 
 ## Config
@@ -32,12 +42,13 @@ alias Star="nvim ~/.config/starship.toml"
 alias Tofi="nvim ~/.config/tofi/config.ini"
 alias Source="source ~/.bashrc"
 alias Qmk="nvim ~/.config/qmk_firmware/keyboards/ferris/keymaps/oo2smh/"
+alias calc="rofi -show calc -modi calc -no-show-match -no-sort"
 
 ## Navigation
 ### Docs/Dev
 alias Tasks="nvim ~/Doc/notes/Aim/_todo.md"
 alias Notes="nvim ~/Doc/notes/"
-alias Scratch="nvim ~/Doc/scratch/"
+alias Scratch="nvim ~/Doc/notes/Tmp/"
 alias Launch="nvim ~/Dev/launch/"
 
 ## Git
@@ -97,6 +108,7 @@ MOZ_ENABLE_WAYLAND=1 #Gives firefox wayland-compatible resolution
 # NNN Setup
 # =============================
 export EDITOR='nvim'
+export READER="zen-browser-bin"
 
 ## NNN CD ON QUIT
 n () {
