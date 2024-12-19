@@ -1,5 +1,4 @@
 local opt = vim.opt
-local cmd = vim.cmd
 local g = vim.g
 
 -- NETRWC
@@ -37,3 +36,6 @@ opt.linebreak = true
 opt.termguicolors = true
 opt.background = "dark"
 opt.signcolumn = "yes"
+
+-- INLINE ERRORS
+vim.diagnostic.config({ virtual_text = false })

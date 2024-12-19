@@ -32,7 +32,7 @@ return {
         "python",
         "markdown",
         "markdown_inline",
-        "svelte",
+        "go",
         "bash",
         "lua",
         "vim",

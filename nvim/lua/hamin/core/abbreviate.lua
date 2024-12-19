@@ -17,7 +17,11 @@ cmd("abb emkybd 🎹")
 cmd("abb emref 📗")
 cmd("abb emreturn ⏎")
 cmd("abb empomo 🍅")
+cmd("abb emtrig 📐")
 
 -- SEPARATORS
 cmd("abb emh1 <!--==================-->")
+cmd("abb em. ..........................")
+cmd("abb em, ``````````````````````````````````")
+
 cmd("abb emdeet <details> <summary> </summary> </details")

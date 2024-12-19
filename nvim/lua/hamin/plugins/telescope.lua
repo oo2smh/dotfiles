@@ -33,12 +33,9 @@ return {
 
     local keymap = vim.keymap.set
     keymap("n", "<leader>ff", "<cmd>Telescope find_files cwd=~/Dev/<cr>")
-    keymap("n", "<leader>fn", "<cmd>Telescope find_files cwd=~/Doc/notes/<cr>")
-    keymap("n", "<leader>fc", "<cmd>Telescope find_files cwd=~/dotfiles/<cr>")
-    keymap("n", "<leader>fk", "<cmd>Telescope find_files cwd=~/Doc/notes/Den/ks/<cr>")
     keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
 
-    keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
+    keymap("n", "<leader>bb", "<cmd>Telescope buffers<cr>")
     keymap("n", "<leader>fr", "<cmd>Telescope registers<cr>")
     keymap("n", "<leader>fD", "<cmd>Telescope diagnostics<cr>")
     keymap("n", "<leader>fs", builtin.lsp_document_symbols)
