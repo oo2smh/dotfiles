@@ -2,18 +2,29 @@ local opt = vim.opt
 local g = vim.g
 
 -- NETRWC
-g["netrw_banner"] = 0
-g["netrw_list_hide"] = "^[.]"
-g["netrw_keepdir"] = 0
-g["netrw_winsize"] = 20
+g.netrw_banner = 0
+g.netrw_list_hide = "^[.]"
+g.netrw_keepdir = 0
+g.netrw_winsize = 20
+
+-- SESSIONS
+opt.sessionoptions = {
+	"buffers",
+	"curdir",
+	"tabpages",
+	"winsize",
+	"globals",
+	"folds",
+}
 
 -- GENERAL
--- opt.relativenumber = true
+opt.relativenumber = true
 opt.number = true
 opt.cursorline = true
+opt.hlsearch = false
 opt.cursorlineopt = "number"
 opt.swapfile = false
-opt.undodir = os.getenv("HOME") .. "/.config/nvim/undodir"
+opt.undodir = os.getenv("HOME") .. "/.local/share/undodir"
 opt.undofile = true
 
 -- TABS & INDENTATION
@@ -36,6 +47,7 @@ opt.linebreak = true
 opt.termguicolors = true
 opt.background = "dark"
 opt.signcolumn = "yes"
+opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25"
 
--- INLINE ERRORS
+-- INLINE ERRORS (for lsp disabled)
 vim.diagnostic.config({ virtual_text = false })

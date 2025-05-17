@@ -12,8 +12,8 @@ configuration {
 }
 
 window {
-    location: south west;
-    anchor: south west;
+    location: south east;
+    anchor: south east;
     orientation: horizontal;
     width: 400;
 }

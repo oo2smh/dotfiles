@@ -1,17 +1,10 @@
--- BOOTSTRAP LAZY
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
-  })
-end
+vim.g.mapleader = " "
+vim.g.maplocalleader = "l"
 
-vim.opt.rtp:prepend(lazypath)
-
-require("hamin.core")
-require("lazy").setup("hamin.plugins")
+require("lazy_init")
+require("options")
+require("key_act")
+require("key_nav")
+require("super_args")
+require("abbreviate")
+require("autocommands")

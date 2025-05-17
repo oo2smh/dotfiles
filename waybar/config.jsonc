@@ -25,8 +25,8 @@
     "show-special": true,
     "special-visible-only": true,
     "persistent-workspaces": {
-      "DP-1": [1,2],
-      "DP-3": [3,4]
+      "HDMI-A-1": [1],
+      "DP-3": [2]
     },
     "disable-scroll": true,
     "format": "{name}"
