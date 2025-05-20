@@ -1,7 +1,7 @@
 // https://github.com/cjbassi/config/tree/master/.config/waybar
 {
   "layer": "top",
-  "position": "bottom",
+  "position": "top",
 
   "modules-left": [
     "hyprland/workspaces"
@@ -46,7 +46,7 @@
   },
 
   "pulseaudio": {
-    "format": "{icon}  {volume:2}%",
+    "format": "|  {icon}  {volume:2}%",
     "format-bluetooth": "{icon}  {volume}%",
     "format-muted": "MUTE",
     "format-icons": {
@@ -62,11 +62,11 @@
   },
   "memory": {
     "interval": 5,
-    "format": "Mem {}%"
+    "format": "| mem: {}%"
   },
   "cpu": {
     "interval": 5,
-    "format": "CPU{usage:2}%"
+    "format": "| cpu:{usage:2}%"
   },
   "battery": {
     "states": {
@@ -85,7 +85,7 @@
   },
   "disk": {
     "interval": 5,
-    "format": "Disk{percentage_used:2}%",
+    "format": "| disk: {percentage_used:2}%",
     "path": "/"
   },
   "tray": {

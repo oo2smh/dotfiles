@@ -1,5 +1,9 @@
 # PATH for scripts
 # h: ENV VARIABLES + PATH
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+
 export PATH="$PATH:$HOME/.local/opt/go/bin:$HOME/.local/bin"
 export PATH=$PATH:$(pnpm root -g) # pnpm adding it to a # pnpm
 
@@ -77,7 +81,7 @@ alias Notes="nvim ~/Doc/notes/"
 ## hopping
 # NOTE: hd = hopping. hopping depth 1, hopping, hopping to notes, hopping + text edit
 alias hd='cd "$(fd --max-depth 1 | fzf)"'
-alias h="fd --type d --exclude Vault --exclude Media --exclude Downloads | fzf"
+alias h='cd "$(fd --type d --exclude Vault --exclude Media --exclude Downloads | fzf)"'
 alias hn='fd --type f --hidden --full-path ~/Doc/notes/ | fzf --preview "bat --style=numbers --color=always --line-range=1:200 {}"'
 ht() {
   local dir
