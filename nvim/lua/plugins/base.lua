@@ -1,55 +1,70 @@
-local plenary = { "nvim-lua/plenary.nvim", lazy = true }
-local marks = { "chentoast/marks.nvim", event = "VeryLazy", config = true }
-local nnn = {
-	"luukvbaal/nnn.nvim",
-	keys = { { "<leader>n", ":NnnPicker %:p:h<CR>", desc = "Open Nnn" } },
-	opts = {
-		-- quitcd = "cd",
-		set_hidden = true,
-		session = "shared",
-		auto_close = true,
-	},
-}
-
---h: MINI BASE
-local m_basics = { "echasnovski/mini.basics", config = true }
-local m_pairs = { "echasnovski/mini.pairs", config = true }
-local m_statusline = { "echasnovski/mini.statusline", config = true }
-local m_tabline = { "echasnovski/mini.tabline", config = true }
-local m_sessions = { "echasnovski/mini.sessions", opts = { autoread = false, autowrite = true } }
-
--- the prebuilt options are [FIX, HACK, TODO, WARN, NOTE, TEST, PERF]
--- h: FOLKE HIGHLIGHTS
-local highlights = {
-	"folke/todo-comments.nvim",
-	opts = {
-		keywords = {
-			h = { color = "orange", alt = { "H", "heading", "header" } },
-			doc = { color = "blue", alt = { "ref" } },
-			key = { color = "info", alt = { "keys" } },
-		},
-		colors = {
-			orange = { "#FFC067" },
-			blue = { "#90D5FF" },
-		},
-	},
-	config = true,
-}
--- h: COLOR SCHEME
 local colorscheme = {
-	"folke/tokyonight.nvim",
-	lazy = false,
-	priority = 1000,
-
-	config = function()
-		require("tokyonight").setup({
-			on_colors = function(colors)
-				colors.bg = "#000000"
-			end,
-		})
-		vim.cmd([[colorscheme tokyonight]])
-		vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#FFFF00", bg = "#000000", bold = true })
-	end,
+  "EdenEast/nightfox.nvim",
+  lazy = false,
+  priority = 1000,
+  config = function()
+    vim.cmd("colorscheme nightfox")
+    vim.api.nvim_set_hl(0, "MiniJump", { fg = "#d3b3b3", bold = true, underline = false, italic = true })
+  end,
 }
 
-return { plenary, marks, nnn, m_basics, m_pairs, m_statusline, m_tabline, m_sessions, highlights, colorscheme }
+local full = {
+  "propet/toggle-fullscreen.nvim",
+  keys = {
+    {
+      "<leader>f",
+      function()
+        require("toggle-fullscreen"):toggle_fullscreen()
+      end,
+      desc = "toggle-fullscreen"
+    },
+  },
+}
+
+local nnn = {
+  "luukvbaal/nnn.nvim",
+  keys = { { "<leader>e", ":NnnPicker %:p:h<CR>", desc = "Open Nnn" } },
+  opts = {
+    quitcd = "tcd",
+    set_hidden = true,
+    session = "shared",
+    auto_close = true,
+  },
+}
+
+local vimdiesel = { "ThePrimeagen/vim-be-good", }
+
+local md_render = {
+  "MeanderingProgrammer/render-markdown.nvim",
+  -- dependencies = { "nvim-treesitter/nvim-treesitter" },
+  opts = {
+    render_modes = { "n", "c", "t", "i" },
+    heading = { signs = { "󰫎 ", "", "", "", "", "" } },
+    code = { sign = false },
+    bullet = { icons = { "•", "▹", "▪", "⋄" } },
+  },
+}
+
+local fugitive = {
+  "tpope/vim-fugitive",
+  config = function()
+    vim.keymap.set("n", "<leader>gm", ":G<cr>:only<CR>", { desc = "Open Fugitive" })
+  end,
+}
+-- git manager
+
+-- MARKDOWN HEADING HIGHLIGHTS
+vim.cmd([[highlight RenderMarkdownH1 guifg=#FFD700 gui=bold]])
+vim.cmd([[highlight RenderMarkdownH2 guifg=#FFA500 gui=bold]])
+vim.cmd([[highlight RenderMarkdownH3 guifg=#FF6347 gui=bold]])
+vim.cmd([[highlight RenderMarkdownH4 guifg=#9370DB gui=bold]])
+vim.cmd([[highlight RenderMarkdownH5 guifg=#1E90FF gui=bold]])
+vim.cmd([[highlight RenderMarkdownH6 guifg=#00CED1 gui=bold]])
+vim.cmd([[highlight RenderMarkdownH1Bg guifg=#FFD700 gui=bold]])
+vim.cmd([[highlight RenderMarkdownH2Bg guifg=#FFA500 gui=bold]])
+vim.cmd([[highlight RenderMarkdownH3Bg guifg=#FF6347 gui=bold]])
+vim.cmd([[highlight RenderMarkdownH4Bg guifg=#9370DB gui=bold]])
+vim.cmd([[highlight RenderMarkdownH5Bg guifg=#1E90FF gui=bold]])
+vim.cmd([[highlight RenderMarkdownH6Bg guifg=#00CED1 gui=bold]])
+
+return { colorscheme, nnn, md_render, vimdiesel, fugitive, full }

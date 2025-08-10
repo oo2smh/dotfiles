@@ -3,26 +3,17 @@ local g = vim.g
 
 -- NETRWC
 g.netrw_banner = 0
+g.netrw_liststyle = 4
 g.netrw_list_hide = "^[.]"
 g.netrw_keepdir = 0
 g.netrw_winsize = 20
 
--- SESSIONS
-opt.sessionoptions = {
-	"buffers",
-	"curdir",
-	"tabpages",
-	"winsize",
-	"globals",
-	"folds",
-}
-
 -- GENERAL
+opt.virtualedit = "block"
 opt.relativenumber = true
 opt.number = true
 opt.cursorline = true
-opt.hlsearch = false
-opt.cursorlineopt = "number"
+opt.cursorlineopt = "both"
 opt.swapfile = false
 opt.undodir = os.getenv("HOME") .. "/.local/share/undodir"
 opt.undofile = true
@@ -51,3 +42,37 @@ opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25"
 
 -- INLINE ERRORS (for lsp disabled)
 vim.diagnostic.config({ virtual_text = false })
+
+-- *****************************************************
+-- AUTOCMDS
+-- *****************************************************
+local autocmd = vim.api.nvim_create_autocmd
+local formatoptions = vim.opt_local.formatoptions
+
+--PREVENT AUTO COMMENTING NEXT LINES
+autocmd("FileType", {
+  pattern = "*",
+  callback = function()
+    formatoptions:remove({ "r", "o" })
+  end,
+})
+
+autocmd("FileType", {
+  pattern = "-",
+  callback = function()
+    formatoptions:remove({ "r", "o" })
+  end,
+})
+
+-- REMOVE TRAILING WHITESPACE
+autocmd({ "BufWritePre" }, {
+  pattern = { "*" },
+  command = [[%s/\s\+$//e]],
+})
+
+-- AUTO LOAD SUPER ARGS
+autocmd("VimEnter", {
+  callback = function()
+    vim.cmd("LoadArgs")
+  end,
+})
