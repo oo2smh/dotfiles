@@ -184,7 +184,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 
 -- KEYS
 for i = 1, 6 do
-  keymap({ "n", "v" }, "<leader>" .. i, function()
+  keymap({ "n", "v" }, "'" .. i, function()
     replaceArgsAtIdx(i)
   end)
 end

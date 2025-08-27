@@ -3,27 +3,29 @@ local colorscheme = {
   lazy = false,
   priority = 1000,
   config = function()
-    vim.cmd("colorscheme nightfox")
-    vim.api.nvim_set_hl(0, "MiniJump", { fg = "#d3b3b3", bold = true, underline = false, italic = true })
+    vim.cmd("colorscheme duskfox")
+    vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#00aaaa", bold = true, italic = true })
   end,
 }
 
+local fullscreen_toggle = function()
+  require("toggle-fullscreen"):toggle_fullscreen()
+end
+
 local full = {
   "propet/toggle-fullscreen.nvim",
+  config = function()
+
+  end,
   keys = {
-    {
-      "<leader>f",
-      function()
-        require("toggle-fullscreen"):toggle_fullscreen()
-      end,
-      desc = "toggle-fullscreen"
-    },
+    { "<leader>f", fullscreen_toggle, desc = "toggle fullscreen" },
+    { "<C-f>",     fullscreen_toggle, desc = "toggle fullscreen" },
   },
 }
 
 local nnn = {
   "luukvbaal/nnn.nvim",
-  keys = { { "<leader>e", ":NnnPicker %:p:h<CR>", desc = "Open Nnn" } },
+  keys = { { "<leader>n", ":NnnPicker %:p:h<CR>", desc = "Open Nnn" } },
   opts = {
     quitcd = "tcd",
     set_hidden = true,
@@ -36,7 +38,8 @@ local vimdiesel = { "ThePrimeagen/vim-be-good", }
 
 local md_render = {
   "MeanderingProgrammer/render-markdown.nvim",
-  -- dependencies = { "nvim-treesitter/nvim-treesitter" },
+  dependencies = { "nvim-treesitter/nvim-treesitter" },
+  math = true,
   opts = {
     render_modes = { "n", "c", "t", "i" },
     heading = { signs = { "󰫎 ", "", "", "", "", "" } },
@@ -45,13 +48,13 @@ local md_render = {
   },
 }
 
+-- git manager
 local fugitive = {
   "tpope/vim-fugitive",
   config = function()
     vim.keymap.set("n", "<leader>gm", ":G<cr>:only<CR>", { desc = "Open Fugitive" })
   end,
 }
--- git manager
 
 -- MARKDOWN HEADING HIGHLIGHTS
 vim.cmd([[highlight RenderMarkdownH1 guifg=#FFD700 gui=bold]])

@@ -1,7 +1,7 @@
 local opt = vim.opt
 local g = vim.g
 
--- NETRWC
+--- NETRWC
 g.netrw_banner = 0
 g.netrw_liststyle = 4
 g.netrw_list_hide = "^[.]"

@@ -2,7 +2,7 @@
 - Keep it minimal
 - Try to use defaults when possible
 - Avoid using tabs, built-in-terminal
-  - Using both window manager, tmux, and this gets redundant
+  - Using a window manager, tmux, and nvim gets confusing
 
 # Things to Work On
 1. Insert mode persistence (<C-o>)
@@ -27,16 +27,20 @@
   - s: secondary, smaller task
   - g/w: gotcha, watch-out
 4. Standarized use of argslist
-  - h: hub biggest file
+  - h: hub biggest file (main file)
   - t: task file
   - n: readme notes
-  - m: module connected
+  - m: conneted module
   - g/w: gotcha file, watch-out file
+
+> [!Note]
+> You can always acess the todo file with <leader t>
 
 # Rejected
 - kept around just in case, I want to implement these in the future
   - use of quickfix
   - kybd shortcuts for fast nav when using terminal
+
 ```lua [QUICKFIX]
 -- QUICKFIX
 keymap({ "n", "v" }, "<F1>", ":copen<cr>", { silent = true })
@@ -45,6 +49,10 @@ keymap({ "n", "v" }, "<F3>", ":cnext<cr>", { silent = true })
 keymap("n", "<F4>", function()
   vim.fn.setqflist({}, "r")
 end, { desc = "Clear quickfix list" })
+
+-- MINI
+local m_pairs = { "echasnovski/mini.pairs", config = true }
+-- some annoyances when it doesn't behave as expected
 
 -- TERMINAL SPECIFIC
 local exit_term = "<C-\\><C-n><ESC>"

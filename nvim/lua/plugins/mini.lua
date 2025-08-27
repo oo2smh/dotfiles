@@ -15,23 +15,27 @@ local m_pick        = {
     require("mini.pick").setup()
     require("mini.extra").setup()
   end,
+  mappings = { stop = { '<C-g>' } },
   keys = function()
     local pick = require("mini.pick")
     local extra = require("mini.extra").pickers
 
     return {
       { "h",          pick.builtin.files },
-      { "<leader>h",  function() extra.oldfiles() end },
-      { "<C-h>",      function() extra.git_files() end },
-      { "<leader>s",  pick.builtin.grep_live },
-      { "<leader>q",  pick.builtin.help },
+      { "<leader>ht", function() extra.oldfiles() end },
+      { "<leader>hn", function() extra.git_hunks() end },
+      { "<leader>hp", function() extra.diagnostic() end },                      -- project diagostic
+      { "<leader>hd", function() extra.diagnostic({ scope = 'current' }) end }, --diagnostic file
+      { "<leader>hs", pick.builtin.grep_live },
       { "<leader>gc", function() extra.git_commits() end },
       { "<leader>gb", function() extra.git_branches() end },
-      { "<leader>da", function() extra.diagnostic() end },
-      { "<leader>dl", function() extra.diagnostic({ scope = 'current' }) end },
+      { "<leader>q",  pick.builtin.help },
       { "<leader>m",  function() extra.marks({ scope = 'buf' }) end },
       { "<leader>u",  function() extra.list({ scope = 'change' }) end },
       { "<leader>c",  function() extra.registers() end },
+      { "<leader>ld", function() extra.lsp({ scope = 'definition' }) end },
+      { "<leader>lo", function() extra.lsp({ scope = 'document_symbol' }) end },
+      { "<leader>lr", function() extra.lsp({ scope = 'references' }) end },
     }
   end,
 }
@@ -48,8 +52,7 @@ local m_diff        = {
   config = function()
     local diff = require("mini.diff")
     diff.setup({
-      view = { style = "sign" },
-
+      view = { style = "number" },
     })
     vim.keymap.set('n', '<leader>k', function()
       diff.toggle_overlay(0)
@@ -57,12 +60,13 @@ local m_diff        = {
   end,
 }
 
+
 return {
   -- FUNCTIONALITY
   m_surround,  -- select visual selection first (sa, sd, sr)
-  m_pairs,     -- autopairs for enclosers (){}[]``''""
   m_pick,      -- viewer
   m_operators, -- go(rient), gs(ort), gr(eplace with register), gm(ultiply)
+  m_pairs,     -- autopairs for enclosers (){}[]``''""
 
   -- READABILITY -- optional formatting enhancements
   m_splitjoin, -- toggle folding for args gS within encloser
