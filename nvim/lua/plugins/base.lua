@@ -8,14 +8,13 @@ local colorscheme = {
   end,
 }
 
-local fullscreen_toggle = function()
-  require("toggle-fullscreen"):toggle_fullscreen()
-end
 
 local full = {
   "propet/toggle-fullscreen.nvim",
   config = function()
-
+    local fullscreen_toggle = function()
+      require("toggle-fullscreen"):toggle_fullscreen()
+    end
   end,
   keys = {
     { "<leader>f", fullscreen_toggle, desc = "toggle fullscreen" },

@@ -7,15 +7,36 @@ local m_surround    = { "echasnovski/mini.surround", config = true }
 local m_align       = { "echasnovski/mini.align", config = true }
 local m_splitjoin   = { "echasnovski/mini.splitjoin", config = true }
 
+local m_sessions    = {
+  "echasnovski/mini.sessions",
+  keys = function()
+    local ms = require('mini.sessions')
+    local function save_session()
+      local dir_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+      local session_name = vim.fn.input("Session name: ", dir_name, "file")
+
+      -- Check if the user pressed <Esc> or entered an empty name
+      if session_name == nil or session_name:match('^%s*$') then
+        vim.notify("Session save cancelled.", vim.log.levels.INFO)
+        return
+      end
+
+      ms.write(session_name)
+      vim.notify("Attempting to save session as: '" .. session_name .. "'", vim.log.levels.INFO)
+    end
+
+    return {
+      { "hi",         function() ms.select("read") end },
+      { "<leader>ms", save_session },
+      { "<leader>md", function() ms.select("delete", { force = true, verbose = true }) end },
+    }
+  end,
+}
+
 local m_pick        = {
   "echasnovski/mini.pick",
   version = false,
   dependencies = { { "echasnovski/mini.extra", "echasnovski/mini.icons" } },
-  config = function()
-    require("mini.pick").setup()
-    require("mini.extra").setup()
-  end,
-  mappings = { stop = { '<C-g>' } },
   keys = function()
     local pick = require("mini.pick")
     local extra = require("mini.extra").pickers
