@@ -1,16 +1,11 @@
-# PATH for scripts
-# h: ENV VARIABLES + PATH
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS=@im=fcitx
-
+# ENV VARIABLEbootdev run 015e56de-861b-4694-931d-d6fce619fe37 -sS + PATH
 export PATH="$PATH:$HOME/.local/opt/go/bin:$HOME/.local/bin"
-export PATH=$PATH:$(pnpm root -g) # pnpm adding it to a # pnpm
 
 export TMUX_CONFIGDIR="$HOME/.config/tmuxp"
 export LESS='-R --mouse' # allows using mouse scroll with less pager
 export QMK_HOME="~/.config/qmk"
 MOZ_ENABLE_WAYLAND=1 #Gives browser wayland-compatible resolution
+
 
 ## MAN PGS
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
@@ -21,69 +16,76 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
+export PATH=$PATH:$(pnpm root -g) # pnpm adding it to
 
 ## NNN
-export EDITOR='nvim'
+export EDITOR="nvim"
 export READER="zen-browser-bin"
 export NNN_TRASH="1"
 export NNN_BMS="d:/home/hamin/Dev/;n:/home/hamin/Doc/notes/;c:/home/hamin/.config;h:/home/hamin/;v:/home/hamin/dotfiles/nvim/"
-export NNN_PLUG="K:quit" # <C-k> kills qmk
 export NNN_TMPFILE='/tmp/.lastd'
 
-
 # h: INITIALIZE
-eval "$(direnv hook bash)"
+eval "$(direnv hook bash)" # makes direnv allow for auto sourcing of venv
 eval "$(starship init bash)"
 eval "$(fzf --bash)" #fzf completions
 
+# export HYPRLAND_INSTANCE_SIGNATURE=$(hyprctl -j activewindow | jq -r '.sig')
 
 # h: ALIASES: Main
 ## Sys Cmds
+alias tre="tree -L 3"
+alias cop="wl-copy"
+alias pas="wl-paste"
+alias sou="source ~/.bashrc"
+alias qme="qmk flash"
 alias x="exit"
 alias ls="ls --color"
 alias pac="sudo pacman"
 alias sys="systemctl"
-alias grep='grep --color=auto'
-alias shutdown="sudo shutdown now"
-alias suspend="systemctl suspend"
+alias gre='grep --color=auto'
+alias shu="sudo shutdown now"
 alias py="python"
-alias img="wl-paste --type image/png > /tmp/screenshots/clip.png && nohup feh /tmp/screenshots/clip.png >/dev/null 2>&1 &"
-alias ,="feh /tmp/screenshots"
-alias ,,="feh ~/Media/screenshots"
-alias open="xdg-open"
-alias Source="source ~/.bashrc"
+alias j="java"
+alias ope="xdg-open"
 alias sa="hyprctl dispatch dpms toggle HDMI-A-1"
 alias sb="hyprctl dispatch dpms toggle DP-3"
 alias nm='nvim .'
-alias pgcli="pgcli postgres"
+alias pgc="pgcli postgres"
 alias ex="exercism"
 
 # h: ALIASES - tmux
 alias t="tmux"
+alias tn="tmux new -s"
+alias td="tmux detach"
 alias ta="tmux a"
 alias tat="tmux a -t"
-alias tld="tmuxp load main" #default
-alias tls="tmuxp load secondary"
+alias tp="tmuxp load main" #default
+# alias tls="tmuxp load secondary"
 
 # h: ALIASES - navigation
 alias Dot="nvim ~/Dotfiles/"
-alias Nvim="nvim ~/.config/nvim"
-alias Tmux="nvim ~/.tmux.conf"
-
-
-alias Config="nvim ~/.config"
-alias Bash="nvim ~/.bashrc"
-alias Hypr="nvim ~/.config/hypr/hyprland.conf"
+alias N="nvim ~/.config/nvim"
+alias T="nvim ~/.tmux.conf"
+alias C="nvim ~/.config"
+alias B="nvim ~/.bashrc"
+alias H="nvim ~/.config/hypr/hyprland.conf"
 alias Foot="nvim ~/.config/foot/foot.ini"
-alias Qmk="nvim ~/.config/qmk/keyboards/ferris/keymaps/oo2smh/"
-alias Notes="nvim ~/Doc/notes/"
+alias Q="nvim ~/Dotfiles/qmk/"
+alias No="nvim ~/Doc/notes/"
+alias J="nvim ~/Doc/notes/var/log/"
 
 ## hopping
-# NOTE: hd = hopping. hopping depth 1, hopping, hopping to notes, hopping + text edit
-alias hd='cd "$(fd --max-depth 1 | fzf)"'
-alias h='cd "$(fd --type d --exclude Vault --exclude Media --exclude Downloads | fzf)"'
-alias hn='fd --type f --hidden --full-path ~/Doc/notes/ | fzf --preview "bat --style=numbers --color=always --line-range=1:200 {}"'
-ht() {
+# NOTE: hd = hopping. hopping depth 1, hopping to notes, hopping + edit in nvim
+alias h='cd;cd "$(fd --type d --exclude Vault --exclude Media --exclude Downloads | fzf)"'
+alias hn='cd ~/Doc/notes && fd --type f --hidden --exclude .git \
+  | fzf --preview "bat --style=numbers --color=always --line-range=1:200 {}" \
+        --preview-window=right:70% \
+        --bind "enter:execute(nvim {})+abort"'
+alias hd='find "$HOME/Downloads" -type f -name "*.pdf" -print0 | fzf --read0 --multi | xargs -0 -r xdg-open'
+
+he() {
+  cd
   local dir
   dir=$(fd --type d --exclude Vault --exclude Media --exclude Downloads | fzf)
   if [[ -n $dir ]]; then
@@ -93,30 +95,47 @@ ht() {
 
 # h: ALIASES:git
 alias g="git"
-alias gt="git tag"
+alias gt="git --no-pager tag"
 alias gst="git stash"
+alias gsti="git --no-pager stash list"
 alias gs="git status"
 alias gss="git status -s" # short condensed status
 alias gw="git switch"
+alias g.="git worktree"
+alias g.l="git worktree list"
+alias gwc="git switch -c"
 alias gx="git checkout"
-alias gr='git reflog'
+alias gr='git --no-pager reflog'
 alias gsh="git show --name-status --oneline"
-alias gb="git branch"
+alias gb="git --no-pager branch"
+alias gba="git --no-pager branch -r" # lists remote too
+alias gbd="git --no-pager branch -d"
+alias gbD="git --no-pager branch -D"
 alias ga="git add"
+alias ga.="git add ."
   alias gap="git add -p" # patch. can choose portions of a file to stage
-alias ge="git reset" # erase..
-alias gm="git merge"
-alias grb="git rebase"
-alias gc="git commit"
-alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit"
-  alias glp="git log --oneline --decorate --all --graph --parents"
+alias gu="git reset --soft" # undo soft..
+alias gum="git reset --mixed" # undo mixed..
+alias guh="git reset --hard" # undo hard..
+alias guv="git revert"  # revert undo
+# git modify/mold the commit history
+alias gmm="git merge"
+alias gmr="git rebase"
+alias gc="git commit -v" # verbose adds the diff to the description of commit
+alias gi="git --no-pager log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit"
+  alias gia="git --no-pager log  --oneline --decorate --all --graph --parents"
 alias gp="git push"
 alias gy="git pull" # git 'yank'
-alias gd="git diff --word-diff --color"
-alias gds="git diff --compact-summary"
-  alias gdi="git diff --staged"
-  alias gdh="git diff HEAD"
-
+alias g,="git --no-pager diff --word-diff --color"
+alias g,c="git --no-pager diff --compact-summary"
+  alias g,i="git --no-pager diff --staged"
+  alias g,h="git --no-pager diff HEAD"
+# ----
+alias ghr="gh repo"
+alias ghp="gh repo"
+alias ghrl="gh repo list"
+alias ghrc="gh repo create"
+alias ghprc="gh pr create"
 
 # h: KEYBINDS
 ## Tab completion \e represents = ALT
@@ -135,7 +154,7 @@ stty -ixon # disables <C-S> which pauses the terminal
 set -o ignoreeof # asks for verification with <C-D>
 
 
-# h: NNN: cd on quit
+# ^@^ NNN: cd quit
 n () {
     # Block nesting of nnn in subshells
     [ "${NNNLVL:-0}" -eq 0 ] || {
@@ -155,12 +174,11 @@ n () {
     }
 }
 
-# h: OTHER
+# ^@^ OTHER
 ## Bash completion add-on
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
     . /usr/share/bash-completion/bash_completion
 source /usr/share/git/completion/git-completion.bash
-
 
 # doc: REFERENCES
 
@@ -174,3 +192,6 @@ source /usr/share/git/completion/git-completion.bash
 # [Friendly Manual] (https://www.gnu.org/software/bash/manual/html_node/Readline-Init-File-Syntax.html)
 
 
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
