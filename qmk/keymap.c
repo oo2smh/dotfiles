@@ -1,198 +1,276 @@
 #include QMK_KEYBOARD_H
-#include <stdint.h>
-#define TMUX_CASE(code, key) case code: tmux(key); return false;
-#define MT_SFT_MAGIC MT(MOD_LSFT, KC_0)
-
-
 /////////////////////////////////////////////////
 // OVERVIEW
 /////////////////////////////////////////////////
 enum layers {
     _BASE,
-    _XOURNAL,
+    _SYMBOLS,
     _MOUSE,
     _QUICK_FIRE,
-    _SYMBOLS,
     _ARROW_NUMPAD,
-    _TMUX,
+    _TMUX_FN,
 };
 
 enum custom_keycodes {
+
+    // TMUX (10)
     TM_PANE_CLOSE = SAFE_RANGE,
     TM_PANEV_NEW,
     TM_PANEH_NEW,
-    TM_P_FULL,
     TM_WIN_NEW,
-    TM_WIN_CLOSE,
-    TM_DETACH,
-    TM_COPY,
-    TM_PASTE,
-    TM_EVEN,
-    TM_P_RESIZE_LEFT,
-    TM_P_RESIZE_RIGHT,
-    TM_P_RESIZE_UP,
-    TM_P_RESIZE_DOWN,
     TM_SESS_MANAGER,
     TM_RN_SESS,
     TM_RN_WIN,
-    TM_RN_PN,
     TM_PREV_SESS,
-    TM_NEXT_SESS,
-    TM_CMD,
-    TM1,
-    TM2,
-    TM3,
-    TM4,
-    TM5,
-    TM6,
-    TM_P_NEXT,
-    TM_P_PREV,
+    TM_SAVE,
+    TM_RESTORE,
 
+    // XOURNAL
+    XOURNAL_MAGENTA,
     XOURNAL_YELLOW,
     XOURNAL_ORANGE,
-    XOURNAL_PINK,
     XOURNAL_BLUE,
+    XOURNAL_RED,
+    XOURNAL_NEON,
+    XOURNAL_GRAY,
+    XOURNAL_RECT,
+    XOURNAL_ELLIPSE,
 
-    ALTREP2,
-    DEL_WORD,
-    DEL_LINE,
-    SPC_SFT_M,
+    // NVIM
+    NVIM_GV,
+    NVIM_GU,
+    NVIM_VIP,
+    NVIM_PREV_HUNK,
+    NVIM_NEXT_HUNK,
+    NVIM_STAGE_HUNK,
+    NVIM_RESET_HUNK,
+    NVIM_STAGE_LINE,
+    NVIM_YANK_REG_PASTE,
+    NVIM_GX,
+
+    // COMMON SYNERGIES
+    MULTILINE_COMMENT,
+    SPC_PEQL_SPC,
+    SPC_PPLS_SPC,
+    END_SCLN_ENT,
+    CODEBLOCKS,
+
+    // SYSTEM
+    MOUSE_REF_VIEW,
+    TEXT_TERM_VIEW,
+    PASTE_AND_POP, // uses a custom shell script
+    BSPC_WORD,
 };
 
+/////////////////////////////////////////////////
+// VARIABLES
+/////////////////////////////////////////////////
 
-// makes OSM escape OSL
-void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (IS_QK_ONE_SHOT_MOD(keycode) && is_oneshot_layer_active() && record->event.pressed) {
-        clear_oneshot_layer_state(ONESHOT_OTHER_KEY_PRESSED);
-    }
-    return;
-}
+// THUMB
+#define TH_TAB MT(MOD_LCTL, KC_TAB)
+#define TH_ENT MT(MOD_RSFT, KC_ENT)
+#define TH_SPC LT(_ARROW_NUMPAD, KC_SPC)
+#define TH_R LT(_SYMBOLS, KC_R)
+
+// LEFT BOT & RIGHT
+#define LB_ALTREP MT(MOD_LSFT, KC_0)
+#define LB_DOT MT(MOD_LCTL, KC_DOT)
+#define LB_BSPC MT(MOD_LALT, KC_BSPC)
+#define LB_COMM MT(MOD_LGUI, KC_COMM)
 
 /////////////////////////////////////////////////
 // COMBOS
 /////////////////////////////////////////////////
-enum combos {
-    MOUSE_RIGHT_TOGGLE,
-    TMUX_THUMB,
-    QUICK_FIRE_LAYER,
-    ESC_RIGHT,
-    ESC_LEFT,
-    KEY_B,
-    KEY_F,
-    KEY_J,
-    KEY_X,
-    KEY_Q,
-    KEY_Z,
-    KEY_V,
-    KEY_PPLS,
-    OSALT,
-    OSSFT,
-    LEFT_ENTER,
-    MOUSE_LAYER,
-    MAIN_LAYER,
-    SFT_THUMB,
-    ZEN_LAYER,
-    CAPS_WORD,
-    SLEEP,
-    SHUTDOWN,
-    QUOT_CAPS,
-    DEL_WORD_C,
-    SPC_SFT,
+// NAV
+const uint16_t PROGMEM alt_tab_home[] = {TH_SPC, KC_I, KC_E, COMBO_END};
+const uint16_t PROGMEM ctl_tab_home[] = {TH_SPC, KC_A, KC_E, COMBO_END};
+const uint16_t PROGMEM sup_bspc_home[] = {TH_SPC, KC_A, KC_I, COMBO_END};
+const uint16_t PROGMEM sup_tab_thumb[] = {TH_TAB, TH_ENT, TH_SPC, TH_R, COMBO_END};
+const uint16_t PROGMEM sup_tab_left[] = {OSM(MOD_LSFT), KC_Y, COMBO_END};
+const uint16_t PROGMEM sup_bspc_left[] = {TH_TAB, KC_Y, OSM(MOD_LSFT), COMBO_END};
+const uint16_t PROGMEM sup_bspc_left2[] = {TH_SPC, KC_Y, OSM(MOD_LSFT), COMBO_END};
+const uint16_t PROGMEM fullscreen_super[] = {TH_SPC, LB_BSPC, LB_COMM, COMBO_END};
+const uint16_t PROGMEM fullscreen_alt[] = {TH_SPC, LB_DOT, LB_BSPC, COMBO_END};
+const uint16_t PROGMEM ref_view[] = {KC_U, KC_A, COMBO_END};
+const uint16_t PROGMEM term_view[] = {KC_H, KC_L, COMBO_END};
+
+// LAYER SFT base ext
+const uint16_t PROGMEM mouse_layer[] = {TH_SPC, LB_BSPC, COMBO_END};
+const uint16_t PROGMEM mouse_layer_mo[] = {TH_R, TH_ENT, COMBO_END};
+const uint16_t PROGMEM quick_fire_layer[] = {TH_TAB, TH_SPC, COMBO_END};
+const uint16_t PROGMEM tmux_layer[] = {TH_SPC, TH_R, TH_ENT, COMBO_END};
+
+// FUNCTIONALITY
+// -- core keys
+const uint16_t PROGMEM esc_r[] = {KC_H, KC_T, COMBO_END};
+const uint16_t PROGMEM esc_l[] = {KC_E, KC_A, COMBO_END};
+const uint16_t PROGMEM ent_r[] = {KC_P, KC_F, COMBO_END};
+const uint16_t PROGMEM ent_l[] = {KC_I, KC_E, COMBO_END};
+const uint16_t PROGMEM stab_r[] = {KC_T, KC_S, KC_N, COMBO_END};
+const uint16_t PROGMEM tab_r[] = {KC_T, KC_N, COMBO_END};
+const uint16_t PROGMEM spc_r[] = {KC_H, QK_REP, COMBO_END};
+const uint16_t PROGMEM spc_l[] = {KC_A, QK_REP, COMBO_END};
+
+// -- modifier
+const uint16_t PROGMEM osctl_th[] = {TH_R, TH_SPC, COMBO_END};
+const uint16_t PROGMEM osalt_r[] = {KC_G, KC_M, COMBO_END};
+const uint16_t PROGMEM ctl_r[] = {TH_TAB, TH_R, COMBO_END};
+
+// -- text mod
+const uint16_t PROGMEM bspc_word[] = {KC_I, LB_BSPC, COMBO_END};
+const uint16_t PROGMEM caps_word_home[] = {KC_T, KC_E, COMBO_END};
+const uint16_t PROGMEM key_del_l[] =   {TH_TAB, LB_BSPC, COMBO_END};
+const uint16_t PROGMEM key_del_r[] = {TH_ENT, KC_G, COMBO_END};
+const uint16_t PROGMEM del_word[] = {KC_N, KC_G, COMBO_END};
+const uint16_t PROGMEM key_home[] = {KC_QUOT, QK_REP, COMBO_END};
+const uint16_t PROGMEM key_end[] = {KC_PAST, QK_REP, COMBO_END};
+
+// -- system functions
+const uint16_t PROGMEM shutdown[] = {LB_ALTREP, LB_DOT, LB_BSPC, LB_COMM, TH_SPC, COMBO_END};
+const uint16_t PROGMEM sleep[] = {LB_ALTREP, LB_DOT, LB_BSPC, LB_COMM, TH_TAB, COMBO_END};
+const uint16_t PROGMEM sleep_r[] = {KC_D, KC_T, KC_G, COMBO_END};
+
+// NVIM
+const uint16_t PROGMEM nvim_gx[] = {KC_K, KC_H, COMBO_END};
+const uint16_t PROGMEM nvim_visual_block[] = {TH_R, KC_D, COMBO_END};
+const uint16_t PROGMEM nvim_V[] = {TH_R, KC_L, COMBO_END};
+const uint16_t PROGMEM nvim_gv[] = {TH_R, KC_P, COMBO_END};
+const uint16_t PROGMEM nvim_gu[] = {TH_R, KC_F, COMBO_END};
+
+// KEYS
+const uint16_t PROGMEM key_tilde[] = {TH_SPC, OSM(MOD_LSFT), COMBO_END};
+const uint16_t PROGMEM key_bsls[] = {TH_SPC, LB_COMM, COMBO_END};
+const uint16_t PROGMEM key_b[] = {TH_R, KC_T, COMBO_END};
+const uint16_t PROGMEM key_v[] = {TH_R, KC_H, COMBO_END};
+const uint16_t PROGMEM key_j[] = {TH_R, KC_N, COMBO_END};
+const uint16_t PROGMEM key_q[] = {TH_R, KC_G, COMBO_END};
+const uint16_t PROGMEM key_x[] = {TH_R, KC_S, COMBO_END};
+const uint16_t PROGMEM key_z[] = {TH_R, KC_W, COMBO_END};
+const uint16_t PROGMEM key_circ[] = {KC_K, TH_R, COMBO_END};
+const uint16_t PROGMEM key_dlr[] = {TH_R, KC_M, COMBO_END};
+const uint16_t PROGMEM key_perc[] = {TH_ENT, KC_MINS, COMBO_END};
+const uint16_t PROGMEM key_ampr[] = {TH_SPC, KC_Y, COMBO_END};
+const uint16_t PROGMEM key_pipe[] = {TH_SPC, KC_O, COMBO_END};
+const uint16_t PROGMEM key_exlm[] = {TH_SPC, KC_U, COMBO_END};
+const uint16_t PROGMEM key_unds[] = {TH_SPC, KC_C, COMBO_END};
+const uint16_t PROGMEM key_slsh[] = {TH_SPC, KC_A, COMBO_END};
+const uint16_t PROGMEM key_ques[] = {TH_SPC, LB_DOT, COMBO_END};
+const uint16_t PROGMEM key_dquo[] = {TH_SPC, KC_I, COMBO_END};
+const uint16_t PROGMEM key_coln[] = {KC_E, TH_SPC, COMBO_END};
+
+// XOURNAL
+const uint16_t PROGMEM xournal_white[]   = {TH_TAB, KC_E, COMBO_END};
+const uint16_t PROGMEM xournal_gray[]    = {TH_TAB, LB_ALTREP, COMBO_END};
+const uint16_t PROGMEM xournal_blue[]    = {TH_TAB, LB_DOT, COMBO_END};
+const uint16_t PROGMEM xournal_neon[]    = {TH_TAB, LB_BSPC, LB_DOT, COMBO_END};
+const uint16_t PROGMEM xournal_yellow[]  = {TH_TAB, LB_COMM, COMBO_END};
+const uint16_t PROGMEM xournal_orange[]  = {TH_TAB, KC_Y, COMBO_END};
+const uint16_t PROGMEM xournal_red[]     = {TH_TAB, KC_O, COMBO_END};
+const uint16_t PROGMEM xournal_magenta[] = {TH_TAB, KC_U, COMBO_END};
+const uint16_t PROGMEM xournal_eraser[] =    {TH_TAB, KC_A, COMBO_END};
+const uint16_t PROGMEM xournal_select[] =    {TH_TAB, KC_I, COMBO_END};
+const uint16_t PROGMEM xournal_rectangle[] = {TH_TAB, KC_C, COMBO_END};
+const uint16_t PROGMEM xournal_ellipse[] =   {TH_TAB, OSM(MOD_LSFT), COMBO_END};
+
+combo_t key_combos[78] = {
+    // MAIN (30)
+    COMBO(ref_view, MOUSE_REF_VIEW),
+    COMBO(term_view, TEXT_TERM_VIEW),
+    COMBO(mouse_layer, TG(_MOUSE)),
+    COMBO(mouse_layer_mo, MO(_MOUSE)),
+    COMBO(quick_fire_layer, OSL(_QUICK_FIRE)),
+    COMBO(tmux_layer, OSL(_TMUX_FN)),
+    COMBO(alt_tab_home, LALT(KC_TAB)),
+    COMBO(sup_bspc_home, LGUI(KC_BSPC)),
+    COMBO(sup_bspc_left, LGUI(KC_BSPC)),
+    COMBO(sup_bspc_left2, LGUI(KC_BSPC)),
+    COMBO(sup_tab_thumb, LGUI(KC_TAB)),
+    COMBO(sup_tab_left, LGUI(KC_TAB)),
+    COMBO(ctl_tab_home, LCTL(KC_TAB)),
+    COMBO(bspc_word, BSPC_WORD),
+    COMBO(del_word, C(KC_DEL)),
+    COMBO(caps_word_home, CW_TOGG),
+    COMBO(key_del_l, KC_DEL),
+    COMBO(key_del_r, KC_DEL),
+    COMBO(nvim_gv, NVIM_GV),
+    COMBO(nvim_V, S(KC_V)),
+    COMBO(nvim_gx, NVIM_GX),
+    COMBO(nvim_visual_block, LCTL(KC_Q)),
+    COMBO(nvim_gu, NVIM_GU),
+    COMBO(fullscreen_super, LGUI(KC_SPC)),
+    COMBO(fullscreen_alt, LALT(KC_SPC)),
+    COMBO(spc_r, KC_SPC),
+    COMBO(spc_l, KC_SPC),
+    COMBO(esc_l, KC_ESC),
+    COMBO(esc_r, KC_ESC),
+    COMBO(mouse_layer_mo, MO(_MOUSE)),
+    COMBO(ent_r, KC_ENT),
+    COMBO(ent_l, KC_ENT),
+    COMBO(tab_r, KC_TAB),
+    COMBO(stab_r, S(KC_TAB)),
+    COMBO(osalt_r, OSM(MOD_LALT)),
+    COMBO(osctl_th, OSM(MOD_LCTL)),
+    COMBO(sleep, KC_SLEP),
+    COMBO(sleep_r, KC_SLEP),
+    COMBO(shutdown, KC_PWR),
+    COMBO(ctl_r, C(KC_R)),
+
+    // KEYS (22)
+    COMBO(key_b, KC_B),
+    COMBO(key_v, KC_V),
+    COMBO(key_x, KC_X),
+    COMBO(key_j, KC_J),
+    COMBO(key_q, KC_Q),
+    COMBO(key_z, KC_Z),
+    COMBO(key_bsls, KC_BSLS),
+    COMBO(key_unds, KC_UNDS),
+    COMBO(key_slsh, KC_SLSH),
+    COMBO(key_circ, KC_CIRC),
+    COMBO(key_home, KC_HOME),
+    COMBO(key_dlr, KC_DLR),
+    COMBO(key_end, KC_END),
+    COMBO(key_dquo, KC_DQUO),
+    COMBO(key_coln, KC_COLN),
+    COMBO(key_exlm, KC_EXLM),
+    COMBO(key_pipe, KC_PIPE),
+    COMBO(key_ampr, KC_AMPR),
+    COMBO(key_tilde, KC_TILDE),
+    COMBO(key_perc, KC_PERC),
+    COMBO(key_ques, KC_QUES),
+
+    // XOURNAL (12)
+    COMBO(xournal_white, RCS(KC_D)), // default tool
+    COMBO(xournal_select, RCS(KC_R)),
+    COMBO(xournal_blue, XOURNAL_BLUE),
+    COMBO(xournal_red, XOURNAL_RED),
+    COMBO(xournal_yellow, XOURNAL_YELLOW),
+    COMBO(xournal_orange, XOURNAL_ORANGE),
+    COMBO(xournal_neon, XOURNAL_NEON),
+    COMBO(xournal_gray, XOURNAL_GRAY),
+    COMBO(xournal_magenta, XOURNAL_MAGENTA),
+    COMBO(xournal_eraser, RCS(KC_E)),
+    COMBO(xournal_rectangle, XOURNAL_RECT),
+    COMBO(xournal_ellipse, XOURNAL_ELLIPSE),
 };
-
-const uint16_t PROGMEM mouse_right_toggle[] = {KC_D, LT(_SYMBOLS, KC_R), COMBO_END};
-const uint16_t PROGMEM spc_sft[] = {LT(_ARROW_NUMPAD, KC_SPC), MT(MOD_RCTL, KC_ENT), COMBO_END};
-const uint16_t PROGMEM quot_caps[] = {LT(_ARROW_NUMPAD, KC_SPC), KC_QUOT, COMBO_END};
-const uint16_t PROGMEM mouse_layer[] = {MT(MOD_LALT, KC_BSPC), LT(_ARROW_NUMPAD, KC_SPC), COMBO_END};
-const uint16_t PROGMEM main_layer[] = {MT(MOD_LCTL, KC_DOT), LT(_ARROW_NUMPAD, KC_SPC), COMBO_END};
-const uint16_t PROGMEM sft_thumb[] = {MT(MOD_LCTL, KC_TAB), MT(MOD_RCTL, KC_ENT), COMBO_END};
-const uint16_t PROGMEM zen_layer[] = {MT_SFT_MAGIC, LT(_ARROW_NUMPAD, KC_SPC), COMBO_END};
-const uint16_t PROGMEM osalt[] = {KC_G, KC_W,COMBO_END};
-const uint16_t PROGMEM ossft[] = {KC_C, KC_S,COMBO_END};
-const uint16_t PROGMEM del_word_c[] = {LT(_SYMBOLS, KC_R), MT(MOD_LCTL, KC_TAB), COMBO_END};
-
-const uint16_t PROGMEM tmux_c[] = {LT(_ARROW_NUMPAD, KC_SPC), LT(_SYMBOLS,KC_R), COMBO_END};
-const uint16_t PROGMEM caps_word[] = {MT(MOD_LALT, KC_BSPC), KC_G, COMBO_END};
-const uint16_t PROGMEM left_enter[] = {MT(MOD_LCTL, KC_DOT), MT(MOD_LALT, KC_BSPC), COMBO_END};
-const uint16_t PROGMEM quick_fire_layer[] = {MT(MOD_LCTL, KC_TAB), LT(_ARROW_NUMPAD, KC_SPC), COMBO_END};
-const uint16_t PROGMEM esc_right[] = {MT(MOD_RCTL, KC_ENT), LT(_SYMBOLS, KC_R), COMBO_END};
-const uint16_t PROGMEM esc_left[] = {MT(MOD_LALT, KC_BSPC) , MT(MOD_LGUI, KC_COMM), COMBO_END};
-
-const uint16_t PROGMEM key_b[] = {LT(_SYMBOLS, KC_R), KC_T, COMBO_END};
-const uint16_t PROGMEM key_f[] = {LT(_SYMBOLS, KC_R), KC_N, COMBO_END};
-const uint16_t PROGMEM key_j[] = {LT(_SYMBOLS, KC_R), KC_H, COMBO_END};
-const uint16_t PROGMEM key_x[] = {LT(_SYMBOLS, KC_R), KC_S, COMBO_END};
-
-const uint16_t PROGMEM key_v[] = {LT(_ARROW_NUMPAD, KC_SPC), KC_C, COMBO_END};
-const uint16_t PROGMEM key_q[] = {LT(_SYMBOLS, KC_R), KC_G, COMBO_END};
-const uint16_t PROGMEM key_z[] = {LT(_SYMBOLS, KC_R), KC_W, COMBO_END};
-const uint16_t PROGMEM key_ppls[] = {LT(_SYMBOLS, KC_R), KC_M, COMBO_END};
-const uint16_t PROGMEM sleep[] = {MT_SFT_MAGIC, MT(MOD_LCTL, KC_DOT), MT(MOD_LALT, KC_BSPC), MT(MOD_LGUI, KC_COMM),  MT(MOD_LCTL, KC_TAB), COMBO_END};
-const uint16_t PROGMEM shutdown[] = {MT_SFT_MAGIC, MT(MOD_LCTL, KC_DOT), MT(MOD_LALT, KC_BSPC), MT(MOD_LGUI, KC_COMM), LT(_ARROW_NUMPAD, KC_SPC), COMBO_END};
-
-combo_t key_combos[26] = {
-    [MOUSE_RIGHT_TOGGLE] = COMBO(mouse_right_toggle, MO(_MOUSE)),
-    [DEL_WORD_C] = COMBO(del_word_c, DEL_WORD),
-    [SPC_SFT] = COMBO(spc_sft, SPC_SFT_M),
-    [TMUX_THUMB] = COMBO(tmux_c, OSL(_TMUX)),
-    [QUICK_FIRE_LAYER] = COMBO(quick_fire_layer, OSL(_QUICK_FIRE)),
-    [ESC_RIGHT] = COMBO(esc_right, KC_ESC),
-    [ESC_LEFT] = COMBO(esc_left, KC_ESC),
-    [KEY_X] = COMBO(key_x, KC_X),
-    [KEY_Q] = COMBO(key_q, KC_Q),
-    [KEY_Z] = COMBO(key_z, KC_Z),
-    [KEY_V] = COMBO(key_v, KC_V),
-    [KEY_J] = COMBO(key_j, KC_J),
-    [KEY_F] = COMBO(key_f, KC_F),
-    [KEY_B] = COMBO(key_b, KC_B),
-    [KEY_PPLS] = COMBO(key_ppls, KC_PPLS),
-    [OSALT] = COMBO(osalt, OSM(MOD_LALT)),
-    [OSSFT] = COMBO(ossft, OSM(MOD_LSFT)),
-    [LEFT_ENTER] = COMBO(left_enter, KC_ENT),
-    [MOUSE_LAYER] = COMBO(mouse_layer, TO(_MOUSE)),
-    [MAIN_LAYER] = COMBO(main_layer, TO(_BASE)),
-    [SFT_THUMB] = COMBO(sft_thumb, OSM(MOD_LSFT)),
-    [ZEN_LAYER] = COMBO(zen_layer, TO(_XOURNAL)),
-    [CAPS_WORD] = COMBO(caps_word, CW_TOGG),
-    [SLEEP] = COMBO(sleep, KC_SLEP),
-    [SHUTDOWN] = COMBO(shutdown, KC_PWR),
-    [QUOT_CAPS] = COMBO_ACTION(quot_caps),
-};
-
-void process_combo_event(uint16_t combo_index, bool pressed) {
-    switch(combo_index) {
-        case QUOT_CAPS:
-            if (pressed) {
-                // On combo press, activate Alt and the numpad layer
-                tap_code16(KC_QUOT);
-                add_oneshot_mods(MOD_BIT(KC_LSFT));
-            }
-            break;
-    }
-}
 
 /////////////////////////////////////////////////
 // MACROS
 /////////////////////////////////////////////////
+
+// ^:^ ALTREP SETUP
 bool remember_last_key_user(uint16_t keycode, keyrecord_t* record,
                             uint8_t* remembered_mods) {
     switch (keycode) {
-        case MT_SFT_MAGIC:
+        case LB_ALTREP:
         case QK_AREP:
-            return false;  // Ignore ALTREP keys.
+            return false;
     }
+    return true;
+}
 
-    return true;  // Other keys can be repeated.
-};
-
-// main AREP on pinky fingers
-uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
+ uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
     switch (keycode) {
-        case KC_RIGHT: return KC_RIGHT;
-        case KC_UP: return KC_UP;
-        case KC_DOWN: return KC_DOWN;
-        case KC_LEFT: return KC_LEFT;
-        case MT(MOD_LALT, KC_BSPC): return KC_BSPC;
+        case LB_BSPC: return KC_BSPC;
         case KC_Y: return KC_I;
         case KC_B: return KC_R;
         case KC_I: return KC_Y;
@@ -200,29 +278,46 @@ uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
         case KC_E: return KC_O;
         case KC_A: return KC_U;
         case KC_U: return KC_A;
-        case KC_S: return KC_W;
         case KC_P: return KC_S;
         case KC_W: return KC_N;
-        case KC_G: return KC_L;
+        case KC_G: return KC_V;
         case KC_L: return KC_M;
         case KC_M: return KC_P;
-        case KC_R: return KC_F;
-        case KC_F: return KC_R;
-        case KC_D: return KC_M;
-        case MT(MOD_LCTL, KC_DOT): return KC_DOT;
-        case MT(MOD_RSFT,KC_PMNS): return S(KC_DOT);
+        case KC_D: return KC_W;
+        case KC_PPLS: return KC_PEQL;
+        case MT(MOD_RSFT,KC_MINS): return S(KC_DOT);
+
+        case KC_RIGHT: return KC_SCLN;
+        case KC_MINS: return S(KC_DOT);
+        case KC_LPRN: return KC_ENT;
+        case KC_LCBR: return KC_ENT;
+        case KC_LBRC: return KC_ENT;
+        case KC_RPRN: return KC_SPC;
+        case KC_RCBR: return KC_SPC;
+        case KC_RBRC: return KC_SPC;
+        case KC_SCLN: return KC_ENT;
+        case KC_COLN: return KC_SPC;
+        case KC_QUES: return KC_SPC;
+        case KC_AMPR: return KC_SPC;
+        case KC_SLSH: return KC_SPC;
+        case KC_UNDS: return KC_SPC;
+
         case KC_1: return KC_4;
-        case KC_2: return KC_5;
-        case KC_3: return KC_6;
         case KC_4: return KC_1;
+        case KC_2: return KC_5;
         case KC_5: return KC_2;
+        case KC_3: return KC_6;
         case KC_6: return KC_3;
-        case LT(_ARROW_NUMPAD, KC_SPC): return OSM(MOD_LSFT); // doesn't work
-        case KC_SPC: return OSM(MOD_LSFT);
+
+        case KC_7: return KC_UP;
+        case KC_8: return KC_UP;
+        case KC_9: return KC_UP;
+        case KC_0: return S(KC_G);
     }
-    return false;  // Defer to default definitions.
+    return false;
 }
 
+// HELPER FNS
 void tmux(uint16_t keycode) {
     register_code(KC_LCTL);
     tap_code(KC_B);
@@ -230,13 +325,16 @@ void tmux(uint16_t keycode) {
     tap_code16(keycode);
 }
 
-void tmux_resize(uint8_t dir) {
+void tmux_prefix(void) {
     register_code(KC_LCTL);
     tap_code(KC_B);
     unregister_code(KC_LCTL);
-    register_code(KC_LALT);
-    tap_code(dir);
-    unregister_code(KC_LALT);
+}
+
+void tmux_ctrl(uint16_t keycode) {
+    register_code(KC_LCTL);
+    tap_code16(keycode);
+    unregister_code(KC_LCTL);
 }
 
 void tmux_close(uint16_t keycode) {
@@ -247,233 +345,353 @@ void tmux_close(uint16_t keycode) {
 void activate_pen_mode(uint16_t keycode) {
     register_code(KC_LCTL);
     register_code(KC_LSFT);
-    tap_code16(KC_P);
+    tap_code16(KC_D);
     unregister_code(KC_LCTL);
     unregister_code(KC_LSFT);
     tap_code16(keycode);
 }
 
+void activate_default_tool(void) {
+  register_code(KC_LCTL);
+  register_code(KC_LSFT);
+  tap_code16(KC_D);
+  unregister_code(KC_LCTL);
+  unregister_code(KC_LSFT);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-    switch (keycode) {
-        case XOURNAL_PINK:
-            if (record->event.pressed) {
-                activate_pen_mode(KC_8);
-            }
-            break;
-        case XOURNAL_YELLOW:
-            if (record->event.pressed) {
-                activate_pen_mode(KC_0);
-            }
-            break;
-        case XOURNAL_BLUE:
-            if (record->event.pressed) {
-                activate_pen_mode(KC_3);
-            }
-            break;
-        case XOURNAL_ORANGE:
-            if (record->event.pressed) {
-                activate_pen_mode(KC_9);
-            }
-            break;
-        case MT_SFT_MAGIC:
-            if (record->tap.count) {  // On tap.
-                // For Alternate Repeat Key, replace the next line with
-                alt_repeat_key_invoke(&record->event);
-                return false;  // Skip default handling.
-            };
-            break;
-        case SPC_SFT_M:
-            if (record->event.pressed) {
-                tap_code(KC_SPC);
-                add_oneshot_mods(MOD_BIT(KC_LSFT));
-            }
-            break;
-        case DEL_WORD:
-            if (record->event.pressed) {
-                add_oneshot_mods(MOD_BIT(KC_LCTL));
-                tap_code(KC_BSPC);
-            }
-            break;
-        case DEL_LINE:
-            if (record->event.pressed) {
-                tap_code(KC_END);
-                add_oneshot_mods(MOD_BIT(KC_LSFT));
-                tap_code(KC_HOME);
-                tap_code(KC_BSPC);
-                add_oneshot_mods(MOD_BIT(KC_LCTL));
-                tap_code(KC_U); // terminal line delete
-            }
-            break;
-        case TM_WIN_NEW:
-            if (record->event.pressed) {
-                tmux(KC_C);
-            }
-            return false;
-        case TM_PANE_CLOSE:
-            if (record->event.pressed) {
-                tmux_close(KC_X);
-            }
-            return false;
+  switch(keycode) {
+    case LB_ALTREP:
+      if (record->tap.count) {
+        alt_repeat_key_invoke(&record->event);
+        return false;
+      };
+      break;
 
-        case TM_PANEV_NEW:
-            if (record->event.pressed) {
-                tmux(KC_PERC);
-            }
-            return false;
+    case PASTE_AND_POP:
+      if (record->event.pressed) {
+        register_code(KC_LCTL);
+        tap_code(KC_V);
+        add_oneshot_mods(MOD_BIT(KC_LALT));
+        tap_code(KC_V);
+        unregister_code(KC_LCTL);
+      }
+      break;
 
-        case TM_PANEH_NEW:
-            if (record->event.pressed) {
-                tmux(KC_DQUO);
-            }
-            return false;
+    case TEXT_TERM_VIEW:
+      if (record->event.pressed) {
+        layer_move(_BASE);
+        register_code16(MEH(KC_T));   // press MEH+Enter
+      } else {
+        unregister_code16(MEH(KC_T)); // release MEH+Enter
+      }
+      return false;
 
+    case MOUSE_REF_VIEW:
+      if (record->event.pressed) {
+        layer_move(_MOUSE);
+        register_code16(MEH(KC_R));   // press MEH+Enter
+      } else {
+        unregister_code16(MEH(KC_R)); // release MEH+Enter
+      }
+      return false;
 
-        case TM_P_NEXT:
-            if (record->event.pressed) {
-                tmux(KC_O);
-            }
-            return false;
+    case END_SCLN_ENT:
+      if (record->event.pressed) {
+        tap_code(KC_END);
+        tap_code(KC_SCLN);
+        tap_code(KC_ENT);
+      }
+    break;
 
-        case TM_P_PREV:
-            if (record->event.pressed) {
-                tmux(KC_SCLN);
-            }
-            return false;
+    case MULTILINE_COMMENT:
+      if (record->event.pressed) {
+        tap_code(KC_SLSH);
+        tap_code(KC_PAST);
+        tap_code(KC_SPC);
+        tap_code(KC_ENT);
+        tap_code(KC_ENT);
+        tap_code(KC_HOME);
+        tap_code(KC_PAST);
+        tap_code(KC_SLSH);
+        tap_code(KC_UP);
+        tap_code(KC_UP);
+        tap_code(KC_END);
+      }
+      break;
 
-        case TM_EVEN:
-            if (record->event.pressed) {
-                tmux(KC_E);
-            }
-            return false;
+    case SPC_PEQL_SPC:
+      if (record->event.pressed) {
+        tap_code(KC_SPC);
+        tap_code(KC_PEQL);
+        tap_code(KC_SPC);
+      }
+      break;
 
-            TMUX_CASE(TM1, KC_1)
-            TMUX_CASE(TM2, KC_2)
-            TMUX_CASE(TM3, KC_3)
-            TMUX_CASE(TM4, KC_4)
-            TMUX_CASE(TM5, KC_5)
-            TMUX_CASE(TM6, KC_6)
-            TMUX_CASE(TM_SESS_MANAGER, KC_S)
-            TMUX_CASE(TM_DETACH, KC_D)
+    case SPC_PPLS_SPC:
+      if (record->event.pressed) {
+        tap_code(KC_SPC);
+        tap_code(KC_PPLS);
+        tap_code(KC_SPC);
+      }
+      break;
 
-        case TM_WIN_CLOSE:
-            if (record->event.pressed) {
-                tmux_close(KC_AMPR);
-            }
-            return false;
+    case CODEBLOCKS:
+      if (record->event.pressed) {
+        tap_code(KC_GRV);
+        tap_code(KC_GRV);
+        tap_code(KC_GRV);
+        tap_code(KC_DEL);
+        tap_code(KC_ENT);
+        tap_code(KC_ENT);
+        tap_code(KC_HOME);
+        tap_code(KC_GRV);
+        tap_code(KC_GRV);
+        tap_code(KC_GRV);
+        tap_code(KC_DEL);
+        tap_code(KC_UP);
+        tap_code(KC_UP);
+      }
+      break;
 
-        case TM_P_RESIZE_LEFT:
-            if (record->event.pressed) {
-                tmux_resize(KC_LEFT);
-            }
+    case BSPC_WORD:
+      if (record->event.pressed) {
+        add_oneshot_mods(MOD_BIT(KC_LCTL));
+        tap_code(KC_BSPC);
+      }
+      break;
 
-            return false;
+    // NVIM
+    case NVIM_STAGE_LINE:
+      if (record->event.pressed) {
+        tap_code(KC_D);
+        tap_code(KC_M);
+        tap_code(KC_MINS);
+     }
+     break;
 
-        case TM_P_RESIZE_RIGHT:
-            if (record->event.pressed) {
-                tmux_resize(KC_RIGHT);
+    case NVIM_GX:
+      if (record->event.pressed) {
+        tap_code(KC_G);
+        tap_code(KC_X);
+      }
+      break;
 
-            }
-            return false;
+    case NVIM_PREV_HUNK:
+      if (record->event.pressed) {
+        tap_code(KC_LBRC);
+        tap_code(KC_H);
+      }
+      break;
 
-        case TM_P_RESIZE_UP:
-            if (record->event.pressed) {
-                tmux_resize(KC_UP);
-            }
-            return false;
+    case NVIM_STAGE_HUNK:
+      if (record->event.pressed) {
+        tap_code(KC_G);
+        tap_code(KC_H);
+        tap_code(KC_G);
+        tap_code(KC_H);
+      }
+      break;
 
-        case TM_P_RESIZE_DOWN:
-            if (record->event.pressed) {
-                tmux_resize(KC_DOWN);
-            }
-            return false;
+    case NVIM_RESET_HUNK:
+      if (record->event.pressed) {
+        tap_code(KC_G);
+        add_oneshot_mods(MOD_BIT(KC_LSFT));
+        tap_code(KC_H);
+        tap_code(KC_G);
+        add_oneshot_mods(MOD_BIT(KC_LSFT));
+        tap_code(KC_H);
+      }
+      break;
 
-        case TM_RN_WIN:
-            if (record->event.pressed) {
-                tmux(KC_COMM);
-            }
-            return false;
+    case NVIM_YANK_REG_PASTE:
+      if (record->event.pressed) {
+        tap_code16(KC_DQUO);
+        tap_code(KC_0);
+        tap_code(KC_P);
+      }
+      break;
 
-        case TM_RN_PN:
-            if (record->event.pressed) {
-                tmux_resize(KC_DOT);
-            }
-            return false;
+    case NVIM_NEXT_HUNK:
+      if (record->event.pressed) {
+        tap_code(KC_RBRC);
+        tap_code(KC_H);
+      }
+      break;
 
-        case TM_RN_SESS:
-            if (record->event.pressed) {
-                tmux(KC_DLR);
-            }
-            return false;
+    case NVIM_VIP:
+      if (record->event.pressed) {
+        tap_code(KC_V);
+        tap_code(KC_I);
+        tap_code(KC_P);
+      }
+      break;
 
-        case TM_PREV_SESS:
-            if (record->event.pressed) {
-                tmux(KC_LPRN);
-            }
-            return false;
+    case NVIM_GU:
+      if (record->event.pressed) {
+        tap_code(KC_G);
+        add_oneshot_mods(MOD_BIT(KC_LSFT));
+        tap_code(KC_U);
+      }
+      break;
 
-            if (record->event.pressed) {
-                case TM_NEXT_SESS:
-                    tmux(KC_RPRN);
-            }
-            return false;
+    case NVIM_GV:
+      if (record->event.pressed) {
+        tap_code(KC_G);
+        tap_code(KC_V);
+      }
+      break;
 
-        case TM_CMD:
-            if (record->event.pressed) {
-                tmux(KC_COLN);
-                return false;
-            }
+    // XOURNAL
+    case XOURNAL_GRAY:
+      if (record->event.pressed) {
+        activate_pen_mode(KC_6);
+      }
+      return false;
 
-        case TM_PASTE:
-            if (record->event.pressed) {
-                tmux(KC_RBRC);
-            }
-            return false;
+    case XOURNAL_BLUE:
+      if (record->event.pressed) {
+        activate_pen_mode(KC_3);
+      }
+      return false;
 
-        case TM_COPY:
-            if (record->event.pressed) {
-                tmux(KC_LBRC);
-            }
-            return false;
+    case XOURNAL_NEON:
+      if (record->event.pressed) {
+        activate_pen_mode(KC_4);
+      }
+      return false;
 
-        case TM_P_FULL:
-            if (record->event.pressed) {
-                tmux(KC_Z);
-            }
-            return false;
+    case XOURNAL_YELLOW:
+      if (record->event.pressed) {
+        activate_pen_mode(KC_9);
+      }
+      return false;
 
-    }
-    return true;
+    case XOURNAL_ORANGE:
+      if (record->event.pressed) {
+        activate_pen_mode(KC_8);
+      }
+      return false;
+
+    case XOURNAL_RED:
+      if (record->event.pressed) {
+        activate_pen_mode(KC_7);
+      }
+      return false;
+
+    case XOURNAL_MAGENTA:
+      if (record->event.pressed) {
+        activate_pen_mode(KC_0);
+      }
+      return false;
+
+    case XOURNAL_ELLIPSE:
+      if (record->event.pressed) {
+        activate_default_tool();
+        add_oneshot_mods(MOD_BIT(KC_LCTL));
+        tap_code(KC_3);
+      }
+      return false;
+
+    case XOURNAL_RECT:
+      if (record->event.pressed) {
+        activate_default_tool();
+        add_oneshot_mods(MOD_BIT(KC_LCTL));
+        tap_code(KC_2);
+      }
+      return false;
+
+    // TMUX
+    case TM_WIN_NEW:
+      if (record->event.pressed) {
+       tmux(KC_C);
+      }
+      return false;
+
+    case TM_PANE_CLOSE:
+      if (record->event.pressed) {
+        tmux_close(KC_X);
+      }
+      return false;
+
+    case TM_PANEV_NEW:
+      if (record->event.pressed) {
+        tmux(KC_PERC);
+      }
+      return false;
+
+    case TM_PANEH_NEW:
+      if (record->event.pressed) {
+        tmux(KC_DQUO);
+      }
+      return false;
+
+    case TM_RN_WIN:
+      if (record->event.pressed) {
+        tmux(KC_COMM);
+      }
+      return false;
+
+    case TM_RN_SESS:
+      if (record->event.pressed) {
+        tmux(KC_DLR);
+      }
+      return false;
+
+    case TM_PREV_SESS:
+      if (record->event.pressed)  {
+        tmux(KC_LPRN);
+      }
+      return false;
+
+    case TM_SESS_MANAGER:
+      if (record->event.pressed) {
+        tmux(KC_S);
+      }
+      return false;
+
+    case TM_SAVE:
+      if (record->event.pressed) {
+        tmux_prefix();
+        tmux_ctrl(KC_S);
+      }
+      return false;
+
+    case TM_RESTORE:
+      if (record->event.pressed) {
+        tmux_prefix();
+        tmux_ctrl(KC_R);
+      }
+      return false;
+  }
+  return true;
 };
-
-
 
 /////////////////////////////////////////////////
 // KEYMAPS
 /////////////////////////////////////////////////
+/*
+FLOATING SYMBOLS
+- symbols not found in the symbols layer
+- ?\/_:"
+
+BASE SYMBOLS
+- '-;
+*/
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [_BASE] = LAYOUT_split_3x5_2(KC_QUOT, KC_Y, KC_O, KC_U, KC_SPC, KC_PAST, KC_L, KC_D, KC_P, KC_UNDS, KC_C, KC_I, KC_E, KC_A, QK_REP, QK_REP, KC_H, KC_T, KC_N, KC_S, MT_SFT_MAGIC, MT(MOD_LCTL,KC_DOT), MT(MOD_LALT, KC_BSPC), MT(MOD_LGUI, KC_COMM), KC_SCLN, KC_K, KC_M, KC_G, KC_W, MT(MOD_RSFT,KC_PMNS), MT(MOD_LCTL, KC_TAB), LT(_ARROW_NUMPAD, KC_SPC), LT(_SYMBOLS, KC_R), MT(MOD_RCTL, KC_ENT)),
+  [_BASE] = LAYOUT_split_3x5_2(KC_SCLN, KC_Y, KC_O, KC_U, KC_QUOT, KC_PAST, KC_L, KC_D, KC_P, KC_F, KC_C, KC_I, KC_E, KC_A, QK_REP, QK_REP, KC_H, KC_T, KC_N, KC_S, LB_ALTREP, LB_DOT, LB_BSPC, LB_COMM, OSM(MOD_LSFT), KC_K, KC_M, KC_G, KC_W, KC_MINS, TH_TAB, TH_SPC, TH_R, TH_ENT),
 
-    [_XOURNAL] = LAYOUT_split_3x5_2(KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, KC_F9, KC_F11, KC_F4, KC_F5, KC_F6, KC_NO, XOURNAL_PINK, XOURNAL_ORANGE, XOURNAL_BLUE, XOURNAL_YELLOW, KC_TRNS, KC_F12, KC_F1, KC_F2, KC_F3, KC_F10, KC_PGDN, KC_PGUP, RCS(KC_E), C(KC_D), RCS(KC_DEL), KC_F13, KC_F7, KC_F8, KC_F9, KC_NO, RCS(KC_G), MT(MOD_LCTL, KC_DEL), KC_TRNS, KC_TRNS),
+  [_SYMBOLS] = LAYOUT_split_3x5_2(KC_TRNS, KC_AMPR, KC_PIPE, KC_EXLM, KC_GRV, KC_TRNS, KC_MINS, KC_PEQL, KC_PPLS, KC_RIGHT, S(KC_COMM), KC_LCBR, KC_LPRN, KC_LBRC, KC_TRNS, KC_TRNS, KC_RBRC, KC_RPRN, KC_RCBR, S(KC_DOT), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TILDE, KC_CIRC, KC_DLR, KC_HASH, KC_AT, KC_PERC, KC_ENT, KC_TRNS, KC_TRNS, KC_TRNS),
 
-    [_MOUSE] = LAYOUT_split_3x5_2(KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, KC_BTN3, KC_I, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_BTN2, QK_REP, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MT(MOD_LALT, KC_G), KC_TRNS, KC_TRNS, KC_TRNS, KC_BTN1, LT(_ARROW_NUMPAD, KC_R), KC_TRNS),
+  [_ARROW_NUMPAD] = LAYOUT_split_3x5_2(KC_SPC, KC_7, KC_8, KC_9, KC_COLN, KC_TRNS, KC_MINS, KC_PEQL, KC_PPLS, KC_SLSH, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, QK_REP, QK_REP, KC_1, KC_2, KC_3, KC_0, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_UNDS, KC_TRNS, KC_4, KC_5, KC_6, S(KC_G), KC_TRNS, KC_TRNS, C(KC_LEFT), C(KC_RIGHT)),
 
-    // this layer corresponds with the kybd shortcuts set in hypr
-    [_QUICK_FIRE] = LAYOUT_split_3x5_2(KC_VOLD, KC_VOLU, MEH(KC_V), MEH(KC_C), MEH(KC_P), KC_F10, KC_F1, KC_F2, KC_F3, KC_F4, RCS(KC_H), A(KC_LEFT), A(KC_RIGHT), MEH(KC_T), QK_REP, QK_REP, A(KC_1), A(KC_2), A(KC_3), KC_F5, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), C(KC_Y), KC_F12, A(KC_4), A(KC_5), A(KC_6), KC_F6, KC_TRNS, KC_TRNS, KC_WH_D, KC_WH_U),
+  [_MOUSE] = LAYOUT_split_3x5_2(KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, KC_BTN3, KC_TRNS, KC_TRNS, C(KC_PPLS), C(KC_MINS), KC_WH_R, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_BTN2, QK_REP, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, TH_TAB, KC_BTN1, MT(MOD_RCTL, KC_SPC), KC_TRNS),
 
-    [_ARROW_NUMPAD] = LAYOUT_split_3x5_2(KC_DQUO, KC_7, KC_8, KC_9, KC_SPC, KC_TRNS, DEL_LINE, KC_HOME, KC_END, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS, QK_REP, KC_1, KC_2, KC_3, KC_0, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_COLN, KC_PPLS, KC_4, KC_5, KC_6, KC_TRNS, KC_TRNS, KC_TRNS, C(KC_LEFT), C(KC_RIGHT)),
+  [_QUICK_FIRE] = LAYOUT_split_3x5_2(KC_MUTE, KC_VOLD, KC_VOLU, MEH(KC_T), LCA(KC_TAB), MULTILINE_COMMENT, CODEBLOCKS, SPC_PEQL_SPC, SPC_PPLS_SPC, END_SCLN_ENT, PASTE_AND_POP, A(KC_LEFT), A(KC_RIGHT), LCA(KC_SPC), QK_REP, QK_REP, A(KC_1), A(KC_2), A(KC_3), NVIM_YANK_REG_PASTE, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), RCS(KC_H), KC_F12, A(KC_4), A(KC_5), TM_PREV_SESS, TM_SESS_MANAGER, KC_TRNS, KC_TRNS, KC_WH_D, KC_WH_U),
 
-    [_SYMBOLS] = LAYOUT_split_3x5_2(KC_GRV, KC_PERC, KC_PEQL, KC_PIPE, KC_SPC, KC_AT, KC_AMPR, KC_CIRC, KC_DLR, KC_TRNS, KC_TILDE, KC_HASH, KC_COLN, KC_SLSH, QK_REP, S(KC_COMM), KC_LPRN, KC_LCBR, KC_LBRC, S(KC_DOT), KC_TRNS, KC_QUES, KC_EXLM, KC_BSLS, KC_TRNS, KC_TRNS, KC_RPRN, KC_RCBR, KC_RBRC, KC_TRNS, KC_F, KC_TRNS, KC_TRNS, KC_TRNS),
-
-    [_TMUX] = LAYOUT_split_3x5_2(TM_P_RESIZE_LEFT, TM_P_RESIZE_DOWN, TM_P_RESIZE_UP, TM_P_RESIZE_RIGHT, TM_EVEN, TM_RN_SESS, TM_SESS_MANAGER, TM_DETACH, TM_PREV_SESS, TM_NEXT_SESS, TM_PANEV_NEW, TM_P_PREV, TM_P_NEXT, TM_P_FULL, KC_TRNS, TM_RN_WIN, TM1, TM2, TM3, TM_WIN_NEW, TM_PANEH_NEW, TM_PANE_CLOSE, TM_COPY, TM_PASTE, C(KC_C), KC_TRNS, TM4, TM5, TM6, TM_CMD, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
-
-
+  [_TMUX_FN] = LAYOUT_split_3x5_2(TM_RESTORE, TM_SAVE, TM_RN_WIN, TM_RN_SESS, QK_BOOT, QK_BOOT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, TM_WIN_NEW, TM_PANE_CLOSE, TM_PANEV_NEW, TM_PANEH_NEW, KC_F11, KC_F12, NVIM_STAGE_HUNK, NVIM_PREV_HUNK, NVIM_NEXT_HUNK, NVIM_RESET_HUNK, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
 };
 
-#if defined(ENCODER_ENABLE) && defined(ENCODER_MAP_ENABLE)
-const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = TILDE
-#endif // defined(ENCODER_ENABLE) && defined(ENCODER_MAP_ENABLE)
-
-/////////////////////////////////////////////////
-// REJECTED
-/////////////////////////////////////////////////
-
+// DEPRECATED
+// #define TMUX_CASE(code , key) case code: tmux(key); return false;
