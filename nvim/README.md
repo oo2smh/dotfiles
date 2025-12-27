@@ -1,7 +1,7 @@
 # Philosophy
-- Keep it minimal
+- eep it minimal
 - Try to use defaults when possible
-- Avoid using tabs, built-in-terminal
+ Avoid using tabs, butlt-in-terminal
   - Using a window manager, tmux, and nvim gets confusing
 
 # Things to Work On
@@ -16,25 +16,22 @@
 
 2. Use of / and ?
   - this feels like a better f/t in that you can search words
-3. Standardized use of marks
-  - r: reference
+3. Standardized use of mark
   - t: task (currently working on code)
   - h: hub/home, (big-picture engine)
-  - m: method/module connected
   - n: notes
-  - d: original declaration for fns
-  - v: variables
+  - r: references for t
   - s: secondary, smaller task
-  - g/w: gotcha, watch-out
+
 4. Standarized use of argslist
-  - h: hub biggest file (main file)
+  - h: hub/home: biggest file (main file)
   - t: task file
-  - n: readme notes
-  - m: conneted module
+  - n: notes?
+  - m: connected module
   - g/w: gotcha file, watch-out file
 
 > [!Note]
-> You can always acess the todo file with <leader t>
+> You can always access the todo file with <leader t>
 
 # Rejected
 - kept around just in case, I want to implement these in the future
@@ -55,6 +52,7 @@ local m_pairs = { "echasnovski/mini.pairs", config = true }
 -- some annoyances when it doesn't behave as expected
 
 -- TERMINAL SPECIFIC
+-- not using the terminal because nnn opens up in a terminal window
 local exit_term = "<C-\\><C-n><ESC>"
 keymap("t", "<esc><esc>", exit_term .. ":q<cr>")
 keymap("t", "<C-g>", exit_term .. ":bd<cr>", { noremap = true, silent = true })
@@ -69,7 +67,7 @@ keymap("n", exit_term .. "<A-5>", ":argument 5<cr>:lua EchoArglist()<cr>")
 keymap("n", exit_term .. "<A-6>", ":argument 6<cr>:lua EchoArglist()<cr>")
 
 -- AUTOCMDS
--- NOTE: naming conflicts when you try to rename on cwd. to bypass, press :bp to get to rename buffer.
+  -- NOTE: naming conflicts when you try to rename on cwd. to bypass, press :bp to get to rename buffer.
 local function dd_removes_qf_item()
   local idx = vim.fn.line(".") - 1
   local qflist = vim.fn.getqflist()

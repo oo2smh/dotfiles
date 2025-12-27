@@ -1,102 +1,115 @@
-local m_basics      = { "echasnovski/mini.basics", config = true }
-local m_statusline  = { "echasnovski/mini.statusline", config = true }
-local m_tabline     = { "echasnovski/mini.tabline", config = true }
-local m_indentscope = { "echasnovski/mini.indentscope", config = true }
-local m_pairs       = { "echasnovski/mini.pairs", config = true }
-local m_surround    = { "echasnovski/mini.surround", config = true }
-local m_align       = { "echasnovski/mini.align", config = true }
-local m_splitjoin   = { "echasnovski/mini.splitjoin", config = true }
+local mini = "echasnovski/mini"
+local m_basics      = { "mini.basics",      config = true }
+local m_statusline  = { "mini.statusline",  config = true }
+local m_tabline     = { "mini.tabline",     config = true }
+local m_indentscope = { "mini.indentscope", config = true }
+local m_pairs       = { "mini.pairs",       config = true }
+local m_surround    = { "mini.surround",    config = true }
+local m_splitjoin   = { "mini.splitjoin", opts = { mappings = { toggle = "mo"}}}
+local m_cursorword  = { "mini.cursorword",  config = true }
+local m_notify      = { "mini.notify",      config = true }
+local m_align       = { "mini.align",       config = true }
 
-local m_sessions    = {
-  "echasnovski/mini.sessions",
-  keys = function()
-    local ms = require('mini.sessions')
-    local function save_session()
-      local dir_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-      local session_name = vim.fn.input("Session name: ", dir_name, "file")
-
-      -- Check if the user pressed <Esc> or entered an empty name
-      if session_name == nil or session_name:match('^%s*$') then
-        vim.notify("Session save cancelled.", vim.log.levels.INFO)
-        return
-      end
-
-      ms.write(session_name)
-      vim.notify("Attempting to save session as: '" .. session_name .. "'", vim.log.levels.INFO)
-    end
-
-    return {
-      { "hi",         function() ms.select("read") end },
-      { "<leader>ms", save_session },
-      { "<leader>md", function() ms.select("delete", { force = true, verbose = true }) end },
-    }
-  end,
-}
-
-local m_pick        = {
-  "echasnovski/mini.pick",
+local m_pick = {
+  "mini.pick",
   version = false,
-  dependencies = { { "echasnovski/mini.extra", "echasnovski/mini.icons" } },
+  dependencies = { { "mini.extra", "mini.icons" } },
+  opts = {
+    window = {
+      config = {
+        anchor = 'NW',
+        row = 20,
+        width = 100, height = 30,
+      },
+    },
+    -- for the sake of convienience, I can't type these in picker float
+    mappings = {
+      toggle_preview = '1',
+      scroll_down = '2',
+      scroll_up = '3',
+      delete_word = '<C-h>',
+    },
+  },
+
   keys = function()
     local pick = require("mini.pick")
     local extra = require("mini.extra").pickers
 
-    return {
-      { "h",          pick.builtin.files },
-      { "<leader>ht", function() extra.oldfiles() end },
-      { "<leader>hn", function() extra.git_hunks() end },
-      { "<leader>hp", function() extra.diagnostic() end },                      -- project diagostic
-      { "<leader>hd", function() extra.diagnostic({ scope = 'current' }) end }, --diagnostic file
-      { "<leader>hs", pick.builtin.grep_live },
-      { "<leader>gc", function() extra.git_commits() end },
-      { "<leader>gb", function() extra.git_branches() end },
-      { "<leader>q",  pick.builtin.help },
-      { "<leader>m",  function() extra.marks({ scope = 'buf' }) end },
-      { "<leader>u",  function() extra.list({ scope = 'change' }) end },
-      { "<leader>c",  function() extra.registers() end },
-      { "<leader>ld", function() extra.lsp({ scope = 'definition' }) end },
-      { "<leader>lo", function() extra.lsp({ scope = 'document_symbol' }) end },
-      { "<leader>lr", function() extra.lsp({ scope = 'references' }) end },
+		return {
+			-- git
+			{"hab", function() extra.git_branches() end, { desc = "git branches" }},
+			{"han", function() extra.git_hunks() end, { desc = "git hunks" }},
+			{"hai", function() extra.git_commits() end, { desc = "git hunks" }},
+			-- other
+			{"ht", pick.builtin.files, { desc = "files" } },
+			{"ho", pick.builtin.buffers, { desc = "open buffers" } }, --existing
+			{"hp", function() extra.diagnostic() end, { desc = "project diagnostic" }},
+			{"hd", function() extra.diagnostic({ scope = "current" }) end, { desc = "file diagnostic" }},
+			{"hs", pick.builtin.grep_live, { desc = "string search" }},
+			{"hr", function() extra.registers() end, { desc = "registers"}},
+			{"hz", function() extra.hipatterns({ scope = "current", highlighters = {"zone"}}) end, { desc = "highlights"}},
+			{"hf", function() extra.hipatterns({highlighters = {"fix"}}) end, { desc = "highlights"}},
+			{"hm", function() extra.marks({ scope = "buf" }) end, { desc = "marks" }},
+			{"hM", function() extra.marks({ scope = "global" }) end, { desc = "marks" }},
+			{"hh", pick.builtin.help, { desc = "help manuals" } },
+      {"hk", function() extra.keymaps() end, { desc = "keymaps"}},
     }
   end,
 }
 
-local m_operators   = {
-  "echasnovski/mini.operators",
-  config = true,
-  opts = { exchange = { prefix = "go" } },
+local m_operators = {
+	"mini.operators",
+	config = true,
+	opts = { exchange = { prefix = "go" }},
 }
 
-local m_diff        = {
-  "echasnovski/mini.diff",
-  version = false, -- always use the latest
-  config = function()
-    local diff = require("mini.diff")
-    diff.setup({
-      view = { style = "number" },
-    })
-    vim.keymap.set('n', '<leader>k', function()
-      diff.toggle_overlay(0)
-    end, { desc = 'MiniDiff: Toggle overlay' })
-  end,
+local m_diff = {
+	"mini.diff",
+	version = false, -- always use the latest
+	options = {update_delay = 50,},
+	config = function()
+		local diff = require("mini.diff")
+		vim.api.nvim_set_hl(0, "MiniDiffOverlay", { fg = "#00ff00", bg = "#440000" })
+
+		diff.setup({view = { style = "number" }})
+		vim.keymap.set("n", "hu", function()
+			diff.toggle_overlay()
+		end, { desc = "MiniDiff: toggle diff overlay" })
+	end,
 }
 
+local m_hipatterns = {
+	"mini.hipatterns",
+	config = function()
+		require("mini.hipatterns").setup({
+			highlighters = {
+				note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote"  },
+				zone = { pattern = "%f[%w]()ZONE()%f[%W]", group = "RenderMarkdownH1"    },
+        fix  = { pattern = "%f[%w]()FIX()%f[%W]",  group = "MiniHipatternsFixme" },
+				hex_color = require("mini.hipatterns").gen_highlighter.hex_color(),
+			},
+		})
+	end,
+}
 
 return {
-  -- FUNCTIONALITY
-  m_surround,  -- select visual selection first (sa, sd, sr)
-  m_pick,      -- viewer
-  m_operators, -- go(rient), gs(ort), gr(eplace with register), gm(ultiply)
-  m_pairs,     -- autopairs for enclosers (){}[]``''""
+	-- FUNCTIONALITY
+	m_pick,        -- viewer
+	m_operators,   -- go(rient+switch), gs(ort), gr(eplace with register), gm(ultiply)
+	m_pairs,       -- autopairs for enclosers (){}[]``''""
+	m_surround,    -- sa, sd, sr
 
   -- READABILITY -- optional formatting enhancements
-  m_splitjoin, -- toggle folding for args gS within encloser
-  m_align,     -- 1. select 2. ga(lign) 3. symbol (comments, =, md tables)
+	m_splitjoin,   -- toggle folding for args gS within encloser
+	m_align,       -- ga(symbol)
 
-  -- VISUAL
-  m_basics,      -- highlight on yank
-  m_statusline,  -- visual
-  m_tabline,     -- visual
-  m_diff,        -- show differences in diff in sign column
-  m_indentscope, -- visual scope cues
+  -- VISUAL UX
+	m_basics,      -- highlight on yank, g/ search within selection
+	m_statusline,  -- visual
+	m_tabline,     -- visual
+	m_diff,        -- show differences in diff in sign column
+	m_indentscope, -- visual scope cues
+	m_hipatterns,  -- pattern matching highlights. Used for hex highlighting
+	m_cursorword,  -- highlights word under cursor
+	m_notify,      -- lsp progress notification
 }
