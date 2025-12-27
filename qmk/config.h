@@ -1,7 +1,7 @@
 #pragma once
 #define EE_HANDS
 
-#define MOUSEKEY_INTERVAL 20
+#define MOUSEKEY_INTERVAL 18
 #define MOUSEKEY_MAX_SPEED 10
 #define MOUSEKEY_MOVE_DELTA 7
 #define MOUSEKEY_TIME_TO_MAX 10
@@ -11,12 +11,15 @@
 #define MOUSEKEY_WHEEL_TIME_TO_MAX 15
 
 // TAP MOD SETTINGS
-#define TAPPING_TERM 160
+#define TAPPING_TERM 165
 #define PERMISSIVE_HOLD
 #define QUICK_TAP_TERM 0
 #define TAPPING_TERM_PER_KEY
 
+// Set to a very high number to prevent accidental locking/toggling
+#define ONESHOT_TAP_TOGGLE 255
+
 // COMBOS
 #define COMBO_ONLY_FROM_LAYER 0
-#define COMBO_TERM 25
-#define COMBO_COUNT 76
+#define COMBO_TERM 30 // reduces window for you to type combo
+#define COMBO_COUNT 94

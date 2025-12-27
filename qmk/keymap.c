@@ -2,266 +2,387 @@
 /////////////////////////////////////////////////
 // OVERVIEW
 /////////////////////////////////////////////////
+
 enum layers {
-    _BASE,
-    _SYMBOLS,
-    _MOUSE,
-    _QUICK_FIRE,
-    _ARROW_NUMPAD,
-    _TMUX_FN,
+  _T_BASE,
+  _T_SCRAPS,
+  _SYMBOLS,
+  _FLOW_SYMBOLS,
+  _ARROWS_NUMPAD,
+  _MOUSE_7SYMBOLS,
+  _QUICK_FIRE,
+  _FN,
 };
 
+
 enum custom_keycodes {
+  // TMUX (10)
+  TM_PANE_CLOSE = SAFE_RANGE,
+  TM_PANEV_NEW,
+  TM_PANEH_NEW,
+  TM_WIN_NEW,
+  TM_SESS_MANAGER,
+  TM_RN_SESS,
+  TM_RN_WIN,
+  TM_PREV_SESS,
+  TM_SAVE,
+  TM_RESTORE,
+  TM_RELOAD,
+  TM1,
+  TM2,
+  TM3,
+  TM4,
 
-    // TMUX (10)
-    TM_PANE_CLOSE = SAFE_RANGE,
-    TM_PANEV_NEW,
-    TM_PANEH_NEW,
-    TM_WIN_NEW,
-    TM_SESS_MANAGER,
-    TM_RN_SESS,
-    TM_RN_WIN,
-    TM_PREV_SESS,
-    TM_SAVE,
-    TM_RESTORE,
+  // XOURNAL
+  XOURNAL_BLACK,
+  XOURNAL_YELLOW,
+  XOURNAL_ORANGE,
+  XOURNAL_CYAN,
+  XOURNAL_NEON,
+  XOURNAL_GRAY,
+  XOURNAL_RECT,
+  XOURNAL_HIGHLIGHTER,
 
-    // XOURNAL
-    XOURNAL_MAGENTA,
-    XOURNAL_YELLOW,
-    XOURNAL_ORANGE,
-    XOURNAL_BLUE,
-    XOURNAL_RED,
-    XOURNAL_NEON,
-    XOURNAL_GRAY,
-    XOURNAL_RECT,
-    XOURNAL_ELLIPSE,
+  FIG_MARKER,
+  FIG_MOVE,
+  FIG_ERASE,
+  FIG_HIGHLIGHT,
 
-    // NVIM
-    NVIM_GV,
-    NVIM_GU,
-    NVIM_VIP,
-    NVIM_PREV_HUNK,
-    NVIM_NEXT_HUNK,
-    NVIM_STAGE_HUNK,
-    NVIM_RESET_HUNK,
-    NVIM_STAGE_LINE,
-    NVIM_YANK_REG_PASTE,
-    NVIM_GX,
+  // NVIM
+  NV_ZZ,
+  NV_PREV_HUNK,
+  NV_NEXT_HUNK,
+  NV_STAGE_HUNK,
+  NV_RESET_LINE,
+  NV_STAGE_LINE,
+  NV_MIDLINE,
+  NV_YANK_REGISTER,
+  NV_A_REGISTER,
+  VISUAL_LINE,
+  NV_MAKE_GMARK,
+  NV_GOTO_GMARK,
+  NV_HIGH_LINE,
 
-    // COMMON SYNERGIES
-    MULTILINE_COMMENT,
-    SPC_PEQL_SPC,
-    SPC_PPLS_SPC,
-    END_SCLN_ENT,
-    CODEBLOCKS,
+  // COMMON SYNERGIES
+  EXLM_EQL,
+  MULTILINE_COMMENT,
+  RIGHT_DELETE,
+  SPC_EQL_SPC,
+  END_SCLN_ENT,
+  CODEBLOCKS,
 
-    // SYSTEM
-    MOUSE_REF_VIEW,
-    TEXT_TERM_VIEW,
-    PASTE_AND_POP, // uses a custom shell script
-    BSPC_WORD,
+  // SYSTEM
+  MOUSE_REF_VIEW,
+  SYS_DUPLICATE,
+  TEXT_TERM_VIEW,
+  TEXT_REF_VIEW,
+  PASTE_AND_POP, // uses a custom shell script
+  DEL_WORD,
 };
 
 /////////////////////////////////////////////////
 // VARIABLES
 /////////////////////////////////////////////////
-
 // THUMB
 #define TH_TAB MT(MOD_LCTL, KC_TAB)
-#define TH_ENT MT(MOD_RSFT, KC_ENT)
-#define TH_SPC LT(_ARROW_NUMPAD, KC_SPC)
-#define TH_R LT(_SYMBOLS, KC_R)
+#define TH_SCRAPS OSL(_T_SCRAPS)
+#define TH_SPC LT(_ARROWS_NUMPAD, KC_SPC)
+#define TH_R LT(_MOUSE_7SYMBOLS, KC_R)
 
 // LEFT BOT & RIGHT
-#define LB_ALTREP MT(MOD_LSFT, KC_0)
+// #define LB_SFT MT(MOD_LSFT, KC_0)
 #define LB_DOT MT(MOD_LCTL, KC_DOT)
 #define LB_BSPC MT(MOD_LALT, KC_BSPC)
 #define LB_COMM MT(MOD_LGUI, KC_COMM)
+#define LB_SFT OSM(MOD_LSFT)
+
+// LAYER SPECIFIC KEYS
+#define SUPER2 MT(MOD_RGUI, KC_2)
+#define SFT0 MT(MOD_RSFT, KC_0)
+#define CTL3 MT(MOD_RCTL, KC_3)
+#define CTL_SPC MT(MOD_LCTL, KC_SPC)
+
+// NAV KEYS
+#define SYS_FULLSCREEN KC_F11
+#define APP_FULLSCREEN A(KC_SPC)
+#define APP_TOGGLE A(KC_C)
+#define SYS_TOGGLE A(KC_TAB)
+#define TAB_TOGGLE C(KC_TAB)
+#define STAB_TOGGLE RCS(KC_TAB)
+#define NV_PANE_TOGGLE C(KC_T)
+#define MON1_TOGGLE G(KC_TAB)
+#define MON2_TOGGLE G(KC_E)
+#define APPLICATION_LAUNCHER G(KC_S)
+#define CLOSE_WINDOW C(KC_W)
+#define CLOSE_SYS_WINDOW A(KC_F4)
+
+#define SCREENSHOT LSG(KC_S)
+#define SCREENSHOT_OCR LSG(KC_O)
+#define ZOOM_IN C(KC_PPLS)
+#define ZOOM_OUT C(KC_PMNS)
+#define CLIPBOARD G(KC_V)
+#define EMOJIS G(KC_SCLN)
+#define GO_BACK A(KC_LEFT)
+#define GO_FORWARD A(KC_RIGHT)
+#define MOVE_LEFT_WORD C(KC_LEFT)
+#define MOVE_RIGHT_WORD C(KC_RIGHT)
+
+#define LABRC S(KC_COMM)
+#define RABRC S(KC_DOT)
+
+/////////////////////////////////////////////////
+// CONFIG
+/////////////////////////////////////////////////
+// NOTE: For faster access to non-texts (nums and symbols), I reduced the tap-term drastically for R and SPC. Don't linger when you press R and SPC unless you want to access (nums and symbols)!
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case TH_R:
+      return 150; // Sets a specific, shorter time
+    case TH_SPC:
+      return 150;
+    case OSL(_SYMBOLS):
+      return 0;
+    case MT(MOD_LCTL, KC_SPC):
+    case SUPER2:
+    case SFT0:
+    case CTL3:
+      return 250;
+    default:
+      return TAPPING_TERM; // Uses the default for all other keys
+  }
+}
 
 /////////////////////////////////////////////////
 // COMBOS
 /////////////////////////////////////////////////
 // NAV
-const uint16_t PROGMEM alt_tab_home[] = {TH_SPC, KC_I, KC_E, COMBO_END};
-const uint16_t PROGMEM ctl_tab_home[] = {TH_SPC, KC_A, KC_E, COMBO_END};
-const uint16_t PROGMEM sup_bspc_home[] = {TH_SPC, KC_A, KC_I, COMBO_END};
-const uint16_t PROGMEM sup_tab_thumb[] = {TH_TAB, TH_ENT, TH_SPC, TH_R, COMBO_END};
-const uint16_t PROGMEM sup_tab_left[] = {OSM(MOD_LSFT), KC_Y, COMBO_END};
-const uint16_t PROGMEM sup_bspc_left[] = {TH_TAB, KC_Y, OSM(MOD_LSFT), COMBO_END};
-const uint16_t PROGMEM sup_bspc_left2[] = {TH_SPC, KC_Y, OSM(MOD_LSFT), COMBO_END};
-const uint16_t PROGMEM fullscreen_super[] = {TH_SPC, LB_BSPC, LB_COMM, COMBO_END};
-const uint16_t PROGMEM fullscreen_alt[] = {TH_SPC, LB_DOT, LB_BSPC, COMBO_END};
-const uint16_t PROGMEM ref_view[] = {KC_U, KC_A, COMBO_END};
+const uint16_t PROGMEM app_toggle_l[] = {QK_REP, KC_A, COMBO_END};
+const uint16_t PROGMEM sys_full[] = {TH_SPC, TH_TAB, KC_I, COMBO_END};
+const uint16_t PROGMEM sys_toggle[] = {TH_SPC, TH_TAB, LB_BSPC, COMBO_END};
+
+const uint16_t PROGMEM mon1_l[] = {KC_I, KC_E, KC_A, COMBO_END};
+const uint16_t PROGMEM mon1_r[] = {KC_H, KC_T, KC_N, COMBO_END};
+const uint16_t PROGMEM mon2_l[] = {KC_I, KC_E, LB_COMM, COMBO_END};
+const uint16_t PROGMEM mon2_r[] = {KC_M, KC_T, KC_N, COMBO_END};
+const uint16_t PROGMEM tm_session_toggle[] = {QK_REP, KC_A, KC_E, COMBO_END};
+const uint16_t PROGMEM app_full[] = {TH_TAB, TH_SPC, KC_A, COMBO_END};
+
+const uint16_t PROGMEM ref_view[] = {KC_A, KC_U, COMBO_END};
+const uint16_t PROGMEM ref_view_text_layer[] = {KC_U, KC_E, KC_A, COMBO_END};
+
+const uint16_t PROGMEM term_view_l[] = {KC_O, KC_E, KC_A, COMBO_END};
 const uint16_t PROGMEM term_view[] = {KC_H, KC_L, COMBO_END};
 
-// LAYER SFT base ext
-const uint16_t PROGMEM mouse_layer[] = {TH_SPC, LB_BSPC, COMBO_END};
-const uint16_t PROGMEM mouse_layer_mo[] = {TH_R, TH_ENT, COMBO_END};
+const uint16_t PROGMEM base_layer[] = {KC_G, KC_M, COMBO_END};
+const uint16_t PROGMEM mouse_layer_l[] = {KC_QUOT, KC_Y, COMBO_END};
+const uint16_t PROGMEM symbol_layer[] = {TH_R, TH_SCRAPS, COMBO_END};
 const uint16_t PROGMEM quick_fire_layer[] = {TH_TAB, TH_SPC, COMBO_END};
-const uint16_t PROGMEM tmux_layer[] = {TH_SPC, TH_R, TH_ENT, COMBO_END};
+const uint16_t PROGMEM fn_layer[] = {TH_TAB, TH_SPC, TH_R, TH_SCRAPS, COMBO_END};
 
-// FUNCTIONALITY
-// -- core keys
-const uint16_t PROGMEM esc_r[] = {KC_H, KC_T, COMBO_END};
-const uint16_t PROGMEM esc_l[] = {KC_E, KC_A, COMBO_END};
-const uint16_t PROGMEM ent_r[] = {KC_P, KC_F, COMBO_END};
-const uint16_t PROGMEM ent_l[] = {KC_I, KC_E, COMBO_END};
-const uint16_t PROGMEM stab_r[] = {KC_T, KC_S, KC_N, COMBO_END};
-const uint16_t PROGMEM tab_r[] = {KC_T, KC_N, COMBO_END};
-const uint16_t PROGMEM spc_r[] = {KC_H, QK_REP, COMBO_END};
-const uint16_t PROGMEM spc_l[] = {KC_A, QK_REP, COMBO_END};
 
-// -- modifier
-const uint16_t PROGMEM osctl_th[] = {TH_R, TH_SPC, COMBO_END};
-const uint16_t PROGMEM osalt_r[] = {KC_G, KC_M, COMBO_END};
-const uint16_t PROGMEM ctl_r[] = {TH_TAB, TH_R, COMBO_END};
+// SYS FUNCTIONALITY
+const uint16_t PROGMEM close_window[] = {LB_BSPC, LB_DOT, COMBO_END};
+const uint16_t PROGMEM close_frame[] = {LB_COMM, LB_DOT, COMBO_END};
+const uint16_t PROGMEM shutdown[] = {LB_SFT, LB_DOT, LB_BSPC, LB_COMM, TH_SPC, COMBO_END};
+const uint16_t PROGMEM sleep[] = {LB_SFT, LB_DOT, LB_BSPC, LB_COMM, TH_TAB, COMBO_END};
+const uint16_t PROGMEM zoom_in[] = {KC_A, KC_E, TH_SPC, COMBO_END};
+const uint16_t PROGMEM zoom_out[] = {KC_I, KC_E, TH_SPC, COMBO_END};
 
-// -- text mod
-const uint16_t PROGMEM bspc_word[] = {KC_I, LB_BSPC, COMBO_END};
-const uint16_t PROGMEM caps_word_home[] = {KC_T, KC_E, COMBO_END};
-const uint16_t PROGMEM key_del_l[] =   {TH_TAB, LB_BSPC, COMBO_END};
-const uint16_t PROGMEM key_del_r[] = {TH_ENT, KC_G, COMBO_END};
-const uint16_t PROGMEM del_word[] = {KC_N, KC_G, COMBO_END};
-const uint16_t PROGMEM key_home[] = {KC_QUOT, QK_REP, COMBO_END};
-const uint16_t PROGMEM key_end[] = {KC_PAST, QK_REP, COMBO_END};
+// -- clipboard
+const uint16_t PROGMEM sys_clipboard[]    = {TH_TAB, LB_COMM, COMBO_END};
+const uint16_t PROGMEM sys_copy[]    = {TH_TAB, KC_E, COMBO_END};
+const uint16_t PROGMEM sys_paste[]  = {TH_TAB, KC_I, COMBO_END};
+const uint16_t PROGMEM sys_paste_pop[]  = {TH_TAB, KC_C, COMBO_END};
+const uint16_t PROGMEM sys_redo[] = {TH_TAB, QK_REP, COMBO_END};
+const uint16_t PROGMEM sys_undo[]  = {TH_TAB, KC_A, COMBO_END};
+const uint16_t PROGMEM sys_screenshot[]  = {TH_SPC, TH_TAB, KC_E, COMBO_END};
+const uint16_t PROGMEM sys_screenshot_ocr[]  = {TH_SPC, TH_TAB, KC_O, COMBO_END};
 
-// -- system functions
-const uint16_t PROGMEM shutdown[] = {LB_ALTREP, LB_DOT, LB_BSPC, LB_COMM, TH_SPC, COMBO_END};
-const uint16_t PROGMEM sleep[] = {LB_ALTREP, LB_DOT, LB_BSPC, LB_COMM, TH_TAB, COMBO_END};
-const uint16_t PROGMEM sleep_r[] = {KC_D, KC_T, KC_G, COMBO_END};
 
-// NVIM
-const uint16_t PROGMEM nvim_gx[] = {KC_K, KC_H, COMBO_END};
-const uint16_t PROGMEM nvim_visual_block[] = {TH_R, KC_D, COMBO_END};
-const uint16_t PROGMEM nvim_V[] = {TH_R, KC_L, COMBO_END};
-const uint16_t PROGMEM nvim_gv[] = {TH_R, KC_P, COMBO_END};
-const uint16_t PROGMEM nvim_gu[] = {TH_R, KC_F, COMBO_END};
+// SHORTCUTS
+// ctl
+const uint16_t PROGMEM ctl_l[] = {TH_R, KC_H, COMBO_END};
+const uint16_t PROGMEM ctl_t[] = {TH_R, KC_T, COMBO_END};
+const uint16_t PROGMEM ctl_n[] = {TH_R, KC_N, COMBO_END};
+const uint16_t PROGMEM ctl_r[] = {TH_R, KC_M, COMBO_END};
+const uint16_t PROGMEM ctl_a[] = {TH_R, KC_A, COMBO_END};
+
+// text edit: general
+const uint16_t PROGMEM del_word[] = {QK_REP, KC_H, COMBO_END};
+const uint16_t PROGMEM caps_word[] = {KC_D, KC_T, COMBO_END};
+const uint16_t PROGMEM k_del_ltab[] =   {TH_TAB, LB_BSPC, COMBO_END};
+const uint16_t PROGMEM k_del_lspc[] =   {TH_SPC, LB_BSPC, COMBO_END};
+const uint16_t PROGMEM select_line[] = {QK_REP, KC_H, KC_T, COMBO_END};
+
+// text edit: nvim
+const uint16_t PROGMEM visual_block[] = {TH_R, KC_N, TH_SCRAPS, COMBO_END};
+const uint16_t PROGMEM nv_highlight_line[] = {TH_R, TH_SCRAPS, KC_H, COMBO_END};
+const uint16_t PROGMEM nv_goto_gmark[] = {TH_SCRAPS, KC_G, COMBO_END};
+const uint16_t PROGMEM nv_make_gmark[] = {TH_SCRAPS, KC_M, COMBO_END};
+const uint16_t PROGMEM nv_0_reg_ins[] = {TH_SCRAPS, KC_D, COMBO_END};
+const uint16_t PROGMEM nv_a_reg_ins[] = {TH_SCRAPS, KC_L, COMBO_END};
+const uint16_t PROGMEM nv_midline[] = {KC_H, QK_REP, KC_A, COMBO_END};
+const uint16_t PROGMEM nv_zz[] = {KC_T, TH_SCRAPS, TH_R, COMBO_END};
+const uint16_t PROGMEM spc_eql_spc[] = {KC_G, KC_W, COMBO_END};
+const uint16_t PROGMEM codeblocks[] = {TH_R, KC_PAST, COMBO_END};
+
+// xournal
+const uint16_t PROGMEM xournal_white[]   = {TH_TAB, KC_I, KC_A, KC_E, COMBO_END};
+const uint16_t PROGMEM xournal_highlighter[]  = {TH_TAB, KC_I, KC_A, COMBO_END};
+const uint16_t PROGMEM xournal_eraser[] =    {TH_TAB, KC_I, KC_E, COMBO_END};
+const uint16_t PROGMEM xournal_select[] =    {TH_TAB, KC_A, KC_E, COMBO_END};
+
+const uint16_t PROGMEM fig_highlight[] = {TH_TAB, KC_Y, KC_U, COMBO_END};
+const uint16_t PROGMEM fig_marker[] = {TH_TAB, KC_O, COMBO_END};
+const uint16_t PROGMEM fig_move[] = {TH_TAB, KC_U, COMBO_END};
+const uint16_t PROGMEM fig_erase[] = {TH_TAB, KC_Y, COMBO_END};
 
 // KEYS
-const uint16_t PROGMEM key_tilde[] = {TH_SPC, OSM(MOD_LSFT), COMBO_END};
-const uint16_t PROGMEM key_bsls[] = {TH_SPC, LB_COMM, COMBO_END};
-const uint16_t PROGMEM key_b[] = {TH_R, KC_T, COMBO_END};
-const uint16_t PROGMEM key_v[] = {TH_R, KC_H, COMBO_END};
-const uint16_t PROGMEM key_j[] = {TH_R, KC_N, COMBO_END};
-const uint16_t PROGMEM key_q[] = {TH_R, KC_G, COMBO_END};
-const uint16_t PROGMEM key_x[] = {TH_R, KC_S, COMBO_END};
-const uint16_t PROGMEM key_z[] = {TH_R, KC_W, COMBO_END};
-const uint16_t PROGMEM key_circ[] = {KC_K, TH_R, COMBO_END};
-const uint16_t PROGMEM key_dlr[] = {TH_R, KC_M, COMBO_END};
-const uint16_t PROGMEM key_perc[] = {TH_ENT, KC_MINS, COMBO_END};
-const uint16_t PROGMEM key_ampr[] = {TH_SPC, KC_Y, COMBO_END};
-const uint16_t PROGMEM key_pipe[] = {TH_SPC, KC_O, COMBO_END};
-const uint16_t PROGMEM key_exlm[] = {TH_SPC, KC_U, COMBO_END};
-const uint16_t PROGMEM key_unds[] = {TH_SPC, KC_C, COMBO_END};
-const uint16_t PROGMEM key_slsh[] = {TH_SPC, KC_A, COMBO_END};
-const uint16_t PROGMEM key_ques[] = {TH_SPC, LB_DOT, COMBO_END};
-const uint16_t PROGMEM key_dquo[] = {TH_SPC, KC_I, COMBO_END};
-const uint16_t PROGMEM key_coln[] = {KC_E, TH_SPC, COMBO_END};
+// core
+// for the sake of convenience, I have to sacrifice the nt and ea bigrams.
+const uint16_t PROGMEM ctl_th[] = {TH_R, TH_SPC, COMBO_END};
+const uint16_t PROGMEM ctlsft_th[] = {TH_TAB, TH_SCRAPS, COMBO_END};
 
-// XOURNAL
-const uint16_t PROGMEM xournal_white[]   = {TH_TAB, KC_E, COMBO_END};
-const uint16_t PROGMEM xournal_gray[]    = {TH_TAB, LB_ALTREP, COMBO_END};
-const uint16_t PROGMEM xournal_blue[]    = {TH_TAB, LB_DOT, COMBO_END};
-const uint16_t PROGMEM xournal_neon[]    = {TH_TAB, LB_BSPC, LB_DOT, COMBO_END};
-const uint16_t PROGMEM xournal_yellow[]  = {TH_TAB, LB_COMM, COMBO_END};
-const uint16_t PROGMEM xournal_orange[]  = {TH_TAB, KC_Y, COMBO_END};
-const uint16_t PROGMEM xournal_red[]     = {TH_TAB, KC_O, COMBO_END};
-const uint16_t PROGMEM xournal_magenta[] = {TH_TAB, KC_U, COMBO_END};
-const uint16_t PROGMEM xournal_eraser[] =    {TH_TAB, KC_A, COMBO_END};
-const uint16_t PROGMEM xournal_select[] =    {TH_TAB, KC_I, COMBO_END};
-const uint16_t PROGMEM xournal_rectangle[] = {TH_TAB, KC_C, COMBO_END};
-const uint16_t PROGMEM xournal_ellipse[] =   {TH_TAB, OSM(MOD_LSFT), COMBO_END};
+const uint16_t PROGMEM esc_r[] = {KC_H, KC_T, COMBO_END};
+const uint16_t PROGMEM esc_l[] = {KC_E, KC_A, COMBO_END};
+const uint16_t PROGMEM ent_r[] = {KC_T, KC_N, COMBO_END};
+const uint16_t PROGMEM ent_l[] = {KC_I, KC_E, COMBO_END};
+const uint16_t PROGMEM spc_r[] = {KC_H, KC_N, COMBO_END};
+const uint16_t PROGMEM tab_r[] = {KC_T, KC_N, TH_R, COMBO_END};
+const uint16_t PROGMEM stab_r[] = {KC_T, KC_H, TH_R, COMBO_END};
 
-combo_t key_combos[78] = {
-    // MAIN (30)
+const uint16_t PROGMEM k_home[] = {TH_SCRAPS, KC_T, KC_H, COMBO_END};
+const uint16_t PROGMEM k_end[] = {TH_SCRAPS, KC_T, KC_N, COMBO_END};
+const uint16_t PROGMEM k_scln[] = {TH_SPC, KC_I, COMBO_END};
+const uint16_t PROGMEM k_unds[] = {TH_SPC, KC_C, COMBO_END};
+const uint16_t PROGMEM k_slsh[] = {TH_SPC, KC_A, COMBO_END};
+const uint16_t PROGMEM k_coln[] = {KC_E, TH_SPC, COMBO_END};
+const uint16_t PROGMEM k_ques[] = {KC_PAST, QK_REP, COMBO_END};
+const uint16_t PROGMEM k_exlm[] = {KC_MINS, QK_REP, COMBO_END};
+
+  // autopair synergies (with left and right)
+const uint16_t PROGMEM k_q[] = {TH_SCRAPS, KC_W, COMBO_END};
+const uint16_t PROGMEM k_v[] = {TH_SCRAPS, KC_H, COMBO_END};
+const uint16_t PROGMEM k_z[] = {TH_SCRAPS, KC_F, COMBO_END};
+const uint16_t PROGMEM k_b[] = {TH_SCRAPS, KC_T, COMBO_END};
+const uint16_t PROGMEM k_j[] = {TH_SCRAPS, KC_N, COMBO_END};
+const uint16_t PROGMEM k_x[] = {TH_SCRAPS, KC_S, COMBO_END};
+
+
+combo_t key_combos[92] = {
+    // TOGGLE
+    COMBO(app_toggle_l, APP_TOGGLE),
+    COMBO(sys_full, SYS_FULLSCREEN),
+    COMBO(sys_toggle, SYS_TOGGLE),
+    COMBO(app_full, APP_FULLSCREEN),
+    COMBO(mon1_l, MON1_TOGGLE),
+    COMBO(mon1_r, MON1_TOGGLE),
+    COMBO(mon2_l, MON2_TOGGLE),
+    COMBO(mon2_r, MON2_TOGGLE),
+    COMBO(tm_session_toggle, TM_PREV_SESS),
+
+    // SYS
+    COMBO(sys_clipboard, CLIPBOARD),
+    COMBO(sys_copy, C(KC_C)),
+    COMBO(sys_paste, C(KC_V)),
+    COMBO(sys_paste_pop, PASTE_AND_POP),
+    COMBO(sys_screenshot, SCREENSHOT),
+    COMBO(sys_screenshot_ocr, SCREENSHOT_OCR),
+    COMBO(sys_undo, C(KC_Z)),
+    COMBO(sys_redo, C(KC_Y)),
+    COMBO(close_window, CLOSE_WINDOW),
+    COMBO(close_frame, CLOSE_SYS_WINDOW),
+    COMBO(ref_view_text_layer, TEXT_REF_VIEW),
     COMBO(ref_view, MOUSE_REF_VIEW),
+    COMBO(term_view_l, TEXT_TERM_VIEW),
     COMBO(term_view, TEXT_TERM_VIEW),
-    COMBO(mouse_layer, TG(_MOUSE)),
-    COMBO(mouse_layer_mo, MO(_MOUSE)),
+    COMBO(sleep, KC_SLEP),
+    COMBO(shutdown, KC_PWR),
+    COMBO(zoom_in, ZOOM_IN),
+    COMBO(zoom_out, ZOOM_OUT),
+
+    // Layer
+    COMBO(symbol_layer, MO(_SYMBOLS)),
+    COMBO(mouse_layer_l, TG(_MOUSE_7SYMBOLS)),
+    COMBO(base_layer, TO(_T_BASE)),
     COMBO(quick_fire_layer, OSL(_QUICK_FIRE)),
-    COMBO(tmux_layer, OSL(_TMUX_FN)),
-    COMBO(alt_tab_home, LALT(KC_TAB)),
-    COMBO(sup_bspc_home, LGUI(KC_BSPC)),
-    COMBO(sup_bspc_left, LGUI(KC_BSPC)),
-    COMBO(sup_bspc_left2, LGUI(KC_BSPC)),
-    COMBO(sup_tab_thumb, LGUI(KC_TAB)),
-    COMBO(sup_tab_left, LGUI(KC_TAB)),
-    COMBO(ctl_tab_home, LCTL(KC_TAB)),
-    COMBO(bspc_word, BSPC_WORD),
-    COMBO(del_word, C(KC_DEL)),
-    COMBO(caps_word_home, CW_TOGG),
-    COMBO(key_del_l, KC_DEL),
-    COMBO(key_del_r, KC_DEL),
-    COMBO(nvim_gv, NVIM_GV),
-    COMBO(nvim_V, S(KC_V)),
-    COMBO(nvim_gx, NVIM_GX),
-    COMBO(nvim_visual_block, LCTL(KC_Q)),
-    COMBO(nvim_gu, NVIM_GU),
-    COMBO(fullscreen_super, LGUI(KC_SPC)),
-    COMBO(fullscreen_alt, LALT(KC_SPC)),
-    COMBO(spc_r, KC_SPC),
-    COMBO(spc_l, KC_SPC),
+    COMBO(fn_layer, MO(_FN)),
+
+    // TEXT MANIPULATION
+    COMBO(del_word, DEL_WORD),
+    COMBO(caps_word, CW_TOGG),
+
+    // COMBO KEYS
+    COMBO(ctlsft_th, OSM(MOD_LCTL | MOD_LSFT)),
+    COMBO(ctl_th, OSM(MOD_LCTL)),
+    COMBO(ctl_n, C(KC_N)),
+    COMBO(ctl_a, C(KC_A)),
+    COMBO(ctl_r, C(KC_R)),
+    COMBO(ctl_l, C(KC_L)),
+    COMBO(ctl_t, C(KC_T)),
+
+    // TEXT MANIPULATION
+    COMBO(nv_0_reg_ins, NV_YANK_REGISTER),
+    COMBO(nv_a_reg_ins, NV_A_REGISTER),
+    COMBO(nv_zz, NV_ZZ),
+    COMBO(nv_midline, NV_MIDLINE),
+    COMBO(spc_eql_spc, SPC_EQL_SPC),
+    COMBO(codeblocks, CODEBLOCKS),
+    COMBO(select_line, VISUAL_LINE),
+    COMBO(nv_make_gmark, NV_MAKE_GMARK),
+    COMBO(nv_goto_gmark, NV_GOTO_GMARK),
+    COMBO(nv_highlight_line, NV_HIGH_LINE),
+    COMBO(visual_block, C(KC_Q)),
+
+    // KEYS 23
     COMBO(esc_l, KC_ESC),
     COMBO(esc_r, KC_ESC),
-    COMBO(mouse_layer_mo, MO(_MOUSE)),
     COMBO(ent_r, KC_ENT),
     COMBO(ent_l, KC_ENT),
     COMBO(tab_r, KC_TAB),
+    COMBO(spc_r, KC_SPC),
     COMBO(stab_r, S(KC_TAB)),
-    COMBO(osalt_r, OSM(MOD_LALT)),
-    COMBO(osctl_th, OSM(MOD_LCTL)),
-    COMBO(sleep, KC_SLEP),
-    COMBO(sleep_r, KC_SLEP),
-    COMBO(shutdown, KC_PWR),
-    COMBO(ctl_r, C(KC_R)),
 
-    // KEYS (22)
-    COMBO(key_b, KC_B),
-    COMBO(key_v, KC_V),
-    COMBO(key_x, KC_X),
-    COMBO(key_j, KC_J),
-    COMBO(key_q, KC_Q),
-    COMBO(key_z, KC_Z),
-    COMBO(key_bsls, KC_BSLS),
-    COMBO(key_unds, KC_UNDS),
-    COMBO(key_slsh, KC_SLSH),
-    COMBO(key_circ, KC_CIRC),
-    COMBO(key_home, KC_HOME),
-    COMBO(key_dlr, KC_DLR),
-    COMBO(key_end, KC_END),
-    COMBO(key_dquo, KC_DQUO),
-    COMBO(key_coln, KC_COLN),
-    COMBO(key_exlm, KC_EXLM),
-    COMBO(key_pipe, KC_PIPE),
-    COMBO(key_ampr, KC_AMPR),
-    COMBO(key_tilde, KC_TILDE),
-    COMBO(key_perc, KC_PERC),
-    COMBO(key_ques, KC_QUES),
+    COMBO(k_home, KC_HOME),
+    COMBO(k_end, KC_END),
+    COMBO(k_del_ltab, KC_DEL),
+    COMBO(k_del_lspc, KC_DEL),
+    COMBO(k_scln, KC_SCLN),
 
-    // XOURNAL (12)
+    COMBO(k_unds, KC_UNDS),
+    COMBO(k_slsh, KC_SLSH),
+    COMBO(k_coln, KC_COLN),
+    COMBO(k_ques, KC_QUES),
+    COMBO(k_exlm, KC_EXLM),
+
+    COMBO(k_q, KC_Q),
+    COMBO(k_v, KC_V),
+    COMBO(k_z, KC_Z),
+    COMBO(k_b, KC_B),
+    COMBO(k_j, KC_J),
+    COMBO(k_x, KC_X),
+
+    // XOURNAL (14)
     COMBO(xournal_white, RCS(KC_D)), // default tool
     COMBO(xournal_select, RCS(KC_R)),
-    COMBO(xournal_blue, XOURNAL_BLUE),
-    COMBO(xournal_red, XOURNAL_RED),
-    COMBO(xournal_yellow, XOURNAL_YELLOW),
-    COMBO(xournal_orange, XOURNAL_ORANGE),
-    COMBO(xournal_neon, XOURNAL_NEON),
-    COMBO(xournal_gray, XOURNAL_GRAY),
-    COMBO(xournal_magenta, XOURNAL_MAGENTA),
     COMBO(xournal_eraser, RCS(KC_E)),
-    COMBO(xournal_rectangle, XOURNAL_RECT),
-    COMBO(xournal_ellipse, XOURNAL_ELLIPSE),
+    COMBO(xournal_highlighter, XOURNAL_HIGHLIGHTER),
+
+    COMBO(fig_highlight, FIG_HIGHLIGHT),
+    COMBO(fig_marker, FIG_MARKER),
+    COMBO(fig_erase, FIG_ERASE),
+    COMBO(fig_move, FIG_MOVE),
 };
 
 /////////////////////////////////////////////////
 // MACROS
-/////////////////////////////////////////////////
-
+///////////////////////
 // ^:^ ALTREP SETUP
 bool remember_last_key_user(uint16_t keycode, keyrecord_t* record,
                             uint8_t* remembered_mods) {
     switch (keycode) {
-        case LB_ALTREP:
+        case OSM(MOD_RSFT):
         case QK_AREP:
             return false;
     }
@@ -270,37 +391,24 @@ bool remember_last_key_user(uint16_t keycode, keyrecord_t* record,
 
  uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
     switch (keycode) {
-        case LB_BSPC: return KC_BSPC;
-        case KC_Y: return KC_I;
         case KC_B: return KC_R;
-        case KC_I: return KC_Y;
-        case KC_O: return KC_E;
+        case KC_X: return KC_T;
+        case TH_R: return KC_B;
         case KC_E: return KC_O;
         case KC_A: return KC_U;
         case KC_U: return KC_A;
-        case KC_P: return KC_S;
         case KC_W: return KC_N;
-        case KC_G: return KC_V;
         case KC_L: return KC_M;
-        case KC_M: return KC_P;
+        case KC_M: return KC_H; // useful for making h mark
         case KC_D: return KC_W;
-        case KC_PPLS: return KC_PEQL;
-        case MT(MOD_RSFT,KC_MINS): return S(KC_DOT);
-
-        case KC_RIGHT: return KC_SCLN;
-        case KC_MINS: return S(KC_DOT);
-        case KC_LPRN: return KC_ENT;
-        case KC_LCBR: return KC_ENT;
-        case KC_LBRC: return KC_ENT;
-        case KC_RPRN: return KC_SPC;
-        case KC_RCBR: return KC_SPC;
-        case KC_RBRC: return KC_SPC;
-        case KC_SCLN: return KC_ENT;
+        case KC_Z: return KC_F;
+        case KC_PMNS: return RABRC;
+        case KC_MINS: return RABRC;
+        case KC_PEQL: return RABRC;
         case KC_COLN: return KC_SPC;
-        case KC_QUES: return KC_SPC;
+        case KC_SCLN: return KC_SPC;
         case KC_AMPR: return KC_SPC;
         case KC_SLSH: return KC_SPC;
-        case KC_UNDS: return KC_SPC;
 
         case KC_1: return KC_4;
         case KC_4: return KC_1;
@@ -308,6 +416,13 @@ bool remember_last_key_user(uint16_t keycode, keyrecord_t* record,
         case KC_5: return KC_2;
         case KC_3: return KC_6;
         case KC_6: return KC_3;
+
+        case KC_LBRC: return KC_RBRC;
+        case KC_LCBR: return KC_RCBR;
+        case KC_LPRN: return KC_RPRN;
+        case KC_RBRC: return KC_SCLN;
+        case KC_RCBR: return KC_SCLN;
+        case KC_RPRN: return KC_SCLN;
 
         case KC_7: return KC_UP;
         case KC_8: return KC_UP;
@@ -342,7 +457,7 @@ void tmux_close(uint16_t keycode) {
     tap_code(KC_Y);
 }
 
-void activate_pen_mode(uint16_t keycode) {
+void pen_mode_color(uint16_t keycode) {
     register_code(KC_LCTL);
     register_code(KC_LSFT);
     tap_code16(KC_D);
@@ -351,22 +466,16 @@ void activate_pen_mode(uint16_t keycode) {
     tap_code16(keycode);
 }
 
-void activate_default_tool(void) {
+void shape_tool(void) {
   register_code(KC_LCTL);
   register_code(KC_LSFT);
-  tap_code16(KC_D);
+  tap_code16(KC_P);
   unregister_code(KC_LCTL);
   unregister_code(KC_LSFT);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   switch(keycode) {
-    case LB_ALTREP:
-      if (record->tap.count) {
-        alt_repeat_key_invoke(&record->event);
-        return false;
-      };
-      break;
 
     case PASTE_AND_POP:
       if (record->event.pressed) {
@@ -378,29 +487,88 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
       }
       break;
 
-    case TEXT_TERM_VIEW:
-      if (record->event.pressed) {
-        layer_move(_BASE);
-        register_code16(MEH(KC_T));   // press MEH+Enter
-      } else {
-        unregister_code16(MEH(KC_T)); // release MEH+Enter
-      }
-      return false;
-
     case MOUSE_REF_VIEW:
       if (record->event.pressed) {
-        layer_move(_MOUSE);
-        register_code16(MEH(KC_R));   // press MEH+Enter
-      } else {
-        unregister_code16(MEH(KC_R)); // release MEH+Enter
+        layer_move(_MOUSE_7SYMBOLS);
+        register_code(KC_LCTL);
+        register_code(KC_LGUI);
+        tap_code(KC_LEFT);
+        unregister_code(KC_LGUI);
+        unregister_code(KC_LCTL);
       }
       return false;
 
-    case END_SCLN_ENT:
+    case TEXT_REF_VIEW:
       if (record->event.pressed) {
-        tap_code(KC_END);
-        tap_code(KC_SCLN);
+        layer_move(_T_BASE);
+        register_code(KC_LCTL);
+        register_code(KC_LGUI);
+        tap_code(KC_LEFT);
+        unregister_code(KC_LGUI);
+        unregister_code(KC_LCTL);
+      }
+      return false;
+
+    case TEXT_TERM_VIEW:
+      if (record->event.pressed) {
+        layer_move(_T_BASE);
+        register_code(KC_LCTL);
+        register_code(KC_LGUI);
+        tap_code(KC_RIGHT);
+        unregister_code(KC_LGUI);
+        unregister_code(KC_LCTL);
+      }
+      return false;
+
+    case NV_MAKE_GMARK:
+    if (record->event.pressed) {
+        tap_code(KC_M);
+        set_oneshot_mods(MOD_BIT(KC_LSFT));
+      }
+    return false;
+
+    case NV_HIGH_LINE:
+      if (record->event.pressed) {
+        tap_code16(S(KC_V));
+        tap_code(KC_T);
         tap_code(KC_ENT);
+      }
+      return false;
+
+    case NV_MIDLINE:
+      if (record->event.pressed) {
+        tap_code(KC_G);
+        tap_code16(S(KC_M));
+      }
+      return false;
+
+    case NV_ZZ:
+      if (record->event.pressed) {
+        tap_code(KC_Z);
+        tap_code(KC_Z);
+      }
+      return false;
+
+    case NV_GOTO_GMARK:
+      if (record->event.pressed) {
+        tap_code(KC_QUOT);
+        set_oneshot_mods(MOD_BIT(KC_LSFT));
+      }
+      return false;
+
+    case VISUAL_LINE:
+      if (record->event.pressed) {
+        tap_code(KC_HOME);
+        add_oneshot_mods(MOD_BIT(KC_LSFT));
+        tap_code(KC_END);
+      }
+    break;
+
+    case SPC_EQL_SPC:
+      if (record->event.pressed) {
+        tap_code(KC_SPC);
+        tap_code(KC_EQL);
+        tap_code(KC_SPC);
       }
     break;
 
@@ -417,22 +585,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         tap_code(KC_UP);
         tap_code(KC_UP);
         tap_code(KC_END);
-      }
-      break;
-
-    case SPC_PEQL_SPC:
-      if (record->event.pressed) {
-        tap_code(KC_SPC);
-        tap_code(KC_PEQL);
-        tap_code(KC_SPC);
-      }
-      break;
-
-    case SPC_PPLS_SPC:
-      if (record->event.pressed) {
-        tap_code(KC_SPC);
-        tap_code(KC_PPLS);
-        tap_code(KC_SPC);
       }
       break;
 
@@ -454,37 +606,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
       }
       break;
 
-    case BSPC_WORD:
+    case DEL_WORD:
       if (record->event.pressed) {
         add_oneshot_mods(MOD_BIT(KC_LCTL));
         tap_code(KC_BSPC);
       }
       break;
 
-    // NVIM
-    case NVIM_STAGE_LINE:
+    case NV_STAGE_LINE:
       if (record->event.pressed) {
-        tap_code(KC_D);
-        tap_code(KC_M);
-        tap_code(KC_MINS);
+        add_oneshot_mods(MOD_BIT(KC_LSFT));
+        tap_code(KC_V);
+        tap_code(KC_G);
+        tap_code(KC_H);
      }
      break;
 
-    case NVIM_GX:
-      if (record->event.pressed) {
-        tap_code(KC_G);
-        tap_code(KC_X);
-      }
-      break;
-
-    case NVIM_PREV_HUNK:
+    case NV_PREV_HUNK:
       if (record->event.pressed) {
         tap_code(KC_LBRC);
         tap_code(KC_H);
       }
       break;
 
-    case NVIM_STAGE_HUNK:
+    case NV_STAGE_HUNK:
       if (record->event.pressed) {
         tap_code(KC_G);
         tap_code(KC_H);
@@ -493,159 +638,142 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
       }
       break;
 
-    case NVIM_RESET_HUNK:
+    case NV_RESET_LINE:
       if (record->event.pressed) {
+        add_oneshot_mods(MOD_BIT(KC_LSFT));
+        tap_code(KC_V);
         tap_code(KC_G);
         add_oneshot_mods(MOD_BIT(KC_LSFT));
         tap_code(KC_H);
-        tap_code(KC_G);
-        add_oneshot_mods(MOD_BIT(KC_LSFT));
-        tap_code(KC_H);
+        tap_code(KC_DOWN);
       }
       break;
 
-    case NVIM_YANK_REG_PASTE:
+  // NVIM REGISTERS
+    case NV_A_REGISTER:
       if (record->event.pressed) {
-        tap_code16(KC_DQUO);
+        add_oneshot_mods(MOD_BIT(KC_LCTL));
+        tap_code(KC_R);
+        tap_code16(KC_A);
+      }
+      break;
+
+    case NV_YANK_REGISTER:
+      if (record->event.pressed) {
+        add_oneshot_mods(MOD_BIT(KC_LCTL));
+        tap_code(KC_R);
         tap_code(KC_0);
-        tap_code(KC_P);
       }
       break;
 
-    case NVIM_NEXT_HUNK:
+
+    case NV_NEXT_HUNK:
       if (record->event.pressed) {
         tap_code(KC_RBRC);
         tap_code(KC_H);
       }
       break;
 
-    case NVIM_VIP:
-      if (record->event.pressed) {
-        tap_code(KC_V);
-        tap_code(KC_I);
-        tap_code(KC_P);
-      }
-      break;
-
-    case NVIM_GU:
-      if (record->event.pressed) {
-        tap_code(KC_G);
-        add_oneshot_mods(MOD_BIT(KC_LSFT));
-        tap_code(KC_U);
-      }
-      break;
-
-    case NVIM_GV:
-      if (record->event.pressed) {
-        tap_code(KC_G);
-        tap_code(KC_V);
-      }
-      break;
-
     // XOURNAL
-    case XOURNAL_GRAY:
+    case XOURNAL_HIGHLIGHTER:
       if (record->event.pressed) {
-        activate_pen_mode(KC_6);
-      }
-      return false;
-
-    case XOURNAL_BLUE:
-      if (record->event.pressed) {
-        activate_pen_mode(KC_3);
-      }
-      return false;
-
-    case XOURNAL_NEON:
-      if (record->event.pressed) {
-        activate_pen_mode(KC_4);
-      }
-      return false;
-
-    case XOURNAL_YELLOW:
-      if (record->event.pressed) {
-        activate_pen_mode(KC_9);
-      }
-      return false;
-
-    case XOURNAL_ORANGE:
-      if (record->event.pressed) {
-        activate_pen_mode(KC_8);
-      }
-      return false;
-
-    case XOURNAL_RED:
-      if (record->event.pressed) {
-        activate_pen_mode(KC_7);
-      }
-      return false;
-
-    case XOURNAL_MAGENTA:
-      if (record->event.pressed) {
-        activate_pen_mode(KC_0);
-      }
-      return false;
-
-    case XOURNAL_ELLIPSE:
-      if (record->event.pressed) {
-        activate_default_tool();
         add_oneshot_mods(MOD_BIT(KC_LCTL));
-        tap_code(KC_3);
+        add_oneshot_mods(MOD_BIT(KC_LSFT));
+        tap_code(KC_H);
       }
       return false;
 
-    case XOURNAL_RECT:
+    case FIG_HIGHLIGHT:
       if (record->event.pressed) {
-        activate_default_tool();
-        add_oneshot_mods(MOD_BIT(KC_LCTL));
-        tap_code(KC_2);
+        add_oneshot_mods(MOD_BIT(KC_LSFT));
+        tap_code(KC_M);
+      }
+      return false;
+
+    case FIG_MOVE:
+      if (record->event.pressed) {
+        tap_code(KC_V);
+      }
+      return false;
+
+    case FIG_ERASE:
+      if (record->event.pressed) {
+        add_oneshot_mods(MOD_BIT(KC_LSFT));
+        tap_code(KC_DEL);
+      }
+      return false;
+
+    case FIG_MARKER:
+      if (record->event.pressed) {
+        tap_code(KC_M);
       }
       return false;
 
     // TMUX
+    case TM1:
+      tmux(KC_1);
+      return false; // Tells QMK not to process TM1 further
+    case TM2:
+      tmux(KC_2);
+      return false;
+    case TM3:
+      tmux(KC_3);
+      return false;
+    case TM4:
+      tmux(KC_4);
+      return false;
+
     case TM_WIN_NEW:
       if (record->event.pressed) {
-       tmux(KC_C);
+        tmux(KC_C);
+        tmux(KC_PERC);
+      }
+      return false;
+
+    case TM_RELOAD:
+      if (record->event.pressed) {
+        tmux(KC_R);
       }
       return false;
 
     case TM_PANE_CLOSE:
-      if (record->event.pressed) {
+    if (record->event.pressed) {
         tmux_close(KC_X);
       }
       return false;
 
     case TM_PANEV_NEW:
-      if (record->event.pressed) {
+    if (record->event.pressed) {
         tmux(KC_PERC);
       }
       return false;
 
     case TM_PANEH_NEW:
-      if (record->event.pressed) {
+    if (record->event.pressed) {
         tmux(KC_DQUO);
       }
       return false;
 
     case TM_RN_WIN:
-      if (record->event.pressed) {
+    if (record->event.pressed) {
         tmux(KC_COMM);
       }
       return false;
 
     case TM_RN_SESS:
-      if (record->event.pressed) {
+    if (record->event.pressed) {
         tmux(KC_DLR);
       }
       return false;
 
     case TM_PREV_SESS:
-      if (record->event.pressed)  {
+    if (record->event.pressed) {
         tmux(KC_LPRN);
       }
       return false;
 
     case TM_SESS_MANAGER:
-      if (record->event.pressed) {
+    if (record->event.pressed) {
         tmux(KC_S);
       }
       return false;
@@ -667,33 +795,219 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   return true;
 };
 
+
 /////////////////////////////////////////////////
 // KEYMAPS
 /////////////////////////////////////////////////
-/*
-FLOATING SYMBOLS
-- symbols not found in the symbols layer
-- ?\/_:"
-
-BASE SYMBOLS
-- '-;
-*/
+// T/B=top,bot | L/R=left,right
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [_BASE] = LAYOUT_split_3x5_2(KC_SCLN, KC_Y, KC_O, KC_U, KC_QUOT, KC_PAST, KC_L, KC_D, KC_P, KC_F, KC_C, KC_I, KC_E, KC_A, QK_REP, QK_REP, KC_H, KC_T, KC_N, KC_S, OSM(MOD_RSFT), LB_DOT, LB_BSPC, LB_COMM, QK_ALT_REPEAT_KEY, KC_K, KC_M, KC_G, KC_W, RB_MINS, TH_TAB, TH_SPC, TH_R, TH_SCRAPS),
+  // :✅
+  [_T_BASE] = LAYOUT_split_3x5_2(KC_QUOT, KC_Y, KC_O, KC_U, KC_MINS, KC_PAST, KC_L, KC_D, KC_P, KC_F, KC_C, KC_I, KC_E, KC_A, QK_REP, QK_REP, KC_H, KC_T, KC_N, KC_S, LB_SFT, LB_DOT, LB_BSPC, LB_COMM, QK_AREP, KC_K, KC_M, KC_G, KC_W, LB_SFT, TH_TAB, TH_SPC, TH_R, TH_SCRAPS),
 
-  [_SCRAPS] = LAYOUT_split_3x5_2(KC_COLN, KC_TRNS, KC_TRNS, KC_TRNS, KC_QUES, KC_TRNS, KC_TRNS, KC_Q, KC_TRNS, KC_Z, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_V, KC_B, KC_J, KC_X, KC_UNDS, KC_TRNS, C(KC_BSPC), KC_R, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
+  [_T_SCRAPS] = LAYOUT_split_3x5_2(KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_Z, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_V, KC_B, KC_J, KC_X, KC_TRNS, KC_TRNS, KC_TRNS, KC_R, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_Q, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
 
-  [_SYMBOLS] = LAYOUT_split_3x5_2(KC_TRNS, KC_AMPR, KC_PIPE, KC_EXLM, KC_GRV, KC_TILDE, KC_PMNS, KC_EQL, KC_PPLS, KC_DEL, S(KC_COMM), KC_LCBR, KC_LPRN, KC_LBRC, KC_TRNS, KC_TRNS, KC_RBRC, KC_RPRN, KC_RCBR, S(KC_DOT), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_CIRC, KC_DLR, KC_HASH, KC_AT, KC_BSLS, KC_ENT, KC_TRNS, KC_TRNS, KC_TRNS),
+  [_SYMBOLS] = LAYOUT_split_3x5_2(
+    KC_AMPR,
+    LABRC,
+    RABRC,
+    KC_BSLS,
+    KC_TRNS,
 
-  [_ARROW_NUMPAD] = LAYOUT_split_3x5_2(KC_SPC, KC_7, KC_8, KC_9, KC_DQUO, KC_TRNS, KC_MINS, KC_EQL, KC_PPLS, KC_RIGHT, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, QK_REP, QK_REP, KC_1, KC_2, KC_3, KC_0, KC_UNDS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, S(KC_G), KC_4, KC_5, KC_6, KC_TRNS, KC_TRNS, KC_TRNS, C(KC_LEFT), C(KC_RIGHT)),
+    KC_TRNS,
+    KC_DLR,
+    KC_PEQL,
+    KC_PPLS,
+    KC_TRNS,
 
-  [_QUICK_FIRE] = LAYOUT_split_3x5_2(KC_MUTE, KC_VOLD, KC_VOLU, MEH(KC_T), LCA(KC_TAB), MULTILINE_COMMENT, CODEBLOCKS, SPC_PEQL_SPC, SPC_PPLS_SPC, END_SCLN_ENT, PASTE_AND_POP, A(KC_LEFT), A(KC_RIGHT), LCA(KC_SPC), QK_REP, QK_REP, A(KC_1), A(KC_2), A(KC_3), NVIM_YANK_REG_PASTE, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), RCS(KC_H), KC_F12, A(KC_4), A(KC_5), TM_PREV_SESS, TM_SESS_MANAGER, KC_TRNS, KC_TRNS, KC_WH_D, KC_WH_U),
+// ------------------------------------------------
+    KC_UNDS,
+    KC_SCLN,
+    KC_COLN,
+    KC_SLSH,
+    KC_TRNS,
 
-  [_QUICK_FIRE] = LAYOUT_split_3x5_2(KC_MUTE, KC_VOLD, KC_VOLU, G(KC_SCLN), LSG(KC_R), TM_RN_WIN, TM1, TM2, TM3, TM4, PASTE_AND_POP, A(KC_LEFT), A(KC_RIGHT), LSG(KC_S), QK_REP, QK_REP, A(KC_1), A(KC_2), A(KC_3), TM_PANEV_NEW, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), RCS(KC_H), TM_WIN_NEW, A(KC_4), A(KC_5), A(KC_6), TM_PANE_CLOSE, KC_TRNS, KC_TRNS, KC_WH_D, KC_WH_U),
+    KC_TRNS,
+    KC_LBRC,
+    KC_LPRN,
+    KC_LCBR,
+    KC_DQUO,
+// ------------------------------------------------
 
-  [_TMUX_FN] = LAYOUT_split_3x5_2(NVIM_STAGE_HUNK, KC_F7, KC_F8, KC_F9, KC_F10, TM_RN_SESS, TM_RESTORE, TM_SAVE, TM_RELOAD, QK_BOOT, NVIM_RESET_LINE, NVIM_PREV_HUNK, NVIM_NEXT_HUNK, NVIM_STAGE_LINE, KC_F11, KC_F12, KC_F1, KC_F2, KC_F3, TM_PANEH_NEW, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, CG_TOGG, KC_TRNS, KC_F4, KC_F5, KC_F6, TM_PANE_CLOSE, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
+    OSL(_ARROWS_NUMPAD),
+    KC_TRNS,
+    KC_TRNS,
+    KC_TRNS,
+    KC_TRNS,
+
+    KC_S,
+    KC_RBRC,
+    KC_RPRN,
+    KC_RCBR,
+    OSL(_FLOW_SYMBOLS),
+
+    // 👍🏻
+    KC_TRNS,
+    KC_TRNS,
+    KC_TRNS,
+    KC_TRNS
+  ),
+
+
+  [_FLOW_SYMBOLS] = LAYOUT_split_3x5_2(KC_TRNS, KC_TRNS, KC_PERC, KC_DLR, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_QUOT, KC_PMNS, KC_PAST, KC_TRNS, KC_TRNS, KC_TRNS, KC_HASH, KC_PIPE, KC_GRV, KC_PERC, KC_TRNS, KC_EXLM, KC_TRNS, KC_QUES, KC_TRNS, KC_TRNS, KC_CIRC, KC_TILDE, KC_AT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
+
+// ************************************************
+  // ✅ Arrows, Numpad, Math Symbols, Window Movement
+  [_ARROWS_NUMPAD] = LAYOUT_split_3x5_2(
+    KC_SPC,
+    KC_7,
+    KC_8,
+    KC_9,
+    KC_TRNS,
+
+    KC_TRNS,
+    KC_DLR,
+    KC_PEQL,
+    KC_PPLS,
+    KC_TRNS,
+
+// ------------------------------------------------
+    KC_LEFT,
+    KC_DOWN,
+    KC_UP,
+    KC_RIGHT,
+    KC_TRNS,
+
+    KC_TRNS,
+    KC_1,
+    SUPER2,
+    CTL3,
+    SFT0,
+// ------------------------------------------------
+
+    KC_SPC,
+    KC_TRNS,
+    KC_TRNS,
+    KC_TRNS,
+    KC_TRNS,
+
+    KC_TRNS,
+    KC_4,
+    KC_5,
+    KC_6,
+    S(KC_G),
+
+    // 👍🏻
+    OSM(MOD_LSFT),
+    KC_TRNS,
+    MOVE_LEFT_WORD,
+    MOVE_RIGHT_WORD
+  ),
+
+  // 👷🏻 WIP: Lots of empty spaces. Can put common synergies here
+  // S added to corner for search and replace :s/ synergy
+// ************************************************
+
+
+  // ✅ Mouse on left, right has equal sign and encloser symbols
+// ************************************************
+  [_MOUSE_7SYMBOLS] = LAYOUT_split_3x5_2(
+    KC_WH_L,
+    KC_WH_D,
+    KC_WH_U,
+    KC_WH_R,
+    KC_BTN2,
+
+    KC_TRNS,
+    OSM(MOD_RGUI),
+    OSM(MOD_RALT),
+    OSM(MOD_RCTL),
+    OSM(MOD_RSFT),
+
+// ------------------------------------------------
+    KC_MS_LEFT,
+    KC_MS_DOWN,
+    KC_MS_UP,
+    KC_MS_RIGHT,
+    KC_TRNS,
+
+    KC_TRNS,
+    KC_HASH,
+    KC_PIPE,
+    KC_GRV,
+    KC_PERC,
+// ------------------------------------------------
+
+    KC_DLR,
+    KC_EXLM,
+    KC_TRNS,
+    KC_QUES,
+    KC_TRNS,
+
+    KC_TRNS,
+    KC_CIRC,
+    KC_TILDE,
+    KC_AT,
+    KC_TRNS,
+
+    // 👍🏻
+    MT(MOD_LCTL, KC_BTN2),
+    KC_BTN1,
+    KC_TRNS,
+    KC_TRNS
+  ),
+
+  // ✅ app specific (tab/buffer) navigation: tmux/browser tabs, nvim open_buffers
+  // system controls: zoom, sound, qk reboot
+  // fullscreen
+  // app launcher
+// ************************************************
+  [_QUICK_FIRE] = LAYOUT_split_3x5_2(
+    KC_VOLD,
+    KC_VOLU,
+    KC_TRNS,
+    SYS_FULLSCREEN,
+    KC_MUTE,
+
+    TM_RN_WIN,
+    TM1,
+    TM2,
+    TM3,
+    TM_PREV_SESS,
+
+    STAB_TOGGLE,
+    GO_BACK,
+    GO_FORWARD,
+    TAB_TOGGLE,
+    KC_TRNS,
+
+    KC_TRNS,
+    A(KC_1),
+    A(KC_2),
+    A(KC_3),
+    EMOJIS,
+
+    KC_TRNS,
+    SYS_FULLSCREEN,
+    SYS_TOGGLE,
+    APPLICATION_LAUNCHER,
+    QK_BOOT,
+
+    TM_PANE_CLOSE,
+    A(KC_4),
+    A(KC_5),
+    A(KC_6),
+    TM_WIN_NEW,
+
+    KC_BTN1,
+    KC_BTN1,
+    KC_WH_D,
+    KC_WH_U
+  ),
+
+ // 🏗️ fn keys and remaining
+ // ************************************************
+  [_FN] = LAYOUT_split_3x5_2(KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F11, KC_F7, KC_F8, KC_F9, KC_F12, NV_RESET_LINE, NV_PREV_HUNK, NV_NEXT_HUNK, NV_STAGE_HUNK, KC_TRNS, KC_TRNS, KC_F1, KC_F2, KC_F3, KC_F10, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F4, KC_F5, KC_F6, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
 };
 
-// DEPRECATED
-// #define TMUX_CASE(code , key) case code: tmux(key); return false;
+
