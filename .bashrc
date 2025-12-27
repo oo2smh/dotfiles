@@ -182,5 +182,12 @@ source /usr/share/git/completion/git-completion.bash
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
+# Start SSH agent if not running
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    eval "$(ssh-agent -s)"
+fi
+
+# Add key quietly
+ssh-add -q ~/.ssh/id_ed25519
 
 
