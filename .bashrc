@@ -182,12 +182,17 @@ source /usr/share/git/completion/git-completion.bash
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
-# Start SSH agent if not running
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    eval "$(ssh-agent -s)"
+# === SSH AGENT (single instance per login) ===
+SSH_ENV="$HOME/.ssh/agent.env"
+
+if [ -f "$SSH_ENV" ]; then
+    . "$SSH_ENV" >/dev/null
 fi
 
-# Add key quietly
-ssh-add -q ~/.ssh/id_ed25519
-
+if ! ssh-add -l >/dev/null 2>&1; then
+    eval "$(ssh-agent -s)" >/dev/null
+    echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" > "$SSH_ENV"
+    echo "export SSH_AGENT_PID=$SSH_AGENT_PID" >> "$SSH_ENV"
+    ssh-add ~/.ssh/id_ed25519
+fi
 

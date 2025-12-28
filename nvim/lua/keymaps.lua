@@ -17,6 +17,7 @@ keymap("n", "<leader>.",":w<cr>") -- save
 -- ctrl h is how tmux/shell understands ctrl bspc
 keymap({"n", "v"}, "<C-H>", "<Nop>", { noremap = true, silent = true })
 keymap({"i", "c"}, "<C-H>", "<C-w>")
+keymap({"i", "c"}, "<C-BS>", "<C-w>")
 
 -- NETRWC (Use to create and delete files. Use nnn for everything else)
 keymap("n", "hN", ":Ex<Cr>")
