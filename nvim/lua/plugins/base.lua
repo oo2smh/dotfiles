@@ -1,5 +1,6 @@
 local keymap = vim.keymap.set
 local cmd = vim.cmd
+local hl = vim.api.nvim_set_hl
 
 local colorscheme = {
 	"EdenEast/nightfox.nvim",
@@ -7,13 +8,12 @@ local colorscheme = {
 	priority = 1000,
 	config = function()
 		cmd("colorscheme duskfox")
-    local set_hl = vim.api.nvim_set_hl
-		set_hl(0, "CursorLineNr", { fg = "#FFFFFF", bg = "#4050C0", bold = true, italic = true })
-		set_hl(0, "CursorLine", {bg = "#454545"})
-		set_hl(0, "Visual", { bg = "#6040B0", italic = true })
-      set_hl(0, "MatchParen", { fg = "#fff44f", bold = true, italic = true, underline = true })
-		set_hl(0, "Search", { bg = "#944475", bold = true, italic = true })
-		set_hl(0, "MiniCursorWord", { bg = "NONE", bold = true, italic = true, underline = true })
+		hl(0, "CursorLineNr", { fg = "#FFFFFF", bg = "#4050C0", bold = true, italic = true })
+		hl(0, "CursorLine", {bg = "#454545"})
+		hl(0, "Visual", { bg = "#6040B0", italic = true })
+      hl(0, "MatchParen", { fg = "#fff44f", bold = true, italic = true, underline = true })
+		hl(0, "Search", { bg = "#944475", bold = true, italic = true })
+		hl(0, "MiniCursorWord", { bg = "NONE", bold = true, italic = true, underline = true })
 	end,
 }
 
@@ -115,7 +115,6 @@ local md_render = {
 
 	config = function()
 		local colors = { "#DCD7A0", "#FFA500", "#FF6347", "#9370DB", "#1E90FF", "#00CED1" }
-		local set_hl = vim.api.nvim_set_hl
 
 		for i, c in ipairs(colors) do
 			local style_opts = { fg = c, bold = true }
@@ -127,8 +126,8 @@ local md_render = {
 
 			if i == 2 then style_opts.underline = false end
 
-			set_hl(0, "RenderMarkdownH" .. i,  style_opts)
-			set_hl(0, "RenderMarkdownH" .. i .. "Bg", style_opts)
+			hl(0, "RenderMarkdownH" .. i,  style_opts)
+			hl(0, "RenderMarkdownH" .. i .. "Bg", style_opts)
 		end
 	end,
 }
@@ -136,6 +135,5 @@ local md_render = {
 local vimbetter = {"szymonwilczek/vim-be-better"}
 
 keymap("n", "<leader>|", ":VimBeBetter<Cr>")
-
 
 return { colorscheme, nnn, md_render, vimbetter, fugitive, full, highlighter}

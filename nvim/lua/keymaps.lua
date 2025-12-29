@@ -54,8 +54,8 @@ keymap("n", "*",
 -- g& to apply to whole file. Or add % to the beginning to change whole file
 -- *lr and leave the search term blank to change all selection
 -- remove the g to only change the first occurrence
-keymap( { "n", "v" }, "lel", ":s///g<Left><Left><Left>", { noremap = true, desc = "replace line/selection" })
-keymap( { "n", "v" }, "le*", "*:%s///g<Left><Left>", { noremap = true, desc = "replace * word" })
+keymap( { "n", "v" }, "lee", ":s///g<Left><Left><Left>", { noremap = true, desc = "replace line/selection" })
+keymap( { "n", "v" }, "les", "*:%s///g<Left><Left>", { noremap = true, desc = "replace * word" })
 keymap({ "n", "v" }, "lep", function() global_search_replace() end, { noremap = true, desc = "replace project wide" })
 
 -- DIAGNOSTICS

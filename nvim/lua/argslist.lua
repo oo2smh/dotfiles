@@ -14,6 +14,7 @@ local load_args
 for i = 1, 6 do
 	keymap({ "n", "v" }, "'" .. i, function()
 		replace_arg_at_idx(i)
+    echo_argslist()
 	end)
 
   -- GO to args: ALT(1-6)

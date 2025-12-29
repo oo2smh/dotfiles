@@ -1,19 +1,26 @@
-local mini = "echasnovski/mini"
-local m_basics      = { "mini.basics",      config = true }
-local m_statusline  = { "mini.statusline",  config = true }
-local m_tabline     = { "mini.tabline",     config = true }
-local m_indentscope = { "mini.indentscope", config = true }
-local m_pairs       = { "mini.pairs",       config = true }
-local m_surround    = { "mini.surround",    config = true }
-local m_splitjoin   = { "mini.splitjoin", opts = { mappings = { toggle = "mo"}}}
-local m_cursorword  = { "mini.cursorword",  config = true }
-local m_notify      = { "mini.notify",      config = true }
-local m_align       = { "mini.align",       config = true }
+local m_basics      = { "nvim-mini/mini.basics",      config = true }
+local m_statusline  = { "nvim-mini/mini.statusline",  config = true }
+local m_tabline     = { "nvim-mini/mini.tabline",     config = true }
+local m_indentscope = { "nvim-mini/mini.indentscope", config = true }
+local m_pairs       = { "nvim-mini/mini.pairs",       config = true }
+local m_surround    = { "nvim-mini/mini.surround",    config = true }
+local m_splitjoin   = { "nvim-mini/mini.splitjoin",   opts   = { mappings = { toggle = "mo"}}}
+local m_cursorword  = { "nvim-mini/mini.cursorword",  config = true }
+local m_notify      = { "nvim-mini/mini.notify",      config = true }
+local m_align       = { "nvim-mini/mini.align",       config = true }
+
+local m_completion  = { "nvim-mini/mini.completion",
+  dependencies = {{"nvim-mini/mini.icons"}},
+  config = function()
+    require("mini.completion").setup()
+    require("mini.icons").setup()
+  end,
+}
 
 local m_pick = {
-  "mini.pick",
+  "nvim-mini/mini.pick",
   version = false,
-  dependencies = { { "mini.extra", "mini.icons" } },
+  dependencies = { { "nvim-mini/mini.extra", "nvim-mini/mini.icons" } },
   opts = {
     window = {
       config = {
@@ -32,6 +39,7 @@ local m_pick = {
   },
 
   keys = function()
+    require("mini.icons").setup()
     local pick = require("mini.pick")
     local extra = require("mini.extra").pickers
 
@@ -58,13 +66,13 @@ local m_pick = {
 }
 
 local m_operators = {
-	"mini.operators",
+	"nvim-mini/mini.operators",
 	config = true,
 	opts = { exchange = { prefix = "go" }},
 }
 
 local m_diff = {
-	"mini.diff",
+	"nvim-mini/mini.diff",
 	version = false, -- always use the latest
 	options = {update_delay = 50,},
 	config = function()
@@ -79,7 +87,7 @@ local m_diff = {
 }
 
 local m_hipatterns = {
-	"mini.hipatterns",
+	"nvim-mini/mini.hipatterns",
 	config = function()
 		require("mini.hipatterns").setup({
 			highlighters = {
@@ -98,6 +106,7 @@ return {
 	m_operators,   -- go(rient+switch), gs(ort), gr(eplace with register), gm(ultiply)
 	m_pairs,       -- autopairs for enclosers (){}[]``''""
 	m_surround,    -- sa, sd, sr
+	m_completion,
 
   -- READABILITY -- optional formatting enhancements
 	m_splitjoin,   -- toggle folding for args gS within encloser
