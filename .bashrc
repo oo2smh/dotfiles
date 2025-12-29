@@ -1,5 +1,9 @@
 export PATH="$PATH:$HOME/.local/opt/go/bin:$HOME/.local/bin"
 
+. /etc/profile.d/nix.sh # loads nix package manager
+# adds pkgs to ~/.nix-profile/bin
+# pacman adds to /usr/bin
+
 export LESS='-R --mouse' # allows using mouse scroll with less pager
 export QMK_HOME="~/.config/qmk"
 export MOZ_ENABLE_WAYLAND=1 #Gives browser wayland-compatible resolution
@@ -46,6 +50,7 @@ alias ta="tmux a"
 alias tat="tmux a -t"
 
 # ALIASES - navigation
+alias S="nvim ~/Dotfiles/sway/config"
 alias D="nvim ~/Dotfiles/"
 alias N="nvim ~/.config/nvim"
 alias T="nvim ~/.tmux.conf"
