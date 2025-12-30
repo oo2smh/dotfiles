@@ -62,6 +62,7 @@ enum custom_keycodes {
   NV_MAKE_GMARK,
   NV_GOTO_GMARK,
   NV_HIGH_LINE,
+  NV_AUTOCOMPLETE,
 
   // COMMON SYNERGIES
   EXLM_EQL,
@@ -159,12 +160,10 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 // NAV
 const uint16_t PROGMEM app_toggle_l[] = {QK_REP, KC_A, COMBO_END};
 const uint16_t PROGMEM sys_full[] = {TH_SPC, TH_TAB, KC_I, COMBO_END};
-const uint16_t PROGMEM sys_toggle[] = {TH_SPC, TH_TAB, LB_BSPC, COMBO_END};
+const uint16_t PROGMEM sys_toggle[] = {TH_SPC, TH_TAB, KC_O, COMBO_END};
 
 const uint16_t PROGMEM mon1_l[] = {KC_I, KC_E, KC_A, COMBO_END};
-const uint16_t PROGMEM mon1_r[] = {KC_H, KC_T, KC_N, COMBO_END};
-const uint16_t PROGMEM mon2_l[] = {KC_I, KC_E, LB_COMM, COMBO_END};
-const uint16_t PROGMEM mon2_r[] = {KC_M, KC_T, KC_N, COMBO_END};
+const uint16_t PROGMEM mon2_r[] = {KC_H, KC_T, KC_N, COMBO_END};
 const uint16_t PROGMEM tm_session_toggle[] = {QK_REP, KC_A, KC_E, COMBO_END};
 const uint16_t PROGMEM app_full[] = {TH_TAB, TH_SPC, KC_A, COMBO_END};
 
@@ -197,7 +196,7 @@ const uint16_t PROGMEM sys_paste_pop[]  = {TH_TAB, KC_C, COMBO_END};
 const uint16_t PROGMEM sys_redo[] = {TH_TAB, QK_REP, COMBO_END};
 const uint16_t PROGMEM sys_undo[]  = {TH_TAB, KC_A, COMBO_END};
 const uint16_t PROGMEM sys_screenshot[]  = {TH_SPC, TH_TAB, KC_E, COMBO_END};
-const uint16_t PROGMEM sys_screenshot_ocr[]  = {TH_SPC, TH_TAB, KC_O, COMBO_END};
+const uint16_t PROGMEM sys_screenshot_ocr[]  = {TH_SPC, TH_TAB, LB_BSPC, COMBO_END};
 
 
 // SHORTCUTS
@@ -217,6 +216,7 @@ const uint16_t PROGMEM select_line[] = {QK_REP, KC_H, KC_T, COMBO_END};
 
 // text edit: nvim
 const uint16_t PROGMEM visual_block[] = {TH_R, KC_N, TH_SCRAPS, COMBO_END};
+const uint16_t PROGMEM nv_autocomplete[] = {TH_R, TH_SPC, TH_SCRAPS, COMBO_END};
 const uint16_t PROGMEM nv_highlight_line[] = {TH_R, TH_SCRAPS, KC_H, COMBO_END};
 const uint16_t PROGMEM nv_goto_gmark[] = {TH_SCRAPS, KC_G, COMBO_END};
 const uint16_t PROGMEM nv_make_gmark[] = {TH_SCRAPS, KC_M, COMBO_END};
@@ -277,8 +277,6 @@ combo_t key_combos[92] = {
     COMBO(sys_toggle, SYS_TOGGLE),
     COMBO(app_full, APP_FULLSCREEN),
     COMBO(mon1_l, MON1_TOGGLE),
-    COMBO(mon1_r, MON1_TOGGLE),
-    COMBO(mon2_l, MON2_TOGGLE),
     COMBO(mon2_r, MON2_TOGGLE),
     COMBO(tm_session_toggle, TM_PREV_SESS),
 
@@ -333,6 +331,7 @@ combo_t key_combos[92] = {
     COMBO(nv_make_gmark, NV_MAKE_GMARK),
     COMBO(nv_goto_gmark, NV_GOTO_GMARK),
     COMBO(nv_highlight_line, NV_HIGH_LINE),
+    COMBO(nv_autocomplete, NV_AUTOCOMPLETE),
     COMBO(visual_block, C(KC_Q)),
 
     // KEYS 23
@@ -526,6 +525,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         set_oneshot_mods(MOD_BIT(KC_LSFT));
       }
     return false;
+
+    case NV_AUTOCOMPLETE:
+      if (record->event.pressed) {
+        set_oneshot_mods(MOD_BIT(KC_LCTL));
+        tap_code16(S(KC_X));
+        set_oneshot_mods(MOD_BIT(KC_LCTL));
+      }
+      return false;
 
     case NV_HIGH_LINE:
       if (record->event.pressed) {
@@ -859,7 +866,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // ************************************************
   // ✅ Arrows, Numpad, Math Symbols, Window Movement
   [_ARROWS_NUMPAD] = LAYOUT_split_3x5_2(
-    KC_SPC,
+    S(KC_G),
     KC_7,
     KC_8,
     KC_9,
@@ -895,7 +902,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_4,
     KC_5,
     KC_6,
-    S(KC_G),
+    KC_TRNS,
 
     // 👍🏻
     OSM(MOD_LSFT),
@@ -965,7 +972,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QUICK_FIRE] = LAYOUT_split_3x5_2(
     KC_VOLD,
     KC_VOLU,
-    KC_TRNS,
+    SYS_TOGGLE,
     SYS_FULLSCREEN,
     KC_MUTE,
 
@@ -988,8 +995,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     EMOJIS,
 
     KC_TRNS,
-    SYS_FULLSCREEN,
-    SYS_TOGGLE,
+    KC_TRNS,
+    KC_TRNS,
     APPLICATION_LAUNCHER,
     QK_BOOT,
 
