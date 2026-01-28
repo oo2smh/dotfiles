@@ -1,7 +1,7 @@
 # Philosophy
 - eep it minimal
 - Try to use defaults when possible
- Avoid using tabs, butlt-in-terminal
+ Avoid using tabs, built-in-terminal
   - Using a window manager, tmux, and nvim gets confusing
 
 # Things to Work On

@@ -1,7 +1,3 @@
-local keymap = vim.keymap.set
-local api = vim.api
-local cmd = vim.cmd
-
 local echo_argslist
 local add_buffer_to_end
 local replace_arg_at_idx

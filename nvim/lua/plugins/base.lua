@@ -1,5 +1,3 @@
-local keymap = vim.keymap.set
-local cmd = vim.cmd
 local hl = vim.api.nvim_set_hl
 
 local colorscheme = {
@@ -20,31 +18,12 @@ local colorscheme = {
 local highlighter = {
   "azabiong/vim-highlighter",
   config = function()
-
---[[
-:HI/Find: Used to search other files. It will not use the current position to search. When you press next, it will most likely search another file. Use global H mark to mark current location. And then while scrolling, return back to base with another keybind. It will pollute the open buffers list
-
-with the filtered list: use r to make it bigger, v to
-  ]]
-
-    -- find and mark project wide
-    keymap("n", "h<tab>", function()
-      -- mark current position as H
-      cmd("normal! mH")
-      -- run :Hi/Find with current word
-      local word = vim.fn.expand("<cword>")
-      local current_buffer = vim.fn.expand("%:t")
-      cmd("Hi/Find " .. word)
-      cmd("norm! /" .. current_buffer)
-    end)
-
     -- make highlights
     keymap("n", "h<cr>", ":Hi +<cr>")
 
     -- delete highlights
     keymap("n", "h<esc>", ":Hi -<cr>")
     keymap("n", "t<esc>", ":Hi -<cr>")
-    keymap("n", "f<bs>", ":Hi //<cr>") -- clears hi/find highlights
     keymap("n", "t<bs>", ":Hi clear<cr>")
     keymap("n", "h<bs>", ":Hi clear<cr>")
 
@@ -52,30 +31,11 @@ with the filtered list: use r to make it bigger, v to
     keymap("n", "`", ":Hi }<cr>zz")
     keymap("n", "|", ":Hi {<cr>zz")
 
-    -- cycle through project search
-    keymap("n", "\\", "'Hzz")
-    keymap("n", "l.", ":Hi/older<cr>") -- past find searches
-    keymap("n", "l,", ":Hi/newer<cr>")
-
     -- highlights import and save
     keymap("n", "hih", ":Hi load <tab><cr>")
     keymap("n", "his", ":Hi save <tab><cr>")
     keymap("n", "hil", ":Hi ls<cr>")
   end,
-}
-
-local full = {
-  "propet/toggle-fullscreen.nvim",
-  config = function() end,
-  keys = {
-    {
-      "<leader>f",
-      function()
-        require("toggle-fullscreen"):toggle_fullscreen()
-      end,
-      desc = "Toggle fullscreen",
-    },
-  },
 }
 
 local nnn = {
@@ -95,7 +55,7 @@ local fugitive = {
 	config = function()
 		-- HAsh & Harvest into HASH HOUSE
 		keymap("n", "hg", ":G<cr>:only<CR>", { desc = "git status" }) --top overview
-		keymap("n", "haf", ":Gblame", { desc = "git blame" }) -- fault
+		keymap("n", "haf", ":G blame", { desc = "git blame" }) -- fault
 		keymap("n", "har", ":Git log<cr>", { desc = "git blame" }) -- use this to see commits and rebase
 		keymap("n", "has", ":G stash list<CR>", { desc = "stash show" })
 		keymap("n", "hap", ":Gvdiffsplit HEAD~1<cr>", { desc = "git diff" }) -- index to previous commit
@@ -104,29 +64,29 @@ local fugitive = {
 }
 
 local md_render = {
-	"MeanderingProgrammer/render-markdown.nvim",
-	dependencies = { "nvim-treesitter/nvim-treesitter" },
-	opts = {
-		render_modes = { "n", "c", "t", "i" },
-		heading = { signs = { "󰫎 ", "", "", "", "", "" } },
-		code = { sign = false },
-		bullet = { icons = { "•", "▹", "▪", "⋄" } },
-	},
+  "MeanderingProgrammer/render-markdown.nvim",
+  opts = {
+    render_modes =  { "n", "c", "t", "i" },
+    heading = { render_modes = true, sign = false},
+    code = {render_modes = true, sign = false },
+    quote = { render_modes = true},
+    bullet = { render_modes = true},
+    link = { render_modes = true},
+  },
 
-	config = function()
-		local colors = { "#DCD7A0", "#FFA500", "#FF6347", "#9370DB", "#1E90FF", "#00CED1" }
+  config = function(_, opts)
+    require("render-markdown").setup(opts)
+    local colors = { "#DCD7A0", "#FFA500", "#FF6347", "#9370DB", "#1E90FF", "#00CED1" }
 
 		for i, c in ipairs(colors) do
 			local style_opts = { fg = c, bold = true }
 
 			if i == 1 then
-				style_opts.fg = "Black"
+				style_opts.fg = "#444444"
 				style_opts.bg = c
 			end
 
-			if i == 2 then style_opts.underline = false end
-
-			hl(0, "RenderMarkdownH" .. i,  style_opts)
+			hl(0, "RenderMarkdownH" .. i, style_opts)
 			hl(0, "RenderMarkdownH" .. i .. "Bg", style_opts)
 		end
 	end,
@@ -134,6 +94,4 @@ local md_render = {
 
 local vimbetter = {"szymonwilczek/vim-be-better"}
 
-keymap("n", "<leader>|", ":VimBeBetter<Cr>")
-
-return { colorscheme, nnn, md_render, vimbetter, fugitive, full, highlighter}
+return { colorscheme, nnn, md_render, vimbetter, fugitive, highlighter}

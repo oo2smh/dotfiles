@@ -34,7 +34,6 @@ local m_pick = {
       toggle_preview = '1',
       scroll_down = '2',
       scroll_up = '3',
-      delete_word = '<C-h>',
     },
   },
 
@@ -47,7 +46,7 @@ local m_pick = {
 			-- git
 			{"hab", function() extra.git_branches() end, { desc = "git branches" }},
 			{"han", function() extra.git_hunks() end, { desc = "git hunks" }},
-			{"hai", function() extra.git_commits() end, { desc = "git hunks" }},
+			{"hai", function() extra.git_commits() end, { desc = "git commits" }},
 			-- other
 			{"ht", pick.builtin.files, { desc = "files" } },
 			{"ho", pick.builtin.buffers, { desc = "open buffers" } }, --existing
@@ -81,7 +80,7 @@ local m_diff = {
 
 		diff.setup({view = { style = "number" }})
 		vim.keymap.set("n", "hu", function()
-			diff.toggle_overlay()
+			diff.toggle_overlay(0)
 		end, { desc = "MiniDiff: toggle diff overlay" })
 	end,
 }
@@ -101,24 +100,26 @@ local m_hipatterns = {
 }
 
 return {
-	-- FUNCTIONALITY
+	-- FUNCTIONALITY (7)
+	m_basics,      -- highlight on yank, g/ search within selection, jk, options setting
 	m_pick,        -- viewer
 	m_operators,   -- go(rient+switch), gs(ort), gr(eplace with register), gm(ultiply)
 	m_pairs,       -- autopairs for enclosers (){}[]``''""
 	m_surround,    -- sa, sd, sr
-	m_completion,
+	m_diff,        -- select (gh): to add hunk, select (gH): reset, hu (see diff)
+	m_completion,  -- autocomplete better
 
-  -- READABILITY -- optional formatting enhancements
-	m_splitjoin,   -- toggle folding for args gS within encloser
+  -- READABILITY: formatting enhancements
+	m_splitjoin,   -- toggle folding for args (mo)
 	m_align,       -- ga(symbol)
 
-  -- VISUAL UX
-	m_basics,      -- highlight on yank, g/ search within selection
+  -- VISUAL UX (6)
 	m_statusline,  -- visual
 	m_tabline,     -- visual
-	m_diff,        -- show differences in diff in sign column
 	m_indentscope, -- visual scope cues
 	m_hipatterns,  -- pattern matching highlights. Used for hex highlighting
 	m_cursorword,  -- highlights word under cursor
 	m_notify,      -- lsp progress notification
 }
+
+
