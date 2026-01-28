@@ -1,8 +1,6 @@
-// https://github.com/cjbassi/config/tree/master/.config/waybar
 {
   "layer": "top",
   "position": "top",
-
   "modules-left": [
     "hyprland/workspaces"
   ],
@@ -10,28 +8,29 @@
     "clock#1",
     "clock#2",
     "clock#3"
-    // "network"
   ],
   "modules-right": [
     "pulseaudio",
     "memory",
     "cpu",
-   // "battery",
     "disk",
-    "tray"
+    "tray",
+    "custom/hyprwhspr"
   ],
-
   "hyprland/workspaces": {
     "show-special": true,
     "special-visible-only": true,
     "persistent-workspaces": {
-      "HDMI-A-1": [1],
-      "DP-3": [2]
+      "HDMI-A-1": [
+        1
+      ],
+      "DP-3": [
+        2
+      ]
     },
     "disable-scroll": true,
     "format": "{name}"
   },
-
   "clock#1": {
     "format": "{:%a}",
     "tooltip": false
@@ -44,16 +43,15 @@
     "format": "{:%m-%d}",
     "tooltip": false
   },
-
   "pulseaudio": {
     "format": "|  {icon}  {volume:2}%",
-    "format-bluetooth": "{icon}  {volume}%",
+    "format-bluetooth": "{icon}  {volume}%\uf294",
     "format-muted": "MUTE",
     "format-icons": {
-      "headphones": "",
+      "headphones": "\uf025",
       "default": [
-        "",
-        ""
+        "\uf027",
+        "\uf028"
       ]
     },
     "scroll-step": 5,
@@ -76,11 +74,11 @@
     },
     "format": "{icon} {capacity}%",
     "format-icons": [
-      "",
-      "",
-      "",
-      "",
-      ""
+      "\uf244",
+      "\uf243",
+      "\uf242",
+      "\uf241",
+      "\uf240"
     ]
   },
   "disk": {
@@ -90,5 +88,5 @@
   },
   "tray": {
     "icon-size": 20
-  }
+  },
 }
