@@ -1,12 +1,16 @@
 export PATH="$PATH:$HOME/.local/opt/go/bin:$HOME/.local/bin"
-
-. /etc/profile.d/nix.sh # loads nix package manager
-# adds pkgs to ~/.nix-profile/bin
-# pacman adds to /usr/bin
+export PATH=$HOME/.local/bin:$PATH
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH" # allows you to use bob
 
 export LESS='-R --mouse' # allows using mouse scroll with less pager
 export QMK_HOME="~/.config/qmk"
 export MOZ_ENABLE_WAYLAND=1 #Gives browser wayland-compatible resolution
+
+# pyenv
+export PYENV_ROOT="$HOME/.local/share/pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
 
 ## MAN PGS
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
@@ -16,7 +20,7 @@ export MANROFFOPT="-c"
 export EDITOR="nvim"
 export READER="zen-browser-bin"
 export NNN_TRASH="1"
-export NNN_BMS="l:/home/hamin/Downloads/;j:/home/hamin/Doc/notes/;c:/home/hamin/.config;h:/home/hamin/;n:/home/hamin/dotfiles/nvim/;p:/home/hamin/Dev;d:/home/hamin/Downloads"
+export NNN_BMS="q:/home/hamin/.config/qmk_firmware/keyboards/ferris/keymaps/default;r:/home/hamin/Doc/notes/;c:/home/hamin/.config;h:/home/hamin/;n:/home/hamin/dotfiles/nvim/;p:/home/hamin/Dev;d:/home/hamin/Downloads;l:/home/hamin/.local/share"
 export NNN_TMPFILE='/tmp/.lastd'
 
 # INITIALIZE
@@ -27,11 +31,14 @@ eval "$(fzf --bash)" #fzf completions
 # ALIASES: Main
 ## Sys Cmds
 alias e='nvim .'
+alias en='nvim ~/Doc/notes/tmp/_notes.md'
+alias et='nvim ~/Doc/notes/tmp/_temp.md'
+
 alias x="exit"
 alias cop="wl-copy"
 alias pas="wl-paste"
 alias sou="source ~/.bashrc"
-alias qmi="qmk flash" # install
+alias qmi="qmk flash -kb ferris/sweep -km default" # install
 alias ls="ls --color"
 alias pac="sudo pacman"
 alias par="sudo pacman -Rsu"
@@ -39,8 +46,6 @@ alias paq="sudo pacman -Qe | grep "
 alias sys="systemctl"
 alias sa="hyprctl dispatch dpms toggle HDMI-A-1"
 alias sb="hyprctl dispatch dpms toggle DP-3"
-alias sc="hyprctl dispatch dpms toggle DP-1"
-alias pgc="pgcli postgres"
 alias grep='grep --color=auto'
 alias grip="go-grip"
 
@@ -119,7 +124,6 @@ alias g,="git --no-pager diff --word-diff --color --ignore-all-space --color-mov
   # g, <ref> <ref> -- <file/folder>  ||> g, -- <file/folder>
     # filters the changes to the specified file/folder
 
-
 # git show <commit> is like a shorthand for:
 # - git commit metadata
 # - git diff <parent commit> <current commit>
@@ -133,8 +137,9 @@ alias ghprc="gh pr create"
 
 # KEYBINDS
 ## Tab completion \e represents = ALT
+# Make Ctrl+Backspace delete previous word (like Ctrl+W)
+bind '"\C-h": backward-kill-word'
 bind 'TAB:menu-complete'
-bind '"\e[Z": menu-complete-backward'
 
 # bind "set show-all-if-ambiguous on"
 bind "set colored-stats on"
@@ -145,8 +150,6 @@ bind "set menu-complete-display-prefix on"
 
 stty -ixon # disables <C-S> which pauses the terminal
 set -o ignoreeof # asks for verification with <C-D>
-
-# GRIP TO PDF
 
 # NNN: cd quit
 n () {
@@ -177,7 +180,6 @@ source /usr/share/git/completion/git-completion.bash
 # doc: REFERENCES
 
 # https://superuser.com/questions/402246/bash-can-i-set-ctrl-backspace-to-delete-the-word-backward
-
 ## Custom keybinds
 # https://superuser.com/questions/160388/change-bash-shortcut-keys-such-as-ctrl-c/1726410#1726410
 # https://unix.stackexchange.com/questions/763630/map-alt-c-to-ctrl-u
@@ -188,16 +190,16 @@ source /usr/share/git/completion/git-completion.bash
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
 # === SSH AGENT (single instance per login) ===
-SSH_ENV="$HOME/.ssh/agent.env"
-
-if [ -f "$SSH_ENV" ]; then
-    . "$SSH_ENV" >/dev/null
-fi
-
-if ! ssh-add -l >/dev/null 2>&1; then
-    eval "$(ssh-agent -s)" >/dev/null
-    echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" > "$SSH_ENV"
-    echo "export SSH_AGENT_PID=$SSH_AGENT_PID" >> "$SSH_ENV"
-    ssh-add ~/.ssh/id_ed25519
-fi
-
+# SSH_ENV="$HOME/.ssh/agent.env"
+#
+# if [ -f "$SSH_ENV" ]; then
+#     . "$SSH_ENV" >/dev/null
+# fi
+#
+# if ! ssh-add -l >/dev/null 2>&1; then
+#     eval "$(ssh-agent -s)" >/dev/null
+#     echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" > "$SSH_ENV"
+#     echo "export SSH_AGENT_PID=$SSH_AGENT_PID" >> "$SSH_ENV"
+#     ssh-add ~/.ssh/id_ed25519
+# fi
+#
