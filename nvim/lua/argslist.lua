@@ -149,6 +149,6 @@ load_args  = function()
 	end
 
 	-- set the args list and opens first entry of argslist
-	vim.cmd("args " .. table.concat(args, " "))
+	cmd("args " .. table.concat(args, " "))
 	print("Args loaded: " .. #args .. " file(s) in the args list")
 end
