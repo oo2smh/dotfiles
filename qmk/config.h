@@ -1,5 +1,6 @@
 #pragma once
 #define EE_HANDS
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
 #define MOUSEKEY_INTERVAL 18
 #define MOUSEKEY_MAX_SPEED 10
@@ -21,5 +22,5 @@
 
 // COMBOS
 #define COMBO_ONLY_FROM_LAYER 0
-#define COMBO_TERM 30 // reduces window for you to type combo
-#define COMBO_COUNT 94
+#define COMBO_TERM 15 // reduces window for you to type combo
+#define COMBO_COUNT 90
