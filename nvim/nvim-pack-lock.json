@@ -44,10 +44,6 @@
       "rev": "0308f949f31769e509696af5d5f91cebb2159c69",
       "src": "https://github.com/nvim-mini/mini.indentscope"
     },
-    "mini.notify": {
-      "rev": "29ec27f60bf4b63e447c851d9061c434d80795a6",
-      "src": "https://github.com/nvim-mini/mini.notify"
-    },
     "mini.operators": {
       "rev": "47e33fee98adf9fef841cc6d6b868db3a28adacc",
       "src": "https://github.com/nvim-mini/mini.operators"
@@ -60,13 +56,13 @@
       "rev": "7c0a674f620ddc701903b887b2dade836b23ea79",
       "src": "https://github.com/nvim-mini/mini.pick"
     },
+    "mini.snippets": {
+      "rev": "b4065ca6b33e4df2897672d3bb760cfc93f4390a",
+      "src": "https://github.com/nvim-mini/mini.snippets"
+    },
     "mini.splitjoin": {
       "rev": "9fcd8856efb95a505090c3225726466494076127",
       "src": "https://github.com/nvim-mini/mini.splitjoin"
-    },
-    "mini.statusline": {
-      "rev": "3e96596ebe51b899874d8174409cdc4f3c749d9a",
-      "src": "https://github.com/nvim-mini/mini.statusline"
     },
     "mini.surround": {
       "rev": "f9358544ed06bc10197e698b7fc8dc5963be3f4b",
@@ -89,7 +85,7 @@
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "f8bbc3177d929dc86e272c41cc15219f0a7aa1ac",
+      "rev": "19c729dae6e0eeb79423df0cf37780aa9a7cc3b7",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-ts-autotag": {
@@ -99,10 +95,6 @@
     "render-markdown.nvim": {
       "rev": "99bfa5d61381a29eedc75810898cb9c0fc755064",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
-    },
-    "vim-be-better": {
-      "rev": "60e0214598d9d0bac8253e8b53a72eace4af92d3",
-      "src": "https://github.com/szymonwilczek/vim-be-better"
     },
     "vim-fugitive": {
       "rev": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4",

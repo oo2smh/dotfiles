@@ -1,5 +1,3 @@
-local keymap = vim.keymap.set
-
 local function compile_and_run()
   vim.cmd('write')
   local current_file = vim.fn.expand('%')

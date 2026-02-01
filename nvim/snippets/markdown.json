@@ -1,10 +1,8 @@
 {
-  "Header1": {
-    "prefix": "hone",
-    "body": ["<!--==================-->\n# $0\n<!--==================-->"]
-  },
-  "Header2": {
-    "prefix": "htwo",
-    "body": ["## _$0_"]
-  }
+  "h2":   { "prefix": "ie", "body": "## *$0*"},
+  "codeblocks plain":   { "prefix": "ff", "body": "```$0\n$1\n```\n"},
+  "codeblocks yaml":   { "prefix": "fy", "body": "```yaml\n$1\n```\n"},
+  "codeblocks toml":   { "prefix": "ft", "body": "```toml\n$1\n```\n"},
+  "codeblocks python":   { "prefix": "fp", "body": "```py\n$1\n```\n"}
 }
+

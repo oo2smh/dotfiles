@@ -1,0 +1,7 @@
+{
+  "NOTE": { "prefix": "no", "body": "NOTE: "},
+  "FIX": { "prefix": "fi", "body": "FIX: "},
+  "ZONE": { "prefix": "zo", "body": "ZONE: "}
+}
+
+

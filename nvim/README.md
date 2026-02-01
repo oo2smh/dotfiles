@@ -1,5 +1,5 @@
 # Philosophy
-- eep it minimal
+- Keep it minimal
 - Try to use defaults when possible
  Avoid using tabs, built-in-terminal
   - Using a window manager, tmux, and nvim gets confusing
@@ -40,10 +40,10 @@
 
 ```lua [QUICKFIX]
 -- QUICKFIX
-keymap({ "n", "v" }, "<F1>", ":copen<cr>", { silent = true })
-keymap({ "n", "v" }, "<F2>", ":cprev<cr>", { silent = true })
-keymap({ "n", "v" }, "<F3>", ":cnext<cr>", { silent = true })
-keymap("n", "<F4>", function()
+key({ "n", "v" }, "<F1>", ":copen<cr>", { silent = true })
+key({ "n", "v" }, "<F2>", ":cprev<cr>", { silent = true })
+key({ "n", "v" }, "<F3>", ":cnext<cr>", { silent = true })
+key("n", "<F4>", function()
   vim.fn.setqflist({}, "r")
 end, { desc = "Clear quickfix list" })
 
@@ -54,17 +54,17 @@ local m_pairs = { "echasnovski/mini.pairs", config = true }
 -- TERMINAL SPECIFIC
 -- not using the terminal because nnn opens up in a terminal window
 local exit_term = "<C-\\><C-n><ESC>"
-keymap("t", "<esc><esc>", exit_term .. ":q<cr>")
-keymap("t", "<C-g>", exit_term .. ":bd<cr>", { noremap = true, silent = true })
-keymap("t", "<A-.>", exit_term .. ":q<cr>", { noremap = true, silent = true })
-keymap("t", "<A-d>", exit_term .. ":vertical resize -20%<CR>", { silent = true })
-keymap("t", "<A-left>", exit_term .. ":bp<cr>", { silent = true })
-keymap("n", exit_term .. "<A-1>", ":argument 1<cr>:lua EchoArglist()<cr>")
-keymap("n", exit_term .. "<A-2>", ":argument 2<cr>:lua EchoArglist()<cr>")
-keymap("n", exit_term .. "<A-3>", ":argument 3<cr>:lua EchoArglist()<cr>")
-keymap("n", exit_term .. "<A-4>", ":argument 4<cr>:lua EchoArglist()<cr>")
-keymap("n", exit_term .. "<A-5>", ":argument 5<cr>:lua EchoArglist()<cr>")
-keymap("n", exit_term .. "<A-6>", ":argument 6<cr>:lua EchoArglist()<cr>")
+key("t", "<esc><esc>", exit_term .. ":q<cr>")
+key("t", "<C-g>", exit_term .. ":bd<cr>", { noremap = true, silent = true })
+key("t", "<A-.>", exit_term .. ":q<cr>", { noremap = true, silent = true })
+key("t", "<A-d>", exit_term .. ":vertical resize -20%<CR>", { silent = true })
+key("t", "<A-left>", exit_term .. ":bp<cr>", { silent = true })
+key("n", exit_term .. "<A-1>", ":argument 1<cr>:lua EchoArglist()<cr>")
+key("n", exit_term .. "<A-2>", ":argument 2<cr>:lua EchoArglist()<cr>")
+key("n", exit_term .. "<A-3>", ":argument 3<cr>:lua EchoArglist()<cr>")
+key("n", exit_term .. "<A-4>", ":argument 4<cr>:lua EchoArglist()<cr>")
+key("n", exit_term .. "<A-5>", ":argument 5<cr>:lua EchoArglist()<cr>")
+key("n", exit_term .. "<A-6>", ":argument 6<cr>:lua EchoArglist()<cr>")
 
 -- AUTOCMDS
   -- NOTE: naming conflicts when you try to rename on cwd. to bypass, press :bp to get to rename buffer.
@@ -84,7 +84,7 @@ vim.api.nvim_create_user_command("RemoveQFItem", dd_removes_qf_item, {})
 autocmd("FileType", {
   pattern = "qf",
   callback = function()
-    vim.keymap.set("n", "dd", ":RemoveQFItem<CR>", { buffer = true, silent = true })
+    vim.key.set("n", "dd", ":RemoveQFItem<CR>", { buffer = true, silent = true })
   end,
 })
 
