@@ -1,6 +1,5 @@
 #pragma once
 #define EE_HANDS
-#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
 #define MOUSEKEY_INTERVAL 18
 #define MOUSEKEY_MAX_SPEED 10

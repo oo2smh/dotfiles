@@ -14,66 +14,44 @@ o       = vim.opt
 -- *****************************************************
 local packadd = vim.pack.add
 local gh = "https://github.com/"
-local mini = gh .. "nvim-mini/mini."
 
-packadd({
+packadd({ -- (25 plugins)
   -- languages
-  {src = gh .. "neovim/nvim-lspconfig"},
-  {src = gh .. "williamboman/mason.nvim"},
-  {src = gh .. "williamboman/mason-lspconfig.nvim"},
-  {src = gh .. "windwp/nvim-ts-autotag"},
-  {src = gh .. "nvim-treesitter/nvim-treesitter"},
+  gh .. "nvim-treesitter/nvim-treesitter",
+  gh .. "neovim/nvim-lspconfig",
+  gh .. "williamboman/mason.nvim",
+  gh .. "williamboman/mason-lspconfig.nvim",
+  gh .. "nvim-treesitter/nvim-treesitter-textobjects", -- used in mini.ai for treesitter
 
-  -- base
-  {src = gh .. "EdenEast/nightfox.nvim"},
-  {src = gh .. "luukvbaal/nnn.nvim"},
-  {src = gh .. "tpope/vim-fugitive"},
-  {src = gh .. "azabiong/vim-highlighter"},
-  {src = gh .. "MeanderingProgrammer/render-markdown.nvim"},
-  -- {src = gh .. "stevearc/quicker.nvim"}, -- download and move to core/start
-
-  -- mini
-  {src = mini .. "snippets"},
-  {src = mini .. "extra"},
-  {src = mini .. "pick"},
-  {src = mini .. "icons"},
-  {src = mini .. "basics"},
-  {src = mini .. "tabline"},
-  {src = mini .. "cursorword"},
-  {src = mini .. "indentscope"},
-  {src = mini .. "pairs"},
-  {src = mini .. "surround"},
-  {src = mini .. "align"},
-  {src = mini .. "completion"},
-  {src = mini .. "splitjoin"},
-  {src = mini .. "hipatterns"},
-  {src = mini .. "operators"},
-  {src = mini .. "diff"},
+  gh .. "nvim-mini/mini.nvim",
+  gh .. "luukvbaal/nnn.nvim",
+  gh .. "tpope/vim-fugitive",
+  gh .. "MeanderingProgrammer/render-markdown.nvim",
+  -- gh .. "stevearc/quicker.nvim", -- downloaded and move to core/start
 })
 
 -- *****************************************************
 -- ZONE: SIMPLE CONFIGS
 -- *****************************************************
-cmd("colorscheme nightfox")
-require("mason").setup()
+cmd("colorscheme age")
+require("nnn").setup({ cd = true, quitcd = "lcd", auto_close = true, set_hidden = false, session = "shared" })
 require("mini.basics").setup()
-require("mini.tabline").setup()
-require("mini.cursorword").setup()
-require("mini.indentscope").setup()
 require("mini.pairs").setup()
 require("mini.surround").setup()
-require("mini.align").setup()
+
 require("mini.completion").setup()
 require("mini.icons").setup()
 require("mini.extra").setup()
-require("nnn").setup({ quitcd = "tcd", auto_close = true, set_hidden = true, session = "shared" })
 require("mini.diff").setup({ update_delay = 50, view = { style = "number" }})
 require("mini.pick").setup({ window = { config = { anchor = "NW", row = 20, width = 100, height = 30 }} })
+require("mini.align").setup()
+-- keymaps.lua (MINI: splitjoin, operators, ai)
 
 -- *****************************************************
 -- ZONE: LSP & TREESITTER
 -- *****************************************************
 -- LSP 🗣️
+require("mason").setup()
 require("mason-lspconfig").setup({
     ensure_installed = { "lua_ls", "vimls" },
     automatic_installation = true,
@@ -95,7 +73,7 @@ hipatterns.setup({
     highlighters = {
       note = {
         pattern = "%f[%w]()NOTE()%f[%W]",
-        group = "MiniHipatternsNote",
+        group = "MiniHipatternsTodo",
       },
       fix = {
         pattern = "%f[%w]()FIX()%f[%W]",
@@ -110,6 +88,18 @@ hipatterns.setup({
     },
 })
 
+require('render-markdown').setup({
+  render_modes = { "n", "c", "t", "i" },
+  heading = { render_modes = true, signs = false, icons = {"","","","","",""}},
+  code = { render_modes = true, sign = false },
+  quote = { render_modes = true },
+  bullet = { render_modes = true, icons = {"•", "‣", "▪", "✧"} },
+  link = { render_modes = true },
+  pipe_table = { render_modes = true },
+  inline_highlight = { render_modes = true },
+})
+
+
 -------------------------------------------------------
 -- ZONE: MINI.SNIPPETS
 -------------------------------------------------------
@@ -121,13 +111,13 @@ end
 
 require('mini.snippets').setup({
   snippets = {
-    -- Load custom file with global snippets first
     gen_loader.from_file('~/.config/nvim/snippets/global.json'),
     gen_loader.from_lang(),
   },
   mappings = { expand = '<C-t>', jump_next = '<Tab>', jump_prev = '<S-Tab>', stop = '<C-t>' },
   expand   = { match = match_strict },
 })
+require('mini.snippets').start_lsp_server()
 
 -- tab to expand
 local expand_or_jump = function()
@@ -162,4 +152,3 @@ require("options")
 require("keymaps")
 require("argslist")
 require("autocmds")
-

@@ -1,4 +1,4 @@
-# Softwares
+#Softwares
 1. [Hyprland](./hypr/hyprland.conf)
 2. [Tmux](./.tmux.conf)
 3. Browser (zen)
@@ -6,7 +6,29 @@
 5. [Nvim](./nvim/lua/)
 6. [Qmk](./qmk/keymap.c)
 
-> [!Tip] Use `gf` to open the files when viewing README in neovim
+> [!Tip] Use `gf` to open the files or `gF` for specific line in file when viewing README in neovim
+
+# Installation
+- Install necessary packages
+- Symlink the config files onto ~/.config
+  * These config files usually have a default place where they look for their config files. Use these locations if all possible!
+
+## TMUX
+- Install tpm (package manager) using `git clone`
+`git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
+- Source the tmux configuration file and press (prefix + I) to install the resurrect plugin
+### Clipboard Copy
+- Set the wayland session var, hyprland instance and the xdg runtime dir
+- Get these values by using `echo <var_name>`
+  - `echo HYPRLAND_INSTANCE_SIGNATURE` for instance
+
+## QMK
+- Install qmk using curl `curl -fsSL https://install.qmk.fm | sh`
+- `qmk setup`
+- move your files into the keymaps/default folder
+- `qmk flash -kb ferris/sweep -km default`
+  - you can also create multiple versions of a keymap by putting it under a diff folder
+  - simply change the default when flashing the keyboard
 
 # Hyprland
 > [!Note]
@@ -16,12 +38,11 @@ Special consideration was taken to make the keybinds aligned with a Windows comp
 
 # Tmux
 > [!Warning]
->  Compatability with wayland (clipboard, ctrl bspc keybind)
+>  Compatibility with wayland (clipboard, ctrl bspc keybind)
 >  - use `env` in the terminal while in a tmux session to see if the variables were passed through.
 
 > [!Tip]
 > Try to only use 2 panes and 2 windows per session so that you can cycle through with a single keybind. I also included a visual cue (color change) to let me know when I am in fullscreen.
-
 
 I don't use most of the features. Resize with the mouse and use the prefix with other commands to create new panes, restore/save sessions.
 
@@ -29,28 +50,27 @@ I don't use most of the features. Resize with the mouse and use the prefix with 
 - vimium c
 - video speed controller
 
-```md
-- <A-.>   : close tab
+```toml
 - <A-tab> : change workspace
 - <A-#>   : select # tab
--
 ```
 
-
-```yaml [vimium c]
+```md [vimium c]
+unmapAll
 map h LinkHints.activate
 map H LinkHints.activateOpenInNewTab
 map gg scrollToTop
 map G scrollToBottom
 map <a-g> moveTabLeft
 map <a-w> moveTabRight
-map ( Vomnibar.activateBookmarks
-map <a-p> togglePinTab
+map m Marks.activateCreate
+map ' Marks.activate
 ```
 
-```yaml [video speed]
-- . slower
-- , faster
+```toml [video speed]
+- , slower
+- . faster
+- r toggle preferred speed (1.7)
 ```
 
 # Terminal
@@ -63,7 +83,7 @@ map <a-p> togglePinTab
 
 # Nvim
 > [!Note] Navigation, Visual Cues, Efficient Operations
-## **NAVIGATION*
+## NAVIGATION
 ### Buffer transfer
 #### Hopper
   - `h` to hop open a view
@@ -84,11 +104,11 @@ map <a-p> togglePinTab
 
 #### Argslist
 - core (1-3)
-  1. 🐧 hub: the biggest file
+  1. 🛖 hub: the biggest file
   2. 🎯 target: current file to tackle
   3. 🐶 neighbor: support for target (test, reference)
   4. 🔥 magma: hotfix or urgent, things to purge
-  5. 🪱 ground: either stable (vars) or granualar details
+  5. 🪱 ground: either stable (vars) or granular details
   6. 🌊 water: wandering. prone to change. experimentation
 
 #### Global Marks, Persistent Files
@@ -110,12 +130,12 @@ map <a-p> togglePinTab
   - Standardized Local Marks
   - If you are multitasking, the left marks correspond to 1 task and the right to that specific task. It is a mirror of each other.
     - use `r/R` for both sides (recent). Use it when you are making any big jumps
-    1. Base (mirors the argslist)
-      - 🐧 hub: biggest engine of the buffer
+    1. Base (mirrors the argslist)
+      - 🛖 hub: biggest engine of the buffer
       - 🎯 temp/target: temp mark. Use often
       - 🐶 neighbor: ref point for temp/target
       - 🔥 magma: fix required
-      - 🪱 ground: granualar details to target
+      - 🪱 ground: granular details to target
       - 🌊 water: wandering. things to explore later
   - Historical jumps (<C-i>, <C-o>)
   - Search jumps (/?*)
@@ -135,6 +155,15 @@ map <a-p> togglePinTab
 
  ## *REGISTERS STANDARDIZED*
 - Use sys-clipboard, (")clipboard, yank(0) clipboard, and the (a) clipboard
+
+## *OTHER TRINKETS*
+- use `:mks` to save a session
+  - by default it will save `Session.vim`
+  - use `:so Session.vim` to activate the session
+- use `:lcd <path>` to local cd. This affects plugins like nnn and mini.pick
+- `:fugitive` is created when you do a diff and fugitive needs to store the temp files
+- `:Gvdiffsplit <commit1> <commit2>` to compare two commits
+  - by default compares working to index (which is mini.diff's default)
 
 # QMK
 > This probably had the most complex config out of all the other items. Some thought went into placing keys in ergonomic positions as well as thinking about the keys next to each key to maximize rolls.

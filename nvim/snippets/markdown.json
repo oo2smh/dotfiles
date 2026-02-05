@@ -1,8 +1,15 @@
 {
-  "h2":   { "prefix": "ie", "body": "## *$0*"},
-  "codeblocks plain":   { "prefix": "ff", "body": "```$0\n$1\n```\n"},
-  "codeblocks yaml":   { "prefix": "fy", "body": "```yaml\n$1\n```\n"},
-  "codeblocks toml":   { "prefix": "ft", "body": "```toml\n$1\n```\n"},
-  "codeblocks python":   { "prefix": "fp", "body": "```py\n$1\n```\n"}
+  "h2":   { "prefix": "htwo", "body": "## *$0*"},
+  "codeblocks plain":   { "prefix": "ff", "body": "```$1\n$0\n```\n"},
+  "codeblocks yaml":   { "prefix": "fy", "body": "```yaml\n$0\n```\n"},
+  "codeblocks toml":   { "prefix": "ft", "body": "```toml\n$0\n```\n"},
+  "codeblocks python":   { "prefix": "fp", "body": "```py\n$0\n```\n"},
+  "codeblocks js":   { "prefix": "fj", "body": "```js\n$0\n```\n"},
+  "blockquote note":   { "prefix": "note", "body": "> [!note] $0"},
+  "blockquote tip":   { "prefix": "tip", "body": "> [!tip] $0"},
+  "blockquote important":   { "prefix": "important", "body": "> [!important] $0"},
+  "blockquote caution":   { "prefix": "caution", "body": "> [!caution] $0"},
+  "blockquote warning":   { "prefix": "warning", "body": "> [!warning] $0"}
 }
+
 

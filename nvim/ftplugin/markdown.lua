@@ -2,11 +2,9 @@
 keymap('i', "'", "'", { buffer = 0 })
 keymap('i', "\"", "\"", { buffer = 0 })
 
--- spellcheck
-keymap('n', "lu", "zg" )
-keymap("n", "ls", function() o.spell = not vim.opt.spell:get() end, { desc = "Toggle spellcheck" })
-vim.fn.setreg("u", '_wi*A*gUU')
+vim.fn.setreg("x", 'V:s/\v\\*//ge\r_wi*A*gUU')
+vim.fn.setreg("u", 'mx:g/^## /normal @x\r\'x')
 
+-- vim.fn.setreg("u", '0:s/\\*//ge\rVUgI*\<Esc>A*\<Esc>')
 -- [[ and ]] to navigate between sections
 -- [s and ]s to navigate between spellwords
-
