@@ -1,4 +1,3 @@
-local o = o
 local g = vim.g
 
 --************************************
@@ -9,6 +8,7 @@ vim.opt.completeopt = { 'menuone', 'noselect', 'noinsert' }
 vim.hl.priorities.semantic_tokens = 95
 vim.opt.viewoptions = "folds"
 vim.opt.sessionoptions = "blank,buffers,curdir,help,tabpages,winsize"
+-- o.clipboard = "unnamedplus"
 o.fdm = "manual"
 o.spellcapcheck = "" -- disable first line letter cap to false
 g.mapleader = " "
@@ -22,14 +22,14 @@ o.undodir = os.getenv("HOME") .. "/.local/share/nvim/undodir"
 g.netrw_keepdir = 0 -- allows mini.pick to use arg directory not the cwd when entered
 
 -- VISUAL
-o.statusline ="%#TabLineFill# %{v:lua.string.upper(v:lua.vim.fn.mode())} "
-  .. "%#Search#%{v:lua.get_git_branch()}"
-  .. "%* %f "
-  .. "%#WarningMsg#%p%%"
-  .. "%#DiagnosticOk# %m%<%="
-  .. "%#Statement#%{%v:lua.count_searches()%} "
-  .. "%#DiagnosticOk#%{v:lua.get_active_treesitter()}"
-  .. "%#Directory#%{v:lua.get_clean_lsp()}"
+o.statusline = "%#TabLineFill# %{v:lua.string.upper(v:lua.vim.fn.mode())} "
+    .. "%#Search#%{v:lua.get_git_branch()}"
+    .. "%* %f "
+    .. "%#WarningMsg#%p%%"
+    .. "%#DiagnosticOk# %m%<%="
+    .. "%#Statement#%{%v:lua.count_searches()%} "
+    .. "%#DiagnosticOk#%{v:lua.get_active_treesitter()}"
+    .. "%#Directory#%{v:lua.get_clean_lsp()}"
 o.laststatus = 2
 o.signcolumn = "yes"
 o.colorcolumn = "80"
@@ -95,7 +95,7 @@ _G.count_searches = function()
   p = p:gsub([[\<]], ""):gsub([[\>]], ""):gsub([[\V]], ""):gsub([[\c]], ""):gsub("%%", "%%%%")
 
   -- Truncate to 5 characters
-  if #p > 15 then p = p:sub(1,15) .. "…" end
+  if #p > 15 then p = p:sub(1, 15) .. "…" end
 
   return string.format("%d/%d %s", sc.current, sc.total, p)
 end

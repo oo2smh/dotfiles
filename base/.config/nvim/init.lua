@@ -39,7 +39,7 @@ packadd({ -- (25 plugins)
   gh .. "supermaven-inc/supermaven-nvim",
   gh .. "stevearc/conform.nvim",
   gh .. "windwp/nvim-ts-autotag",
-  -- gh .. "stevearc/quicker.nvim", -- downloaded and move to core/start
+  gh .. "stevearc/quicker.nvim", -- downloaded and move to core/start
 })
 
 -- *****************************************************

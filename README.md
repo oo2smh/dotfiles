@@ -67,7 +67,7 @@ map m Marks.activateCreate
 map ' Marks.activate
 ```
 
-```toml [video speed]
+```yaml [video speed]
 - , slower
 - . faster
 - r toggle preferred speed (1.7)

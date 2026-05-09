@@ -93,13 +93,29 @@ keymap({ "n", "v" }, "#", function()
 end, opts)
 
 --******************************************************************
+-- ZONE: MAC-SPECIFIC
+--*******************************************************************
+-- Command (D doesn't work that well. Must manipulate it in ghostty)
+
+-- DELETE WORD / BUFFER TOGGLE
+keymap({ "i", "c" }, "<A-BS>", "<C-w>")
+keymap({ "n", "v" }, "<A-BS>", "<C-w>w", opts)
+
+-- MOVE WORD
+keymap({ "n", "v" }, "<A-f>", "W", opts)
+keymap("i", "<A-f>", "<C-o>W", opts)
+keymap("i", "<A-b>", "<C-o>B", opts)
+
+-- OPEN CLOSE
+keymap({ "n", "v" }, "<D-w>", "<cmd>:q!<cr>", { noremap = true, nowait = true }) -- window close (closes panes, tabs(if it's the last pane of tab) and nvim if it's the last pane)
+
+--******************************************************************
 -- ACTIONS
 --*******************************************************************
 -- lsp gr series (project changes) | (grr = ref (*), grn = name-change (project-wide), gri = implementation, gd = jump to definition), gra = code actions
 -- code actions aka code suggestions: (import missing modules, typos, remove unused var, etc )
 
 -- GENERAL
-keymap("i", "F0", "<C-x><C-f>", opts)
 keymap({ "n", "v" }, "|", H.toggle_fullscreen, opts)
 keymap("n", "<leader>en", ":qa!<cr>", opts) -- Exit: no changes
 keymap("n", "<leader>ew", ":xa<cr>", opts)  -- Exit: write
@@ -137,11 +153,12 @@ keymap('n', "gn", "]szz")
 keymap('n', "gN", "[szz")
 keymap("n", "ls", function() o.spell = not vim.opt.spell:get() end, { desc = "Toggle spellcheck" })
 
---DELETE
+--DELEe
 -- ctrl h is how tmux/shell understands ctrl bspc
 keymap({ "i", "c" }, "<C-H>", "<C-w>")
 keymap({ "i", "c" }, "<C-BS>", "<C-w>")
 keymap({ "i", "c" }, "<S-End>", "<esc>v<end>dO")
+keymap("n", "<S-End>", "V")
 
 -- TAB TO INDENT
 -- <Tab> is represented as <C-i> in terminal/tmux. Remap. Use Ctl-m for loc jumping
@@ -163,7 +180,7 @@ keymap("n", "<A-a>", "GVgg")
 keymap("n", "<S-end>", "V")
 
 -- SEARCH AND REPLACE (EXCHANGE)
-------------------------------------------------------------
+-----------------------------------------------------------
 -- better * (*N) hackish, but works with flickering. This longer command doesn't flicker
 keymap({ "n", "v" }, "*",
   ":let @/='\\<'.expand('<cword>').'\\>'<CR>:set hlsearch<CR>",
@@ -216,8 +233,8 @@ keymap("n", "<C-*>", function() H.execute_action("test") end, { desc = "Run test
 
 -- OPEN CLOSE
 keymap({ "n", "v" }, "<C-w>", "<cmd>:q!<cr>", { noremap = true, nowait = true }) -- window close (closes panes, tabs(if it's the last pane of tab) and nvim if it's the last pane)
-keymap("t", "<Esc>", "<C-\\><C-n>:bd!<CR>", opts)                                --nnn.nvim opens in a terminal window..allows you to escape with 1 esc
 keymap({ "n", "v" }, "<C-g>", ":bd<cr>", { silent = true })
+keymap("t", "<Esc>", "<C-\\><C-n>:bd!<CR>", opts)                                --nnn.nvim opens in a terminal window..allows you to escape with 1 esc
 
 -- PANES/TABS
 keymap("n", "<A-n>", ":vsplit<CR>", opts)
@@ -240,17 +257,16 @@ keymap({ "n", "v" }, "<C-h>", "<C-w>w", opts)
 -- SCROLL AND CENTER
 keymap("n", "<C-e>", "5<C-e>")
 keymap("n", "<C-y>", "5<C-y>")
+keymap("n", "<C-d>", "<C-d>zz")
+keymap("n", "<C-u>", "<C-u>zz")
 keymap("n", "n", "nzz")
 keymap("n", "N", "Nzz")
 keymap({ "n", "v" }, "<ScrollWheelUp>", "5kzz")
 keymap({ "n", "v" }, "<ScrollWheelDown>", "5jzz")
+
 keymap("n", "<C-t>", "g;zz")
-keymap("n", "<C-n>", "g,zz")
-keymap("n", "<A-right>", "<C-i>")
-keymap("n", "<A-left>", "<C-o>zz")
-keymap("n", "<A-right>", "<C-i>zz")
-keymap("n", "<C-d>", "<C-d>zz")
-keymap("n", "<C-u>", "<C-u>zz")
+keymap("n", "<C-n>", "<C-i>zz")
+keymap("n", "<C-o>", "<C-o>zz")
 keymap("n", "''", "''zz")
 keymap("n", "``", "``zz")
 keymap({ "n", "v" }, "u", "uzz", opts)
@@ -289,7 +305,7 @@ keymap("n", "<leader>t", ":e ~/Doc/notes/tmp/_tmp.md<CR>", { desc = "temp.md" })
 keymap("n", "<leader>sp", ":e ~/Doc/notes/tmp/_scratch.py<CR>", { desc = "temp py" })
 keymap("n", "<leader>sj", ":e ~/Doc/notes/tmp/_scratch.js<CR>", { desc = "temp js" })
 keymap("n", "<leader>ko", ":e ~/Doc/notes/etc/keys.md<CR>", { desc = "Nvim keymaps" })
-keymap("n", "<leader>kn", ":e ~/Dotfiles/nvim/lua/keymaps.lua<CR>", { desc = "Nvim keymaps" })
-keymap("n", "<leader>kk", ":e ~/Dotfiles/qmk/keymap.c<CR>", { desc = "Nvim keymaps" })
-keymap("n", "<leader>kt", ":e ~/Dotfiles/.tmux.conf<CR>", { desc = "Nvim keymaps" })
-keymap("n", "<leader>ka", ":e ~/Dotfiles/.bashrc<CR>", { desc = "Nvim keymaps" })
+keymap("n", "<leader>kn", ":e ~/dotfiles/base/.config/nvim/lua/keymaps.lua<CR>", { desc = "Nvim keymaps" })
+keymap("n", "<leader>kk", ":e ~/dotfiles/qmk/keymap.c<CR>", { desc = "Nvim keymaps" })
+keymap("n", "<leader>kt", ":e ~/dotfiles/base/.tmux.conf<CR>", { desc = "Nvim keymaps" })
+keymap("n", "<leader>ka", ":e ~/dotfiles/base/.bashrc<CR>", { desc = "Nvim keymaps" })
