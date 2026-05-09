@@ -1,6 +1,7 @@
 {
   "h2":   { "prefix": "htwo", "body": "## *$0*"},
   "codeblocks plain":   { "prefix": "ff", "body": "```$1\n$0\n```\n"},
+  "codeblocks css":   { "prefix": "fcss", "body": "```css\n$0\n```\n"},
   "codeblocks yaml":   { "prefix": "fy", "body": "```yaml\n$0\n```\n"},
   "codeblocks toml":   { "prefix": "ft", "body": "```toml\n$0\n```\n"},
   "codeblocks python":   { "prefix": "fp", "body": "```py\n$0\n```\n"},

@@ -1,9 +1,6 @@
 local M = {}
 local pick = require("mini.pick")
 local fullscreen = false
-local ns = vim.api.nvim_create_namespace("side_signs")
-local mark_chars = { "a", "h", "t", "m", "w", "A", "E", "I", "C" }
-
 ------------------------------------------------
 -- GENERAL
 ------------------------------------------------
@@ -50,7 +47,6 @@ M.open_root_file = function(filename)
   cmd("edit " .. vim.fn.fnameescape(file_path))
 end
 
-
 M.centered_act = function(command, letter)
   letter = letter or ""
   return command .. letter .. "zz"
@@ -62,83 +58,8 @@ M.toggle_fullscreen = function()
 end
 
 ------------------------------------------------
--- SHOW MARKS
-------------------------------------------------
-M.update_mark_signs = function()
-  local bufnr = vim.api.nvim_get_current_buf()
-  vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
-
-  for _, char in ipairs(mark_chars) do
-    local mark = vim.api.nvim_buf_get_mark(bufnr, char)
-    local row = mark[1] - 1
-
-    if row >= 0 then
-      vim.api.nvim_buf_set_extmark(bufnr, ns, row, 0, {
-        sign_text = char,
-        sign_hl_group = "Statement",
-        priority = 1,
-      })
-    end
-  end
-  vim.opt_local.signcolumn = "yes"
-  vim.cmd("redraw")
-end
-
-local function set_mark_and_update()
-  local ok, char = pcall(vim.fn.getcharstr)
-  if not ok or char == "\27" then return end -- Handle <Esc> or errors
-  vim.cmd("normal! m" .. char)
-  M.update_mark_signs()
-end
-
-local function del_mark_at_line_and_update()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local cursor_line = vim.api.nvim_win_get_cursor(0)[1]
-  local found = false
-
-  -- Iterate through your defined mark_chars to find one on this line
-  for _, char in ipairs(mark_chars) do
-    local mark = vim.api.nvim_buf_get_mark(bufnr, char)
-    if mark[1] == cursor_line then
-      vim.cmd("delmarks " .. char)
-      found = true
-    end
-  end
-
-  if found then
-    M.update_mark_signs()
-  else
-    vim.notify("No mark found on current line", vim.log.levels.INFO)
-  end
-end
-
-------------------------------------------------
 -- MINI PICKERS
 ------------------------------------------------
-M.check_health = function()
-  local items = {
-    "mason-lspconfig",
-    "nvim-treesitter",
-    "render-markdown",
-    "vim.deprecated",
-    "vim.health",
-    "vim.lsp",
-    "vim.pack",
-    "vim.provider",
-    "vim.treesitter"
-  }
-
-  pick.start({
-    source = {
-      items = items,
-      name = 'Checkhealth',
-      choose = function(item)
-        vim.cmd('vert checkhealth ' .. item)
-      end,
-    },
-  })
-end
-
 M.git_branch_switch = function()
   local branches = vim.fn.systemlist("git branch --format='%(HEAD) %(worktreepath) %(refname:short)'")
 
@@ -161,122 +82,249 @@ M.git_branch_switch = function()
   },
 })
 end
+
 ------------------------------------------------
--- BOOKMARKER
+-- TRI-COLOR HIGHLIGHTER
 ------------------------------------------------
-local ns_id = vim.api.nvim_create_namespace("LineHighlighter")
-hl(0, "FirstCharMark", { fg = "#FFCC00" })
+M.ns = vim.api.nvim_create_namespace("InstanceHighlight")
+M.highlight_dir = vim.fn.stdpath("data") .. "/highlights"
 
-local function redraw(bufnr)
-    bufnr = bufnr or vim.api.nvim_get_current_buf()
-    local path = vim.api.nvim_buf_get_name(bufnr)
-    local data = vim.g.MARKER_DATA or {}
-
-    vim.api.nvim_buf_clear_namespace(bufnr, ns_id, 0, -1)
-    if not data[path] then return end
-
-    local total_lines = vim.api.nvim_buf_line_count(bufnr)
-    for row_str, _ in pairs(data[path]) do
-        local row = tonumber(row_str)
-        if row and row < total_lines then
-            vim.api.nvim_buf_set_extmark(bufnr, ns_id, row, 0, {
-                number_hl_group = "FirstCharMark",
-                priority = 1000,
-            })
-        end
-    end
+-- Ensure folder exists
+if vim.fn.isdirectory(M.highlight_dir) == 0 then
+  vim.fn.mkdir(M.highlight_dir, "p")
 end
-local function toggle_bookmark()
-    local path = vim.api.nvim_buf_get_name(0)
-    if path == "" then return end
-    local row = tostring(vim.api.nvim_win_get_cursor(0)[1] - 1)
 
-    -- Force deep copy to break Lua/Vimscript proxy issues
-    local data = vim.deepcopy(vim.g.MARKER_DATA or {})
-    data[path] = data[path] or {}
+-- Highlight groups (plain colors)
+vim.cmd([[
+  highlight MyCyan   guibg=#00FFFF guifg=#000000
+  highlight MyOrange guibg=#FFA500 guifg=#000000
+  highlight MyNeon   guibg=#39FF14 guifg=#000000
+]])
 
-    if data[path][row] then
-        data[path][row] = nil
+M.highlights = {}
+
+M.file_highlight_path = function(buf)
+  local path = vim.api.nvim_buf_get_name(buf)
+  if path == "" then return nil end
+
+  -- Determine base folder
+  local git_root = vim.fn.systemlist("git -C " .. vim.fn.fnameescape(path) .. " rev-parse --show-toplevel")[1]
+  local base
+  if git_root and git_root ~= "" and vim.v.shell_error == 0 then
+    -- Use the git root folder name
+    base = vim.fn.fnamemodify(git_root, ":t")
+    -- Make path relative to git root
+    path = vim.fn.fnamemodify(path, ":." .. git_root)
+  else
+    -- fallback to home
+    local home = vim.fn.expand("~")
+    base = "~"
+    path = path:gsub("^" .. home .. "/", "")
+  end
+
+  local safe_name = path:gsub("/", "_")
+  return M.highlight_dir .. "/" .. base .. "_" .. safe_name
+end
+-- Load highlights for a buffer
+M.load_highlights = function(buf)
+  local path = M.file_highlight_path(buf)
+  if not path or vim.fn.filereadable(path) ~= 1 then return {} end
+  local ok, data = pcall(dofile, path)
+  if ok and type(data) == "table" then return data end
+  return {}
+end
+
+-- Save highlights for a buffer
+M.save_highlights = function(buf)
+  buf = buf or vim.api.nvim_get_current_buf()
+  local path = M.file_highlight_path(buf)
+  if not path then return end
+  local f = io.open(path, "w")
+  if f then
+    f:write("return " .. vim.inspect(M.highlights[buf] or {}))
+    f:close()
+  end
+end
+
+-- Toggle highlight (removes overlapping, applies new color)
+M.toggle_highlight = function(group, s_line, s_col, e_line, e_col)
+  local buf = vim.api.nvim_get_current_buf()
+  M.highlights[buf] = M.highlights[buf] or {}
+
+  local remove_existing = false
+  local new_hl = {}
+
+  for _, h in ipairs(M.highlights[buf]) do
+    local overlap = not (h.e_col <= s_col and h.s_line == s_line or
+                        h.s_line < s_line or
+                        h.s_col >= e_col and h.s_line == e_line or
+                        h.s_line > e_line)
+
+    if overlap then
+      if h.group == group then
+        remove_existing = true  -- same color exists → remove it
+      end
+      -- different color → remove it, do not add
     else
-        data[path][row] = true
+      table.insert(new_hl, h)
+    end
+  end
+
+  M.highlights[buf] = new_hl
+
+  -- Apply new highlight if no same-color highlight existed
+  if not remove_existing then
+    for l = s_line, e_line do
+      local startc = (l == s_line) and s_col or 0
+      local endc = (l == e_line) and e_col or vim.api.nvim_buf_get_lines(buf, l, l+1, false)[1]:len()
+      table.insert(M.highlights[buf], {group=group, s_line=l, s_col=startc, e_col=endc})
+    end
+  end
+
+  -- Refresh buffer
+  vim.api.nvim_buf_clear_namespace(buf, M.ns, 0, -1)
+  for _, h in ipairs(M.highlights[buf]) do
+    vim.api.nvim_buf_add_highlight(buf, M.ns, h.group, h.s_line, h.s_col, h.e_col)
+  end
+
+  M.save_highlights(buf)
+end
+
+-- Highlight word or selection
+M.highlight_word_or_selection = function(group)
+  local mode = vim.fn.mode()
+  if mode == "v" or mode == "V" then
+    local start_pos = vim.fn.getpos("v")
+    local end_pos   = vim.fn.getpos(".")
+    local s_line, s_col = start_pos[2]-1, start_pos[3]-1
+    local e_line, e_col = end_pos[2]-1, end_pos[3]-1
+
+    if s_line > e_line or (s_line == e_line and s_col > e_col) then
+      s_line, e_line = e_line, s_line
+      s_col, e_col = e_col, s_col
     end
 
-    vim.g.MARKER_DATA = data
-    redraw(0)
-end
+    if mode == "v" then e_col = e_col + 1 end
 
-local function clear_bookmarks()
-    local path = vim.api.nvim_buf_get_name(0)
-    local data = vim.deepcopy(vim.g.MARKER_DATA or {})
-    data[path] = nil
-    vim.g.MARKER_DATA = data
-    vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
-    print("Marks cleared")
-end
-
--- local function jump_bookmarks(dir)
---     local marks = vim.api.nvim_buf_get_extmarks(0, ns_id, 0, -1, {})
---     if #marks == 0 then return end
---     local row = vim.api.nvim_win_get_cursor(0)[1] - 1
---     table.sort(marks, function(a, b) return a[2] < b[2] end)
---     for _, m in ipairs(marks) do
---         if (dir > 0 and m[2] > row) or (dir < 0 and m[2] < row) then
---             vim.api.nvim_win_set_cursor(0, { m[2] + 1, 0 })
---             return
---         end
---     end
---     local t = dir > 0 and marks[1] or marks[#marks]
---     vim.api.nvim_win_set_cursor(0, { t[2] + 1, 0 })
--- end
-
-local function jump_bookmarks(dir)
-    local marks = vim.api.nvim_buf_get_extmarks(0, ns_id, 0, -1, {})
-    if #marks == 0 then return end
-
-    local row = vim.api.nvim_win_get_cursor(0)[1] - 1
-    table.sort(marks, function(a, b) return a[2] < b[2] end)
-
-    if dir > 0 then
-        -- Forward: Find the first mark after the cursor
-        for _, m in ipairs(marks) do
-            if m[2] > row then
-                vim.api.nvim_win_set_cursor(0, { m[2] + 1, 0 })
-                return
-            end
-        end
-        vim.api.nvim_win_set_cursor(0, { marks[1][2] + 1, 0 }) -- Wrap to start
+    -- Visual Line mode: highlight full lines
+    if mode == "V" then
+      for l = s_line, e_line do
+        local line_len = vim.api.nvim_buf_get_lines(0,l,l+1,false)[1]:len()
+        M.toggle_highlight(group, l, 0, l, line_len)
+      end
     else
-        -- Backward: Iterate in reverse to find the first mark before the cursor
-        for i = #marks, 1, -1 do
-            local m = marks[i]
-            if m[2] < row then
-                vim.api.nvim_win_set_cursor(0, { m[2] + 1, 0 })
-                return
-            end
-        end
-        vim.api.nvim_win_set_cursor(0, { marks[#marks][2] + 1, 0 }) -- Wrap to end
+      M.toggle_highlight(group, s_line, s_col, e_line, e_col)
     end
+
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, true, true), "n", true)
+  else
+    local word = vim.fn.expand("<cword>")
+    if word ~= "" then
+      local line = vim.api.nvim_get_current_line()
+      local col = string.find(line, word, 1, true)-1
+      M.toggle_highlight(group, vim.fn.line('.')-1, col, vim.fn.line('.')-1, col+#word)
+    end
+  end
 end
 
+-- Apply highlights to buffer
+M.apply_highlights = function(buf)
+  buf = buf or vim.api.nvim_get_current_buf()
+  if not M.highlights[buf] then return end
+  vim.api.nvim_buf_clear_namespace(buf, M.ns, 0, -1)
+  for _, h in ipairs(M.highlights[buf]) do
+    vim.api.nvim_buf_add_highlight(buf, M.ns, h.group, h.s_line, h.s_col, h.e_col)
+  end
+end
 
-autocmd({ "BufWinEnter", "SessionLoadPost" }, { callback = function(ev) redraw(ev.buf) end })
+-- Toggle visibility
+local highlights_visible = true
+M.toggle_visibility = function()
+  local buf = vim.api.nvim_get_current_buf()
+  if highlights_visible then
+    vim.api.nvim_buf_clear_namespace(buf, M.ns, 0, -1)
+    highlights_visible = false
+  else
+    M.apply_highlights(buf)
+    highlights_visible = true
+  end
+end
 
--- Mappings
-keymap('n', 'm-', toggle_bookmark) -- make mark
-keymap('n', 'mn', function() jump_bookmarks(1) cmd("norm zz") end)
-keymap('n', 'mi', function() jump_bookmarks(-1) cmd("norm zz") end) -- use altrep key
-keymap('n', 'm<BS>', clear_bookmarks)
-keymap("n", "md", del_mark_at_line_and_update, { desc = "Delete mark and update signs" })
-keymap("n", "m", set_mark_and_update, { desc = "Set any mark and update signs", silent = true })
-autocmd({ "BufEnter", "SessionLoadPost", "BufWritePre" }, { callback = function() M.update_mark_signs() end, })
+-- Clear all highlights
+M.clear_highlights = function()
+  local buf = vim.api.nvim_get_current_buf()
+  vim.api.nvim_buf_clear_namespace(buf, M.ns, 0, -1)
+  M.highlights[buf] = nil
+  M.save_highlights(buf)
+end
 
-keymap('n', '<leader>f', function()
-    local winid = vim.api.nvim_get_current_win()
-    if vim.wo[winid].foldlevel == 0 then
-        vim.cmd('normal! zR') -- Unfold all
-    else
-        vim.cmd('normal! zM') -- Fold all
+-- Jump between orange highlights only
+M.jump_color = function(group, dir)
+  local buf = vim.api.nvim_get_current_buf()
+  local hl = M.highlights[buf]
+  if not hl or #hl == 0 then return end
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  row = row - 1
+
+  local filtered = {}
+  for _, h in ipairs(hl) do
+    if h.group == group then table.insert(filtered, h) end
+  end
+  if #filtered == 0 then return end
+
+  table.sort(filtered, function(a,b) return a.s_line < b.s_line end)
+
+  if dir > 0 then
+    for _, h in ipairs(filtered) do
+      if h.s_line > row or (h.s_line == row and h.s_col > col) then
+        vim.api.nvim_win_set_cursor(0, {h.s_line+1, h.s_col})
+        return
+      end
     end
-end, { desc = "Toggle Fold All" })
+    vim.api.nvim_win_set_cursor(0, {filtered[1].s_line+1, filtered[1].s_col})
+  else
+    for i=#filtered,1,-1 do
+      local h = filtered[i]
+      if h.s_line < row or (h.s_line == row and h.s_col < col) then
+        vim.api.nvim_win_set_cursor(0, {h.s_line+1, h.s_col})
+        return
+      end
+    end
+    vim.api.nvim_win_set_cursor(0, {filtered[#filtered].s_line+1, filtered[#filtered].s_col})
+  end
+
+  cmd("norm zz")
+end
+
+-- Auto-load highlights per buffer
+autocmd({"BufReadPost", "BufEnter"}, {
+  callback = function(ev)
+    M.highlights[ev.buf] = M.load_highlights(ev.buf)
+    M.apply_highlights(ev.buf)
+  end
+})
+
+keymap({"n","v"}, "!1", function() M.highlight_word_or_selection("MyOrange") end, {silent=true})
+keymap("n", "!2", function() M.jump_color("MyOrange", -1) end, {silent=true})
+keymap("n", "!3", function() M.jump_color("MyOrange", 1) end, {silent=true})
+keymap({"n","v"}, "!4", function() M.highlight_word_or_selection("MyNeon") end, {silent=true})
+keymap("n", "!5", function() M.jump_color("MyNeon", -1) end, {silent=true})
+keymap("n", "!6", function() M.jump_color("MyNeon", 1) end, {silent=true})
+keymap({"n","v"}, "!7", function() M.highlight_word_or_selection("MyCyan") end, {silent=true})
+keymap("n", "!8", function() M.jump_color("MyCyan", -1) end, {silent=true})
+keymap("n", "!9", function() M.jump_color("MyCyan", 1) end, {silent=true})
+
+keymap({"n","v"}, "!h", function() M.highlight_word_or_selection("MyOrange") end, {silent=true})
+keymap("n", "!t", function() M.jump_color("MyOrange", -1) end, {silent=true})
+keymap("n", "!n", function() M.jump_color("MyOrange", 1) end, {silent=true})
+keymap({"n","v"}, "!m", function() M.highlight_word_or_selection("MyNeon") end, {silent=true})
+keymap("n", "!g", function() M.jump_color("MyNeon", -1) end, {silent=true})
+keymap("n", "!w", function() M.jump_color("MyNeon", 1) end, {silent=true})
+keymap({"n","v"}, "!l", function() M.highlight_word_or_selection("MyCyan") end, {silent=true})
+keymap("n", "!d", function() M.jump_color("MyCyan", -1) end, {silent=true})
+keymap("n", "!p", function() M.jump_color("MyCyan", 1) end, {silent=true})
+
+keymap("n", "<leader>h", M.toggle_visibility, {silent=true}) -- toggle visibility
+keymap("n", "h<bs>", M.clear_highlights, {silent=true})     -- clear all highlights
 
 return M

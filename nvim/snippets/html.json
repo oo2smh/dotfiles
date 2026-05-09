@@ -1,0 +1,127 @@
+{
+  "Link": {
+    "prefix": "at",
+    "body": "<a href=\"${1:/}\">${0}</a>"
+  },
+  "Division": {
+    "prefix": "divt",
+    "body": "<div>\n\t${0}\n</div>"
+  },
+  "Section": {
+    "prefix": "sectiont",
+    "body": "<section class=\"${1}\">\n\t${0}\n</section>"
+  },
+  "Main": {
+    "prefix": "maint",
+    "body": "<main>\n\t${0}\n</main>"
+  },
+  "Footer": {
+    "prefix": "foott",
+    "body": "<footer>\n\t${0}\n</footer>"
+  },
+  "Header": {
+    "prefix": "headt",
+    "body": "<header>\n\t${0}\n</header>"
+  },
+  "Hgroup": {
+    "prefix": "hgroupt",
+    "body": "<hgroup>${0}</hgroup>"
+  },
+  "Heading 1": {
+    "prefix": "hone",
+    "body": "<h1>${0}</h1>"
+  },
+  "Heading 2": {
+    "prefix": "htwo",
+    "body": "<h2>${0}</h2>"
+  },
+  "Heading 3": {
+    "prefix": "hthree",
+    "body": "<h3>${0}</h3>"
+  },
+  "Heading 4": {
+    "prefix": "hfour",
+    "body": "<h4>${0}</h4>"
+  },
+  "Paragraph": {
+    "prefix": "pt",
+    "body": "<p>${0}</p>"
+  },
+  "Ordered List": {
+    "prefix": "olt",
+    "body": "<ol>\n\t<li>${0}</li>\n</ol>"
+  },
+  "Unordered List": {
+    "prefix": "ult",
+    "body": "<ul>\n\t<li>${0}</li>\n</ul>"
+  },
+  "List Item": {
+    "prefix": "lit",
+    "body": "<li>${0}</li>"
+  },
+  "Span": {
+    "prefix": "spant",
+    "body": "<span>${0}</span>"
+  },
+  "Button": {
+    "prefix": "btnt",
+    "body": "<button type=\"button\">${0}</button>"
+  },
+  "Article": {
+    "prefix": "articlet",
+    "body": "<article>${0}</article>"
+  },
+  "Nav": {
+    "prefix": "navt",
+    "body": "<nav>${0}</nav>"
+  },
+  "Figure": {
+    "prefix": "figuret",
+    "body": "<figure>${0}</figure>"
+  },
+  "Figcaption": {
+    "prefix": "figcaptiont",
+    "body": "<figcaption>${0}</figcaption>"
+  },
+  "Definition List": {
+    "prefix": "dlt",
+    "body": "<dl>${0}</dl>"
+  },
+  "Definition Term": {
+    "prefix": "dtt",
+    "body": "<dt>${0}</dt>"
+  },
+  "Definition Data": {
+    "prefix": "ddt",
+    "body": "<dd>${0}</dd>"
+  },
+  "Time": {
+    "prefix": "timet",
+    "body": "<time>${0}</time>"
+  },
+  "Blockquote": {
+    "prefix": "bquotet",
+    "body": ["<figure class=\"quoteBox\">", "  <blockquote cite=\"${1:url}\">", "    <p>\"${2:Quote text}\"</p>", "  </blockquote>", "  <figcaption>", "     <cite>${3:Author}</cite>", "  </figcaption>", "</figure>"],
+    "description": "Semantic figure quote with attribution"
+  },
+  "Image Tag (Standard)": {
+    "prefix": "imgt",
+    "body": ["<img src=\"${1:path/to/image}\" alt=\"${2:description}\">"],
+    "description": "Standard BEM-flavored image tag"
+  },
+  "Image Nested in Div": {
+    "prefix": "dimgt",
+    "body": ["<div>", "\t<img src=\"${2:path/to/image}\" alt=\"${3:description}\">", "</div>"],
+    "description": "Image wrapped in a div frame for 8pt grid control"
+  },
+  "Picture Tag (Art Direction)": {
+    "prefix": "pict",
+    "body": ["<picture class=\"${1:block}__picture\">", "\t<source media=\"(min-width: ${2:1024}px)\" srcset=\"${3:desktop-path}\">", "\t<source media=\"(min-width: ${4:768}px)\" srcset=\"${5:tablet-path}\">", "\t<img src=\"${6:mobile-path}\" alt=\"${7:description}\" class=\"${1:block}__img\">", "</picture>"],
+    "description": "Picture tag for Art Direction with multi-source support"
+  },
+  "Industrial HTML Boilerplate": {
+    "prefix": "boilerplate",
+    "body": ["<!doctype html>", "<html lang=\"en\">", "  <head>", "    <meta charset=\"UTF-8\" />", "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />", "    <title>${1:Project Name}</title>", "    <meta name=\"description\" content=\"${2:Description}\" />", "", "    <script type=\"application/ld+json\">", "      {", "        \"@context\": \"https://schema.org\",", "        \"@type\": \"WebSite\",", "        \"name\": \"$1\",", "        \"url\": \"${3:https://example.com}\"", "      }", "    </script>", "", "    <meta property=\"og:title\" content=\"$1\" />", "    <meta property=\"og:type\" content=\"website\" />", "    <meta property=\"og:url\" content=\"$3\" />", "    <meta property=\"og:description\" content=\"$2\" />", "", "    <link rel=\"icon\" href=\"/assets/favicons/favicon.ico\" sizes=\"any\" />", "    <link rel=\"stylesheet\" href=\"css/main.css\" />", "    <script src=\"js/main.js\" defer></script>", "", "    <style>", "      @font-face {", "        font-family: \"Bitter\";", "        src: url(\"assets/fonts/Bitter.woff2\") format(\"woff2-variations\");", "        font-weight: 100 900;", "        font-display: swap;", "      }", "    </style>", "  </head>", "  <body>", "    <a class=\"skip-link visually-hidden\" href=\"#main\">Skip to main content</a>", "    <header class=\"hdr pos-sticky\"></header>", "    <main id=\"main\" class=\"main\">", "      $0", "    </main>", "    <footer class=\"ftr\"></footer>", "  </body>", "</html>"],
+    "description": "Industrial Minimalist HTML5 boilerplate with linked Title and Schema."
+  }
+}

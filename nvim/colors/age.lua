@@ -14,7 +14,7 @@ local frappe = {
   subtext    = "#8080a0",
   overlay2   = "#949cbb",
   surface2   = "#626880",
-  surface1   = "#41576d",
+  hurface1   = "#41576d",
   surface0   = "#415559",
   base       = "#305450",
   mantle     = "#2f3f3c",
@@ -107,7 +107,7 @@ hl(0, "RenderMarkdownBullet",    { fg = frappe.lavender })
 hl(0, "DiagnosticInfo",    { fg = frappe.blue, bold = false })
 hl(0, "@markup.heading",    { fg = frappe.blue, bold = true })
 hl(0, "@markup.heading.1",    { fg = frappe.base, bg = frappe.yellow, bold = true })
-hl(0, "@markup.heading.2",    { fg = frappe.peach, bg  = frappe.surface0, bold = true, })
+hl(0, "@markup.heading.2",    { fg = frappe.peach, bold = true, })
 hl(0, "@markup.heading.3",    { fg = frappe.red, bold = true })
 hl(0, "@markup.heading.4",    { fg = frappe.lavender, bold = true })
 hl(0, "@markup.heading.5",    { fg = frappe.blue, bold = true })

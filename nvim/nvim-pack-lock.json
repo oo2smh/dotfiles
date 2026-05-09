@@ -1,8 +1,8 @@
 {
   "plugins": {
-    "leap.nvim": {
-      "rev": "0033bcaefc3cd7cf5a70b28cd356fe4860e5c074",
-      "src": "https://github.com/ggandor/leap.nvim"
+    "conform.nvim": {
+      "rev": "086a40dc7ed8242c03be9f47fbcee68699cc2395",
+      "src": "https://github.com/stevearc/conform.nvim"
     },
     "mason-lspconfig.nvim": {
       "rev": "3d89e7c92fbd96c5e10e0298fc2b006f21cf9428",
@@ -84,13 +84,29 @@
       "rev": "a0e182ae21fda68c59d1f36c9ed45600aef50311",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
     },
+    "nvim-ts-autotag": {
+      "rev": "8e1c0a389f20bf7f5b0dd0e00306c1247bda2595",
+      "src": "https://github.com/windwp/nvim-ts-autotag"
+    },
     "render-markdown.nvim": {
       "rev": "99bfa5d61381a29eedc75810898cb9c0fc755064",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
+    "supermaven-nvim": {
+      "rev": "07d20fce48a5629686aefb0a7cd4b25e33947d50",
+      "src": "https://github.com/supermaven-inc/supermaven-nvim"
+    },
     "vim-fugitive": {
       "rev": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4",
       "src": "https://github.com/tpope/vim-fugitive"
+    },
+    "vim-matchup": {
+      "rev": "dccb2d12ef2a703d2f076b3cda36a3339449d1eb",
+      "src": "https://github.com/andymass/vim-matchup"
+    },
+    "yazi.nvim": {
+      "rev": "21d84984103c82628a1f5818eca8c6dd3fd0cc8a",
+      "src": "https://github.com/mikavilpas/yazi.nvim"
     }
   }
 }

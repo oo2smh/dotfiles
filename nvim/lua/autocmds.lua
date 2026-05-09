@@ -12,10 +12,10 @@ autocmd("FileType", {
 autocmd("BufWritePre", { group = group, command = [[%s/\s\+$//e]] })
 
 -- OPEN HELP IN VERTICAL SPLIT
-autocmd("FileType", { group = group, pattern = "help", command = "wincmd L"})
+autocmd("FileType", { group = group, pattern = "help", command = "wincmd L" })
 
 -- RESTORE CURSOR TO FILE POSITION IN PREVIOUS EDITING SESSION
-autocmd("BufReadPost", {
+autocmd({ "BufReadPost", "SessionLoadPost" }, {
   group = group,
   callback = function(args)
     local mark = vim.api.nvim_buf_get_mark(args.buf, '"')
@@ -42,16 +42,18 @@ autocmd({ "WinEnter", "BufEnter", "WinLeave", "BufLeave" }, {
 })
 
 -- TREESITTER AUTOSTART auto-start treesitter for certain filetypes
-local languages = { "markdown", "markdown-inline", "python", "yaml", "javascript", "c" }
+local languages = { "markdown", "html", "jsx", "javascript", "typescript", "typescriptreact", "markdown-inline", "python",
+  "yaml", "javascript", "c",
+  "css" }
+
 for _, lang in ipairs(languages) do
-    autocmd("FileType", {
-      group = group,
-        pattern = lang,
-        callback = function()
-            vim.treesitter.start() -- highlights
-            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"  -- indents
-        end,
-    })
+  autocmd("FileType", {
+    group = group,
+    pattern = lang,
+    callback = function()
+      vim.treesitter.start() -- highlights
+    end,
+  })
 end
 
 -- MARKDOWN ONLY
@@ -62,4 +64,21 @@ autocmd("FileType", {
     o.spellcapcheck = "" -- disable cap check for spell check
     o.conceallevel = 2
   end,
+})
+
+-- AUTOLOAD VIEW (for folds)
+local fold_sync = vim.api.nvim_create_augroup("FoldSync", { clear = true })
+
+-- Save view on buffer leave or write
+autocmd({ "BufWinLeave", "BufWritePost" }, {
+  group = fold_sync,
+  pattern = "*",
+  command = "silent! mkview",
+})
+
+-- Load view on buffer enter (handles sessions and direct file opens)
+autocmd({ "BufReadPost" }, {
+  group = fold_sync,
+  pattern = "*",
+  command = "silent! loadview"
 })

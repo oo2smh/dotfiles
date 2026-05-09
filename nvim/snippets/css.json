@@ -1,0 +1,11 @@
+{
+  "Variable": {
+    "prefix": "--",
+    "body": "var(--${0});"
+  },
+  "Comment": {
+    "prefix": "gcom",
+    "body": "/* ${0} */"
+  }
+}
+
