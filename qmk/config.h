@@ -21,5 +21,5 @@
 
 // COMBOS
 #define COMBO_ONLY_FROM_LAYER 0
-#define COMBO_TERM 15 // reduces window for you to type combo
+#define COMBO_TERM 25 // reduces window for you to type combo
 #define COMBO_COUNT 90
