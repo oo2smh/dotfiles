@@ -5,6 +5,7 @@ keybind = cmd+l=text:\x0c
 keybind = cmd+w=text::q\r
 keybind = ctrl+tab=text:\x1b[27;5;9~
 keybind = ctrl+shift+tab=text:\x1b[27;6;9~
+keybind = global:alt+p=toggle_quick_terminal
 
 # COPY PASTE
 keybind = super+c=text:\x03
@@ -19,4 +20,4 @@ keybind = "cmd+]=text:\x0ezz"
 macos-option-as-alt = true
 
 # START TMUX WITH GHOSTTY
-command = /bin/zsh -c "tmux start-server; tmux new-session -d -s 🎯; ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh; tmux has-session -t 🌧️ 2>/dev/null || (tmux new-session -d -s 🌧️ -n window1 && tmux new-window -t 🌧️ -n window2); tmux kill-session -t 0 2>/dev/null; tmux attach -t 🎯"
+command = /bin/zsh -c "tmux start-server; tmux new-session -d -s 🎯; ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh; tmux has-session -t 🌧️ 2>/dev/null || (tmux new-session -d -s 🌧️ -n 🐿️ && tmux new-window -t 🌧️ -n ⚙️); tmux kill-session -t 0 2>/dev/null; tmux attach -t 🎯"

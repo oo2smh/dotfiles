@@ -27,6 +27,7 @@ enum custom_keycodes {
   MOVE_RIGHT_WORD,
   GO_BACK,
   GO_FORWARD,
+  CLIPBOARD,
   L_WKSPC,
   R_WKSPC,
   EMOJIS,
@@ -53,8 +54,6 @@ enum custom_keycodes {
   TM_WIN_NEW,
   TM_RN_WIN,
   TM_PREV_SESS,
-  TM1,
-  TM2,
 
   XOURNAL_WHITE,
   XOURNAL_SELECT,
@@ -67,10 +66,6 @@ enum custom_keycodes {
   XOURNAL_ORANGE,
   XOURNAL_RED,
   XOURNAL_CYAN,
-  FIG_MARKER,
-  FIG_MOVE,
-  FIG_ERASE,
-  FIG_HIGHLIGHT,
 
   // NVIM
   NV_FILEPATH,
@@ -131,6 +126,7 @@ const os_key_map_t os_keys[] = {
     {MOVE_RIGHT_WORD, C(KC_RIGHT), A(KC_RIGHT)},
     {GO_BACK, A(KC_LEFT), G(KC_LBRC)},
     {GO_FORWARD, A(KC_RIGHT), G(KC_RBRC)},
+    {CLIPBOARD, G(KC_V), LCG(KC_V)},
     {TOP_LVL_TOGGLE, G(KC_TAB), C(KC_UP)},
     {L_WKSPC, RCG(KC_LEFT), C(KC_LEFT)},
     {R_WKSPC, RCG(KC_RIGHT), C(KC_RIGHT)},
@@ -199,7 +195,6 @@ bool handle_os_aware_keys(uint16_t keycode, bool pressed) {
 // MUST SETUP WITHIN OS
 #define SYS_FULLSCREEN KC_F11
 #define SCREENSHOT_OCR LSG(KC_O)
-#define CLIPBOARD LCG(KC_V)
 
 // MISC
 #define LABRC S(KC_COMM)
@@ -499,18 +494,6 @@ void tmux(uint16_t keycode) {
     tap_code16(keycode);
 }
 
-void tmux_prefix(void) {
-    register_code(KC_LCTL);
-    tap_code(KC_B);
-    unregister_code(KC_LCTL);
-}
-
-void tmux_ctrl(uint16_t keycode) {
-    register_code(KC_LCTL);
-    tap_code16(keycode);
-    unregister_code(KC_LCTL);
-}
-
 void tmux_close(uint16_t keycode) {
     tmux(keycode);
     tap_code(KC_Y);
@@ -727,40 +710,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
       }
       return false;
 
-    case FIG_HIGHLIGHT:
-      if (record->event.pressed) {
-        add_oneshot_mods(MOD_BIT(KC_LSFT));
-        tap_code(KC_M);
-      }
-      return false;
-
-    case FIG_MOVE:
-      if (record->event.pressed) {
-        tap_code(KC_V);
-      }
-      return false;
-
-    case FIG_ERASE:
-      if (record->event.pressed) {
-        add_oneshot_mods(MOD_BIT(KC_LSFT));
-        tap_code(KC_DEL);
-      }
-      return false;
-
-    case FIG_MARKER:
-      if (record->event.pressed) {
-        tap_code(KC_M);
-      }
-      return false;
-
       // ZONE: 🐅TMUX
-    case TM1:
-    case TM2:
-      if (record->event.pressed) {
-        tmux(keycode == TM1 ? KC_1 : KC_2);
-      }
-      return false;
-
     case TM_WIN_NEW:
       if (record->event.pressed) {
         tmux(KC_C);
@@ -808,6 +758,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QUICK_FIRE] = LAYOUT_split_3x5_2(KC_VOLD, ZOOM_OUT, ZOOM_IN, KC_VOLU, KC_MUTE, KC_MUTE, A(KC_7), A(KC_8), A(KC_9), TM_PREV_SESS, SFT_TAB, GO_BACK, GO_FORWARD, TAB_TOGGLE, KC_TRNS, KC_TRNS, A(KC_1), A(KC_2), A(KC_3), EMOJIS, TM_WIN_NEW, TM_PANE_CLOSE, TG(_MOUSE_7SYMBOLS), LAUNCHPAD, MS_BTN2, QK_BOOT, A(KC_4), A(KC_5), A(KC_6), KC_TRNS, MS_BTN1, MS_BTN2, MS_WHLD, MS_WHLU),
 
    // 🏗️ fn keys
-  [_FN] = LAYOUT_split_3x5_2(FIG_MOVE, FIG_HIGHLIGHT, FIG_MARKER, FIG_ERASE, OS_TOGGLE, KC_F11, KC_F7, KC_F8, KC_F9, KC_F12, XOURNAL_GRAY, XOURNAL_NEON, XOURNAL_WHITE, XOURNAL_ORANGE, XOURNAL_RED, KC_TRNS, KC_F1, KC_F2, KC_F3, KC_F10, CTL_A, XOURNAL_SELECT, MT(MOD_LALT, KC_DEL), XOURNAL_ERASE, XOURNAL_HAND, KC_TRNS, KC_F4, KC_F5, KC_F6, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
+  [_FN] = LAYOUT_split_3x5_2(KC_BRID, L_WKSPC, R_WKSPC, KC_BRIU, OS_TOGGLE, KC_F11, KC_F7, KC_F8, KC_F9, KC_F12, XOURNAL_GRAY, XOURNAL_NEON, XOURNAL_WHITE, XOURNAL_ORANGE, XOURNAL_RED, KC_TRNS, KC_F1, KC_F2, KC_F3, KC_F10, CTL_A, XOURNAL_SELECT, MT(MOD_LALT, KC_DEL), XOURNAL_ERASE, XOURNAL_HAND, KC_TRNS, KC_F4, KC_F5, KC_F6, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
 };
 
