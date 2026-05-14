@@ -29,8 +29,8 @@ n:$HOME/dotfiles/nvim/;\
 m:$HOME/.config/mise/;\
 p:$HOME/.local/share/nvim/site/pack/core/opt/;\
 q:$HOME/.config/qmk_firmware/keyboards/ferris/keymaps/default/;\
-r:$HOME/Doc/notes/;\
-s:/tmp/screenshots/;\
+r:$HOME/Documents/notes/;\
+s:$HOME/dotfiles/;\
 v:$HOME/Media/recordings/;\
 "
 
@@ -334,5 +334,3 @@ function fsubsetv {
 #     ssh-add ~/.ssh/id_ed25519
 # fi
 #
-
-. "$HOME/.local/bin/env"
