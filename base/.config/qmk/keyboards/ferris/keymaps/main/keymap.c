@@ -15,6 +15,7 @@ enum layers {
 enum custom_keycodes {
   OS_TOGGLE = SAFE_RANGE,
   SYS_TOGGLE,
+  TOP_LVL_TOGGLE,
   TERM_TOGGLE,
   SCREENSHOT,
   LAUNCHPAD,
@@ -26,6 +27,8 @@ enum custom_keycodes {
   MOVE_RIGHT_WORD,
   GO_BACK,
   GO_FORWARD,
+  L_WKSPC,
+  R_WKSPC,
   EMOJIS,
   COPY,
   PASTE,
@@ -128,6 +131,9 @@ const os_key_map_t os_keys[] = {
     {MOVE_RIGHT_WORD, C(KC_RIGHT), A(KC_RIGHT)},
     {GO_BACK, A(KC_LEFT), G(KC_LBRC)},
     {GO_FORWARD, A(KC_RIGHT), G(KC_RBRC)},
+    {TOP_LVL_TOGGLE, G(KC_TAB), C(KC_UP)},
+    {L_WKSPC, RCG(KC_LEFT), C(KC_LEFT)},
+    {R_WKSPC, RCG(KC_RIGHT), C(KC_RIGHT)},
     {SLEEP, KC_SLEP, LCG(KC_Q)},
     {SHUTDOWN, KC_PWR, LSG(KC_SPC)},
     {DEL_WORD, C(KC_BSPC), A(KC_BSPC)},
@@ -192,7 +198,6 @@ bool handle_os_aware_keys(uint16_t keycode, bool pressed) {
 
 // MUST SETUP WITHIN OS
 #define SYS_FULLSCREEN KC_F11
-#define MON_TOGGLE LAG(KC_TAB)
 #define SCREENSHOT_OCR LSG(KC_O)
 #define CLIPBOARD LCG(KC_V)
 
@@ -224,6 +229,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 // COMBOS
 /////////////////////////////////////////////////
 // NAV
+const uint16_t PROGMEM l_wkspc[] = {TH_R, TH_SPC, TH_TAB, COMBO_END};
+const uint16_t PROGMEM r_wkspc[] = {TH_R, TH_SPC, TH_SCRAPS, COMBO_END};
 const uint16_t PROGMEM mon_toggle[] = {KC_A, KC_I, KC_E, COMBO_END};
 const uint16_t PROGMEM sys_toggle[] = {KC_A, KC_U, COMBO_END};
 const uint16_t PROGMEM term_toggle[] = {KC_H, KC_L, COMBO_END};
@@ -333,13 +340,16 @@ const uint16_t PROGMEM k_x[] = {TH_SCRAPS, KC_S, COMBO_END};
 combo_t key_combos[85] = {
     // TOGGLE 7
     COMBO(term_toggle, TERM_TOGGLE),
-    COMBO(mon_toggle, MON_TOGGLE),
+    COMBO(mon_toggle, TOP_LVL_TOGGLE),
     COMBO(sys_toggle, SYS_TOGGLE),
     COMBO(tmux_toggle, TMUX_TOGGLE),
     COMBO(sys_fullscreen, SYS_FULLSCREEN),
     COMBO(tmux_fullscreen, TMUX_FULLSCREEN),
 
     // SYS 17
+    COMBO(l_wkspc, L_WKSPC),
+    COMBO(r_wkspc, R_WKSPC),
+    COMBO(term_toggle, TERM_TOGGLE),
     COMBO(sys_clipboard, CLIPBOARD),
     COMBO(sys_copy, COPY),
     COMBO(sys_paste, PASTE),
